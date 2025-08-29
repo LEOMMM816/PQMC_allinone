@@ -1,0 +1,129 @@
+! 2D square lattice with EPSOC in sigmaz channel
+! n_cover = n means plaquettes cover the whole lattice n times, so n_plaquette = Ns * n_cover/pf%dim
+! tsl_vec are the positions of the first site in the interaction H-space, also refered as the position of the boson field 
+! int_vec are the positions of sites in each plaquette, relative to the first site. The first vector is 0,0
+
+&lat_dim
+dim = 2
+n_subsite_uc = 1
+/
+
+&lat_spatial
+  lat_size = 4,4
+  lat_vec = 1,0,
+              0,1
+/
+
+&lat_subsite_vector
+  site_vec = 0,0
+/
+
+&pf1
+  id = 1
+  updateable = .true.
+  dim = 2
+  n_cover = 1
+/
+
+&pfdetail
+      K_coe = -1.0d0 !> coupling constant for K matrix
+      V_coe = 1.0d0 !> coupling constant for V matrix
+      coupled_bf = 1 !> index of the coupled boson field
+      pla_tsl_vec = 2,0,
+                   1,1 
+      pla_tsl_offset_vec = 0,0
+      pla_int_vec = 0,0,
+                    1,0
+      Kmatrix = (0,0),(1,0),
+                (1,0),(0,0)
+      Vmatrix = (0,0),(0,1),
+                (0,-1),(0,0)
+/
+
+&pf1
+  id = 2
+  updateable = .true.
+  dim = 2
+  n_cover = 1
+/
+
+&pfdetail
+      K_coe = -1.0d0 !> coupling constant for K matrix
+      V_coe = 1.0d0 !> coupling constant for V matrix
+      coupled_bf = 1 !> index of the coupled boson field
+      pla_tsl_vec = 2,0,
+                   1,1 
+      pla_tsl_offset_vec = 1,0
+      pla_int_vec = 0,0,
+                    1,0
+      Kmatrix = (0,0),(1,0),
+                (1,0),(0,0)
+      Vmatrix = (0,0),(0,1),
+                (0,-1),(0,0)
+/
+
+&pf1
+  id = 3
+  updateable = .true.
+  dim = 2
+  n_cover = 1
+/
+
+&pfdetail
+K_coe = -1.0d0 !> coupling constant for K matrix
+      V_coe = 1.0d0 !> coupling constant for V matrix
+      coupled_bf = 2 !> index of the coupled boson field
+      pla_tsl_vec = 2,0,
+                   1,1 
+      pla_tsl_offset_vec = 0,0
+      pla_int_vec = 0,0,
+                    0,1
+      Kmatrix = (0,0),(1,0),
+                (1,0),(0,0)
+      Vmatrix = (0,0),(0,1),
+                (0,-1),(0,0)
+/
+
+&pf1
+  id = 4
+  updateable = .true.
+  dim = 2
+  n_cover = 1
+/
+
+&pfdetail
+K_coe = -1.0d0 !> coupling constant for K matrix
+      V_coe = 1.0d0 !> coupling constant for V matrix
+      coupled_bf = 2 !> index of the coupled boson field
+      pla_tsl_vec = 2,0,
+                   1,1 
+      pla_tsl_offset_vec = 0,1
+      pla_int_vec = 0,0,
+                    0,1
+      Kmatrix = (0,0),(1,0),
+                (1,0),(0,0)
+      Vmatrix = (0,0),(0,1),
+                (0,-1),(0,0)
+/
+
+&slater
+    dim = 3
+    n_cover = 3
+    updateable = .false.
+/
+
+&slater_detail
+
+    K_coe = -1.0d0 !> coupling constant for K matrix
+    pla_tsl_vec = 1,0,
+                   0,1 
+    pla_tsl_offset_vec = 0,0
+    pla_int_vec = 0,0,
+                  1,0
+                  0,1
+    Kmatrix = 0,1,1,
+              1,0,0,
+              1,0,0
+/
+
+

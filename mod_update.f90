@@ -1,0 +1,361 @@
+module update
+
+  use ran_state
+  use evolution
+  implicit none
+
+contains
+
+  subroutine update_phonon_field(ppf, time)
+
+    !> update phonon field, calculate exp(delta E), if accepted, update Kmat, green function
+    !> this subroutine is called in Main_PQMC.f90
+    !> ppf is the phonon field type, time is the time step
+    !> note that boson_field and the expKV and expKV_inv have been updated
+    !> update ph_field, calculate exp(delta E), if accepted, update Kmat, green function
+    implicit none
+    integer, intent(in) :: time
+    type(pf_type), intent(in) :: ppf
+    type(pf_data_type), pointer :: p_data
+    complex(kind=8) :: R_elec ! relative boltzmann weight &
+    real(8) :: R, delta_energy, bf_jump, delta_energy_elec
+    real(8) :: old_bf
+    complex(8), dimension(ppf%dim,ppf%dim) :: expKV_old,expK_inv_old
+    complex(8),dimension(ppf%dim,ppf%dim) :: Delta_sub,  R_mat_sub, R_temp_sub, g_h_sub,g_sub
+    complex(8), dimension(Ns, Ns) :: g_temp
+    complex(8) :: g_part_nd(Ns,ppf%dim) !> Ns*d of G_h,auxillary matrix to construct updated g
+    complex(8) :: g_part_dn(ppf%dim,Ns)!> d*Ns of G,auxillary matrix to construct updated g
+    integer ::  i,j,k,i_pla
+    integer :: site_list(ppf%dim)
+    logical :: flag = .true., update_accept
+    real(8), pointer :: p_bf
+    !if(.not.allocated(g_debug)) allocate(g_debug(Ns,Ns))
+
+    !initialization
+    p_data => ppf%p_data
+    Delta_sub = 0d0
+    g_h_sub = 0d0
+    R_mat_sub = 0d0
+    g_temp = 0d0
+    g_sub = 0d0
+    !g_debug = 0d0
+    g_part_nd = 0d0
+    g_part_dn = 0d0
+    delta_energy = 0d0
+    delta_energy_elec = 0d0
+    bf_jump = 0d0
+    R_temp_sub = 0d0
+    flag = .true.
+    update_accept = .false.
+      !! fix two end points
+    if ( time ==1 .or. time == ntime ) return
+      !! preparation
+
+    do i_pla = 1 , ppf%n_plaquette
+      ! get the site index of the plaquette
+      site_list = p_data%pla_site_list(:,i_pla)
+      ! get the old field value
+      p_bf => boson_field(p_data%bf_list(i_pla), time)
+      old_bf = p_bf
+      ! get g_sub and g_h_sub
+      g_h_sub = g_h(site_list, site_list)
+      g_sub = idx(ppf%dim) - g_h_sub
+      do i = 1, n_local_update
+        ! new bf_jump value
+        bf_jump = jump_distance*ran_sysm()
+        ! calculate energy difference due to boson field: delta_energy
+        call cal_energy_difference(p_data%bf_list(i_pla), time, bf_jump, delta_energy)
+        delta_energy = -delt*delta_energy
+        R = exp(delta_energy)
+        ! calculate det(B')/det(B), energy difference due to electrons
+        R_elec = 1d0
+        p_bf = p_bf + bf_jump ! update boson field
+        Delta_sub = calculate_Delta(ppf,i_pla,time,p_bf)
+        R_mat_sub = idx(ppf%dim) + matmul(g_h_sub,Delta_sub) !> R_sub = I  + G_h_sub * Delta_sub
+        R_elec = R_elec * det(ppf%dim,R_mat_sub)! R_elec = det(I + delta*G_h)
+        R_elec = (R_elec*conjg(R_elec))**ncopy
+        R = R*abs(R_elec)
+
+        ! calculate the acceptance probability
+        if (R >= 0d0) then
+          if (Metropolis) then
+            prob = real(R)
+            if (greatest_decent) then
+              prob = floor(prob)
+            end if
+          else!heat bath
+            prob = real(R/(1 + R)) ! accept probobility
+          end if
+          !print*,"P = ",prob
+
+        else
+          print *, "SIGN PROBLEM,R:", R, 'in updating phonon field'
+          print *, 'time,i_pf,i_pla:', time, ppf%id, i_pla
+          print *, 'R_mat_sub:', R_mat_sub
+          print *, 'Delta_sub:', Delta_sub
+          print *, 'g_h_sub:', g_h_sub
+          stop
+        end if
+
+        ! acceptance test
+
+        if ((prob < rands())) then
+          ! reject
+          p_bf = p_bf - bf_jump
+        else
+          update_accept = .true.
+          ! update pf_data
+          call get_expKV(p_data%expKV(:,:,i_pla,time),ppf,p_bf,inv=.false.)
+          call get_expKV(p_data%expKV_inv(:,:,i_pla,time),ppf,p_bf,inv=.true.)
+
+          ! update G_sub
+          ! g_h_sub = g_h_sub + g_h_sub * Delta * R^(-1) * (I - g_h_sub)
+          call inverse(ppf%dim, R_mat_sub) ! R_mat_sub => R_mat_sub^(-1)
+          R_temp_sub = matmul(Delta_sub,R_mat_sub)
+          g_h_sub = g_h_sub + matmul(matmul(g_h_sub,R_temp_sub),g_sub)
+          g_sub = idx(ppf%dim) - g_h_sub
+          ln_cw = ln_cw + log(abs(R_elec))
+        end if
+      end do
+
+      if (update_accept) then
+         !! final update ph & g
+        positive_accept = positive_accept + 1
+        ! update green functiuon
+        ! note that boson_field and the expKV and expKV_inv have been updated
+        g_h_sub = g_h(site_list, site_list)
+        g_part_nd = g_h(:, site_list)
+        g_part_dn = g(site_list, :)
+        call get_expKV(Delta_sub,ppf, old_bf, inv=.true.)
+        Delta_sub = matmul(Delta_sub, p_data%expKV(:,:,i_pla,time)) - idx(ppf%dim) ! Delta_sub = expKV * exp(-delt*KV') - I
+
+        R_mat_sub = idx(ppf%dim) + Delta_sub* g_h_sub
+        call inverse(ppf%dim,R_mat_sub) ! R_mat_sub => R_mat_sub^(-1)
+        R_mat_sub = matmul(Delta_sub,R_mat_sub) ! R_mat_sub  => Delta_sub * R_mat_sub^(-1)
+        g_h = g_h + matmul(matmul(g_part_nd,R_mat_sub),g_part_dn)
+        g = -g_h
+        forall (j=1:Ns) g(j, j) = g(j, j) + 1d0
+
+        ! update Kmat
+        !call update_Kmat(bond,time)
+      else
+        p_bf = old_bf
+        negative_accept = negative_accept + 1
+        !print*,'non-accepted ln_cw:',ln_cw
+      end if
+    end do
+
+  end subroutine
+
+  Subroutine cal_energy_difference(bf_index, time, bf_jump, delta_energy)
+    implicit none
+    integer ::  time,bf_index
+    real(8) :: bf_jump, delta_energy, E_1, E_2, ph_be, ph_af, ph_now, ph_new
+    ph_be = boson_field(bf_index, modi(time - 1, ntime))
+    ph_af = boson_field(bf_index, modi(time + 1, ntime))
+    ph_now = boson_field(bf_index, time)
+    ph_new = ph_now + bf_jump
+    !delta_energy = bf_jump * (delt**(-2)*(2 *(-boson_field(bond,modi(time+1,ntime))-boson_field(bond,modi(time-1,ntime))+ &
+    !& 2*boson_field(bond,time))) + 2*omega*omega*boson_field(bond,time)) &
+    !& + bf_jump**2 *(2*delt**(-2)+omega**2)
+    E_1 = 0.5*M*((ph_be - ph_now)**2 + (ph_af - ph_now)**2)/(delt)**2 + 0.5*D*ph_now**2 - biased_phonon * ph_now
+    E_2 = 0.5*M*((ph_be - ph_new)**2 + (ph_af - ph_new)**2)/(delt)**2 + 0.5*D*ph_new**2 - biased_phonon * ph_new
+    delta_energy = (E_2 - E_1)
+    !if(.true.) then
+    !delta_energy_K = delta_energy_K + abs(0.5  * ((ph_be - ph_new)**2 + (ph_af - ph_new)**2)/(delt*omega)**2 - &
+    !& 0.5  * ((ph_be - ph_now)**2 + (ph_af - ph_now)**2)/(delt*omega)**2)
+    !delta_energy_P = delta_energy_P + abs(0.5 * D *(ph_new**2 - ph_now**2))
+    !end if
+  end subroutine
+
+  FUNCTION calculate_Delta(ppf,i_pla, time,bf_new) result(re)
+    implicit none
+    integer, intent(in)::  i_pla,time! n is dimension of field
+    type(pf_type), intent(in) :: ppf
+    complex(8) :: re(ppf%dim, ppf%dim)
+    real(8),pointer ::  bf_new
+    real(8) :: bf_value
+    bf_value = bf_new
+    call get_expKV(re,ppf,bf_value,inv = .false.) ! re = expKV
+    re = matmul(ppf%p_data%expKV_inv(:,:,i_pla,time),re) - idx(ppf%dim) ! delta_sub = exp(delt*KV) * exp(-delt*KV') - I
+    ! p_Data%expKV_inv(:,:,i_pla,time) is exp(delt*KV)
+  end FUNCTION
+
+  subroutine update_global()
+    implicit NONE
+    real(8) :: oldfield(Ns, ntime)
+    real(8) :: oldconfigurationweight
+
+    real(kind=8) :: R ! relative boltzmann weight
+    real(8) :: ph_ln_cw
+    oldfield = boson_field
+    oldconfigurationweight = ln_cw
+
+    ln_cw = 0d0
+
+    call generate_newfield_global() ! generate new pf and sum over the weight caused by energy difference
+
+    ph_ln_cw = ln_cw
+
+    call cal_new_weight() ! calculate the relative weight caused by det()
+    !print*,'ln_cw:',ln_cw
+    !print*,'ph_ln_cw:',ph_ln_cw
+    !print*,'ln_cw + ph_ln_cw - oldconfigurationweight:',ln_cw + ph_ln_cw - oldconfigurationweight
+    R = exp(min(10d0, ln_cw + ph_ln_cw - oldconfigurationweight))
+    if (R > -0.0000001) then
+      if (Metropolis) then
+        prob = min(1d0, real(R))
+        if (greatest_decent) then
+          prob = floor(prob)
+        end if
+      else
+        prob = real(R/(1 + R)) ! accept probobility
+
+      end if
+      print*,"global update: P = ",prob
+    else
+      print *, "SIGN PROBLEM,R:", R, 'in global update phonon field'
+      print *, 'ln_cw,oldconfigurationweight:', ln_cw, oldconfigurationweight
+      prob = real(R)
+      stop
+    end if
+
+    if (ran() < prob) then ! accept this global update
+      global_accept = global_accept + 1
+      updated = .true.
+      !call set_kmat()
+      !call init_g_T0() ! will recalculate ln_cw to erase the energy part
+
+      !print*,'accepted!'
+    else
+      boson_field = oldfield
+      ln_cw = oldconfigurationweight
+      !Kmat = old_Kmat
+      global_reject = global_reject + 1
+    end if
+
+  end subroutine
+
+  subroutine generate_newfield_global()
+    implicit none
+    integer :: i, site
+    integer, dimension(n_global_update) :: updated_ind !
+    real(8) :: bf_temp(ntime), bf_jump, max_jump, Kspace_jump_norm
+    real(8) :: delta_energy
+    if(.not.global_update_exchange) then
+      !! new field
+      do i = 1, n_global_update
+
+        updated_ind(i) = irands(n_boson_field) + 1
+        if (global_update_flip) then
+          bf_temp = - boson_field(updated_ind(i), :)
+        elseif (global_update_shift) then
+          bf_jump = ran_sysm()* global_update_distance
+          bf_temp = boson_field(updated_ind(i), :) + bf_jump
+        end if
+        bf_temp(1) = end_field
+        bf_temp(ntime) = end_field
+      !! energy difference
+        delta_energy = 0d0
+        if (.not. global_update_flip) then
+          delta_energy = 0.5*D*sum(bf_temp**2 - boson_field(updated_ind(i), :)**2)
+        end if
+        delta_energy = delta_energy + sum(- biased_phonon * (bf_temp - boson_field(updated_ind(i), :)))
+        boson_field(updated_ind(i), :) = bf_temp
+        ln_cw = ln_cw - delta_energy*delt
+      end do
+    else !! exchange nearby ph fields
+      do i = 1, n_global_update
+        delta_energy = 0d0
+        updated_ind(i) = irands(n_boson_field) + 1
+        site = irands(n_boson_field) + 1
+        bf_temp = boson_field(updated_ind(i), :)
+        boson_field(updated_ind(i), :) = boson_field(site, :)
+        boson_field(site, :) = bf_temp
+      end do
+    end if
+    !call set_kmat()
+  end subroutine
+
+  subroutine generate_newfield_space(bf_jump, K_vec, distance)
+    implicit none
+    real(8), intent(in) :: distance
+    real, intent(in) :: K_vec(Lat%dim) !K_vec's components belong to [-1,1], by unit of pi
+    real(8), intent(out) :: bf_jump(n_boson_field)
+    real(8) :: phi, amplitude
+    integer :: i_bf,i_cell
+    bf_jump = 0d0
+
+    do i_bf = 1, bf_sets
+      phi = 2d0*pi*rands()
+      amplitude = distance/Lat%N_cell*ran_sysm()
+      do i_cell = 1, Lat%N_cell
+        bf_jump(bf_sets*(i_cell-1) + i_bf) = amplitude*(cos(sum(K_vec * p_cells(i_cell)%rpos * pi) + phi))
+      end do
+    end do
+  end subroutine
+
+  subroutine cal_new_weight()
+    ! calculate the relative weight caused by det(), the expKV are not available
+    ! this subroutine is called in update_global
+    ! note that boson_field have been updated but the expKV and expKV_inv need to be calculated explicitly
+    ! the Q,D,R are not changed in this subroutine
+    implicit none
+    integer flv, p, d, flag, i, i_pf,i_pla
+    real(8) :: lndet
+    complex(8), allocatable :: tmat(:, :), lmat(:, :), rmat(:, :), expKV_temp(:,:)
+    ln_cw = 0d0
+
+    lndet = 0d0
+    d = nelec
+    allocate (tmat(d, d), lmat(d, ns), rmat(ns, d))
+
+    lmat = conjg(transpose(Q_string(:, 1:nelec, nblock)))
+
+    do i = 1, d
+      lndet = lndet + log(abs(d_string(i, nblock)))
+    end do
+
+    flag = 0
+    do p = ntime, 1, -1
+      do i_pf = n_phonon_field,1,-1
+        allocate (expKV_temp(ppf_list(i_pf)%dim, ppf_list(i_pf)%dim))
+        do i_pla = 1, ppf_list(i_pf)%n_plaquette
+          if(pf_list(i_pf)%V_exist) then
+            call get_expKV(expKV_temp, ppf_list(i_pf), boson_field(ppf_list(i_pf)%p_data%bf_list(i_pla), p), inv=.false.)
+          else
+            expKV_temp = pf_list(i_pf)%p_data%expKV(:,:,i_pla,p) ! if no V, expKV = I
+          end if
+
+          ! left evolve the lmat matrix : expK * expV * Q
+          lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) =  &
+          & matmul(lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)),expKV_temp)
+        end do
+        deallocate(expKV_temp)
+      end do
+
+      flag = flag + 1
+      if (flag /= ngroup) cycle
+      flag = 0
+      call zlq(d, ns, lmat, tmat)
+      do i = 1, d
+        lndet = lndet + log(abs(tmat(i, i)))
+      end do
+      !print*,'lndet for time',p,'is',lndet
+    end do
+
+    rmat = Q_string(:, 1:nelec, 1)
+
+    do i = 1, d
+      lndet = lndet + log(abs(d_string(i, 1)))
+    end do
+
+    tmat = matmul(lmat, rmat)
+    lndet = lndet + log(abs(det(d, tmat)))
+    !print*,'lndet:',log(abs(det(d,tmat)))
+
+    ln_cw = ln_cw + lndet * ncopy * 2
+
+  end subroutine
+
+end module update

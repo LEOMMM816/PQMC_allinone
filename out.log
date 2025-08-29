@@ -1,0 +1,48 @@
+ nelec:           0
+ beta,ntime,nblock   80.000000000000000                0           0
+ set lattice begins
+ Lattice dimension:           1
+ Lattice dimension from file:           1
+ Lattice dimension:           1
+ Lattice lengths:          20
+ Lattice spatial vectors:
+   1.0000000000000000     
+ Number of sites in unit cell:           2
+ site unit cell vectors:
+   0.0000000000000000     
+  0.10000000000000001     
+ Total number of sites in the lattice:          40
+ Lattice periodicity: T
+ Lattice unit cell count:          20
+ Lattice size:          20
+ Lattice spatial lengths:   20.000000000000000     
+ Lattice spatial vectors:
+   1.0000000000000000     
+ Lattice setup completed.
+ set pf begins
+ Error reading namelist pfdetail1 at index            1
+ ios:        5010
+ nelec:           0
+ beta,ntime,nblock   80.000000000000000                0           0
+ set lattice begins
+ Lattice dimension:           1
+ Lattice dimension from file:           1
+ Lattice dimension:           1
+ Lattice lengths:          20
+ Lattice spatial vectors:
+   1.0000000000000000     
+ Number of sites in unit cell:           2
+ site unit cell vectors:
+   0.0000000000000000     
+  0.10000000000000001     
+ Total number of sites in the lattice:          40
+ Lattice periodicity: T
+ Lattice unit cell count:          20
+ Lattice size:          20
+ Lattice spatial lengths:   20.000000000000000     
+ Lattice spatial vectors:
+   1.0000000000000000     
+ Lattice setup completed.
+ set pf begins
+ Error reading namelist pfdetail1 at index            1
+ ios:        5010

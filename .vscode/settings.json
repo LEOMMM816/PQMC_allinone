@@ -1,0 +1,82 @@
+{
+    "fortran.formatting.path": "/home/zhangxiangyu/.local/bin",
+    "fortran.formatting.formatter": "fprettify",
+    
+
+  
+  // —— 建议的基础可读性设置 ——
+  "editor.fontLigatures": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.renderWhitespace": "selection",
+  "editor.lineHeight": 22,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.inlayHints.enabled": "off",
+
+  // —— 主题无关的 Fortran 语法高亮（对所有主题生效） ——
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      // 1) 控制类关键字（if/do/select/return/stop/exit...）
+      { "scope": "source.fortran keyword.control", "settings": { "foreground": "#b843babe"} },
+
+      // 2) 声明/结构类关键字（program/module/use/contains/interface...）
+      { "scope": ["source.fortran keyword.declaration", "source.fortran keyword.other", "source.fortran storage.type.module", "source.fortran entity.other.attribute-name"], "settings": { "foreground": "#C792EA", "fontStyle": "bold" } },
+
+      // 3) 类型关键字（integer/real/complex/logical/character...）
+      { "scope": ["source.fortran storage.type", "source.fortran support.type"], "settings": { "foreground": "#E7C787", "fontStyle": "bold" } },
+      { "scope": ["keyword.control.type.fortran", "keyword.control.endtype.fortran"],"settings": { "foreground": "#cf5707", "fontStyle": "bold" } },
+      // 4) 存储修饰/属性（intent/optional/allocatable/pointer/parameter...）
+      { "scope": ["source.fortran storage.modifier", "source.fortran keyword.modifier", "source.fortran variable.parameter", "source.fortran storage.modifier.parameter"], "settings": { "foreground": "#89DDFF", "fontStyle": "italic" } },
+
+      // 5) 函数/子程序名
+      { "scope": ["source.fortran entity.name.function", "source.fortran entity.name.subroutine"], "settings": { "foreground": "#F78C6C", "fontStyle": "italic" } },
+
+      // 6) 程序/模块/派生类型名
+      { "scope": ["source.fortran entity.name.program", "source.fortran entity.name.module", "source.fortran entity.name.type"], "settings": { "foreground": "#FFCB6B" } },
+
+      // 7) 内建/标准过程（intrinsic）
+      { "scope": ["source.fortran support.function.intrinsic", "source.fortran support.function.builtin"], "settings": { "foreground": "#80CBC4" } },
+
+      // 8) 常量（数字）
+      { "scope": "source.fortran constant.numeric", "settings": { "foreground": "#E6B673" } },
+
+      // 9) 逻辑常量（.true. / .false.）
+      { "scope": ["source.fortran constant.language.boolean", "source.fortran constant.language"], "settings": { "foreground": "#C3E88D", "fontStyle": "bold" } },
+
+      // 10) 字符串
+      { "scope": "source.fortran string", "settings": { "foreground": "#74b90d" } },
+
+      // 11) 运算符（算术/逻辑/关系/赋值）
+      { "scope": "source.fortran keyword.operator", "settings": { "foreground": "#89DDFF" } },
+
+      // 12) 注释
+      { "scope": "source.fortran comment", "settings": { "foreground": "#7F848E", "fontStyle": "italic" } },
+
+      // 13) 预处理/宏
+      { "scope": ["source.fortran meta.preprocessor", "source.fortran entity.name.function.preprocessor", "source.fortran keyword.control.import"], "settings": { "foreground": "#FF5370" } },
+
+      // 14) 标签/FORMAT
+      { "scope": ["source.fortran entity.name.label", "source.fortran support.function.format", "source.fortran meta.label"], "settings": { "foreground": "#A6ACCD" } },
+
+      // 15) 标点
+      { "scope": ["source.fortran punctuation.separator", "source.fortran punctuation.terminator", "source.fortran punctuation.section"], "settings": { "foreground": "#B0BEC5" } },
+
+      // 16) 非法/弃用
+      { "scope": ["source.fortran invalid.illegal", "source.fortran invalid.deprecated"], "settings": { "foreground": "#FFFFFF", "background": "#D7263D", "fontStyle": "bold" } }
+    ]
+  },
+
+  // —— 语义高亮（若扩展支持） ——
+  "editor.semanticHighlighting.enabled": true,
+  "editor.semanticTokenColorCustomizations": {
+    "enabled": true,
+    "rules": {
+      "function.declaration": { "foreground": "#F78C6C", "italic": true },
+      "function": { "foreground": "#F78C6C" },
+      "type": { "foreground": "#FFCB6B", "bold": true },
+      "macro": { "foreground": "#FF5370" },
+      "parameter": { "foreground": "#89DDFF", "italic": true },
+      "variable.readonly": { "foreground": "#C792EA" }
+    }
+  }
+}
