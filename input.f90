@@ -39,7 +39,7 @@ MODULE input
   integer :: MPI_nblock = 1!> = numprocs/MPI_one_block
 ! MC parameter
   integer :: warmup = 20, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
-  integer :: nbin_per_core = 2, one_bin = 20! # of bins and size of one bin
+  integer :: nbin_per_core = 2, nmeas_per_bin = 20! # of bins and size of one bin
 ! measurement parameter
   integer :: n_obs = 11 , n_corf = 33, n_ctau = 5 ! number of observables
   integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
@@ -180,7 +180,7 @@ contains
   SUBROUTINE init()
     implicit none
     ! parameters definition
-    one_bin_tau = one_bin/(meas_interval_tau/meas_interval)
+    one_bin_tau = nmeas_per_bin/(meas_interval_tau/meas_interval)
     jump_distance = (1d0) * (0.1d0/delt)
     ntime = nint(beta/delt)
     Ns = Lat%Ns

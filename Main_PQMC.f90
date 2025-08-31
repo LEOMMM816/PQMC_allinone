@@ -147,7 +147,7 @@ program Pqmc_main
       if (loop > warmup .and. mod(loop - warmup, meas_interval) == 0) then
         if(time >= ntime/2 - meas_number .and. time <= ntime/2 + meas_number) then
           ! take measurement every meas_interval MCS
-          call Meas_sys%take_measurement(time, forward)
+          call Meas_sys%begin_measure( forward,time)
         end if
       end if
 

@@ -204,4 +204,30 @@ contains
     end do
     
   end subroutine get_uc_index_from_dpos
+
+  subroutine get_relative_index(ind, dpos1, dpos2)
+    implicit none
+    ! This function returns the relative index from dpos1 to dpos2
+    ! considering periodic boundary conditions
+    ! dpos1 and dpos2 are the position vectors to be input, where
+    ! each component tops [L1-1, L2-1, L3-1, ...](0-based)
+    ! ind is the relative index to be returned
+    ! ind = 1 + (dpos_rel(1)) + L1*((dpos_rel(2)) + L2*((dpos_rel(3)) + ...))) (0-based)
+    ! ind = 1 + (dpos_rel(1)-1) + L1*((dpos_rel(2)-1) + L2*((dpos_rel(3)-1) + ...))) (1-based)
+    ! this subroutine is self-contained, it does not depend on the lattice type or outside variables
+    
+    integer, intent(in) :: dpos1(lat%dim), dpos2(lat%dim)
+    integer, intent(out) :: ind
+    integer :: i
+    integer :: dpos_rel(size(dpos1))
+    
+    ! Calculate relative position considering periodic boundary conditions
+    do i = 1, size(dpos1)
+      dpos_rel(i) = mod(dpos2(i) - dpos1(i) + lat%dlength(i), lat%dlength(i))
+    end do
+    
+    ! Now calculate the index from the relative position
+    call get_uc_index_from_dpos(dpos_rel, ind)
+    
+  end subroutine get_relative_index
 end module lattice
