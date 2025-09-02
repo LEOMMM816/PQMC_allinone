@@ -54,7 +54,6 @@ contains
       stop
     end if
     read(10, nml=pf_basic)
-    print*,"debug:",pf_dim
     do i_pf = 1, n_phonon_field
 
       ppf => pf_list(i_pf)

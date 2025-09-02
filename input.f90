@@ -63,12 +63,12 @@ MODULE input
   real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
   integer, allocatable :: field_type(:) ! field number
   real(8):: TBC_phase_number(2) = (/0d0,0d0/)
-  real(8) :: filling
+  real(8) :: filling = 1d0
   real(8) :: biased_phonon
 
 ! HS parameter
 
-  real(kind=8) :: ep_parameter, U = 0d0 ! Hubbard U and steps delt * U < 0.5
+  real(kind=8) :: ep_parameter = 1d0, U = 0d0 ! Hubbard U and steps delt * U < 0.5
 
 ! proj
   real(8) :: disorder = 0d0
@@ -85,7 +85,7 @@ MODULE input
   integer :: n_boson_field ! number of decomposed phonon field
   real(8) :: D = 1d0,M = 1d0 !>stiffness constant and Mass
   real(8) :: char_length = 1.0 !> characteristic length of phonon field
-  real(8) :: omega!> phonon frequency
+  real(8) :: omega = 1d0!> phonon frequency
   real(8) :: end_field = 0d0
   real(8) :: jump_distance
   real(8) :: max_displacement !> = hop / ep_parameter
@@ -205,9 +205,8 @@ contains
     do i_pf = 1, n_phonon_field
       pf_list(i_pf)%K_coe = (-hop)
       pf_list(i_pf)%V_coe = ep_parameter
-      call init_expKV(ppf_list(i_pf))
     end do
-
+    slater_pf%K_coe = (-hop)
     return
   end subroutine init_MPI
 

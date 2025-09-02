@@ -2,7 +2,6 @@ module dqmc_measurements
   use pf_setting
   use iso_fortran_env, only: real64
   implicit none
-  private
   public :: MeasurementSystem
 
   integer, parameter :: dp = real64
@@ -20,7 +19,7 @@ module dqmc_measurements
     integer :: field_width = 0
     integer,allocatable :: handles(:)
     ! ---- data buffer ----
-    real(dp), allocatable :: data(:,:,:) ! [total_width, nbins, nmeas]
+    complex(dp), allocatable :: data(:,:,:) ! [total_width, nbins, nmeas]
     integer :: nbins = 0, nmeas = 0
     integer :: cur_bin = 1, cur_meas = 0
     ! ---- status ----
@@ -28,6 +27,7 @@ module dqmc_measurements
 
   contains
     ! ---- init / io ----
+    procedure :: init_meas            => ms_init_meas               ! initialize measurement system
     procedure :: init_from_namelist   => ms_init_from_namelist   ! read observables, finalize, allocate data
     procedure :: finalize_layout      => ms_finalize_layout      ! compute offsets
     procedure :: init_storage         => ms_init_storage
@@ -44,6 +44,7 @@ module dqmc_measurements
     procedure :: record_field_entry => ms_record_field_entry
 
     ! ---- analysis ----
+    procedure :: data_analyse         => ms_data_analyse
     procedure :: compute_all_bin_means => ms_compute_all_bin_means
   end type MeasurementSystem
 
@@ -63,7 +64,7 @@ contains
     integer :: head, bin , handle, N_cell
     integer ::   i,j,c1,c2,s1, s2, s1_next,s2_next,ind
     complex(kind=8) :: factor ! phase factor of the position (should be complex in general)
-    real(8) :: obs_temp,  t_s1_c, t_s2_c
+    complex(dp) :: obs_temp,  t_s1_c, t_s2_c
     type(cell_type), pointer :: pc1,pc2
 
       !! MEASUREMENT BEGINS
@@ -237,59 +238,57 @@ contains
 !                             NAMELIST INIT                             !
 !======================================================================!
 
-  subroutine init_meas()
+  subroutine ms_init_meas(this)
     implicit none
-    Meas_sys%nbins = nbin_per_core
-    Meas_sys%nmeas = n_meas_per_bin
-    Meas_sys%cur_bin = 1
-    Meas_sys%cur_meas = 1
-    call Meas_sys%init_from_namelist('measurement.nml')
-  end subroutine init_meas
+    class(MeasurementSystem), intent(inout) :: this
+    this%nbins = nbin_per_core
+    this%nmeas = nmeas_per_bin
+    this%cur_bin = 1
+    this%cur_meas = 1
+    call this%init_from_namelist(nml_file)
+  end subroutine ms_init_meas
 
   subroutine ms_init_from_namelist(this, filename)
     class(MeasurementSystem), intent(inout) :: this
     character(*),            intent(in)    :: filename
-    integer :: nbins, nmeas_per_bin
     integer :: lun, ios
-    character(len=NAME_LEN) :: name, mskind
+    character(len=NAME_LEN) :: name, obskind
     integer :: cap
-
-    namelist /observable/ name, mskind
-
-    if (nbins<=0 .or. nmeas_per_bin<=0) error stop "init_from_namelist: nbins/nmeas must be >0"
+    namelist /observable/ name, obskind
+    print*,this%nbins,this%nbins
+    if (this%nbins<=0 .or. this%nmeas<=0) error stop "init_from_namelist: nbins/nmeas must be >0"
     this%field_width = product(Lat%dlength)
-
     ! 初始容量（动态增长，避免频繁重分配）
     cap = 16
     allocate(this%names(cap), this%kinds(cap), this%widths(cap), this%off_lo(cap), this%off_hi(cap))
     this%nobs = 0
 
-    open(newunit=lun, file=filename, status='old', action='read', iostat=ios)
+    open(newunit=lun, file=filename, status='old', action='read',position = 'rewind' ,iostat=ios)
     if (ios/=0) error stop "init_from_namelist: cannot open file: "//trim(filename)
 
     do
-      name = ''; mskind = ''
+      name = ''; obskind = ''
       read(lun, nml=observable, iostat=ios)
       if (ios /= 0) exit  ! 到末尾或无更多组
-      call tolower_inplace(mskind)
+      call tolower_inplace(obskind)
       call trim_inplace(name)
       if (len_trim(name)==0) error stop "observable group missing name"
-      select case (mskind)
+      select case (obskind)
       case ('scalar','s','sc','1')
         call push_obs(this, name, KIND_SCALAR)
       case ('field','f','array','a')
-        if (this%field_width<=0) error stop "observable mskind=field but field_width not provided"
+        if (this%field_width<=0) error stop "observable obskind=field but field_width not provided"
         call push_obs(this, name, KIND_FIELD)
       case default
-        error stop "unknown observable mskind: "//trim(mskind)//" (name="//trim(name)//")"
+        error stop "unknown observable obskind: "//trim(obskind)//" (name="//trim(name)//")"
       end select
     end do
     close(lun)
 
     if (this%nobs==0) error stop "no observable groups found in namelist"
-
+    print*,"MeasurementSystem: found ", this%nobs, " observables."
     call this%finalize_layout()
-    call this%init_storage(nbins, nmeas_per_bin)
+    call this%init_storage()
   end subroutine ms_init_from_namelist
 
   subroutine push_obs(this, name, k)
@@ -364,17 +363,12 @@ contains
     this%finalized = .true.
   end subroutine ms_finalize_layout
 
-  subroutine ms_init_storage(this, nbins, nmeas_per_bin)
+  subroutine ms_init_storage(this)
     class(MeasurementSystem), intent(inout) :: this
-    integer,                 intent(in)    :: nbins, nmeas_per_bin
     if (.not.this%finalized) error stop "init_storage: call finalize_layout first"
-    if (nbins<=0 .or. nmeas_per_bin<=0) error stop "init_storage: nbins/nmeas must be >0"
-    this%nbins = nbins
-    this%nmeas = nmeas_per_bin
+    if (this%nbins<=0 .or. this%nmeas<=0) error stop "init_storage: nbins/nmeas must be >0"
     allocate(this%data(this%total_width, this%nmeas,this%nbins))
     this%data = 0.0_dp
-    this%cur_bin  = 1
-    this%cur_meas = 0
   end subroutine ms_init_storage
 
 !======================================================================!
@@ -388,7 +382,8 @@ contains
     if(second_trotter) then
 
     end if
-    call take_measurement(this, time)
+    if (this%cur_bin > this%nbins) error stop "begin_measure: no more bins left"
+    call this%take_measurement(forward, time)
     ! next loop
     if ((forward .and. time == ntime/2 + meas_number) .or. ((.not. forward) .and. time == ntime/2 - meas_number)) then
       ! average over all sites and all measurements in one loop
@@ -398,7 +393,6 @@ contains
         ! next bin
         this%cur_meas = 1
         this%cur_bin = this%cur_bin + 1
-        if (this%cur_bin > this%nbins) error stop "begin_measure: no more bins left"
       end if
 
     end if
@@ -424,23 +418,23 @@ contains
     if (h==0) error stop "get_handle: name not found: "//trim(name)
   end function ms_get_handle
 
-  subroutine ms_get_range_by_handle(this, handle, lo, hi, width, mskind)
+  subroutine ms_get_range_by_handle(this, handle, lo, hi, width, obskind)
     class(MeasurementSystem), intent(in)  :: this
     integer,                 intent(in)  :: handle
-    integer,                 intent(out) :: lo, hi, width, mskind
+    integer,                 intent(out) :: lo, hi, width, obskind
     if (handle<1 .or. handle>this%nobs) error stop "get_range_by_handle: handle out of range"
     lo = this%off_lo(handle); hi = this%off_hi(handle)
-    width = this%widths(handle); mskind  = this%kinds(handle)
+    width = this%widths(handle); obskind  = this%kinds(handle)
   end subroutine ms_get_range_by_handle
 
   subroutine ms_record_scalar(this, handle, value, bin, meas)
     class(MeasurementSystem), intent(inout) :: this
     integer,                 intent(in)    :: handle
-    real(dp),                intent(in)    :: value
+    complex(dp),                intent(in)    :: value
     integer,      intent(in), optional    :: bin, meas
-    integer :: lo, hi, width, mskind, b, m
-    call this%get_range_by_handle(handle, lo, hi, width, mskind)
-    if (mskind /= KIND_SCALAR) error stop "record_scalar: not a scalar handle"
+    integer :: lo, hi, width, obskind, b, m
+    call this%get_range_by_handle(handle, lo, hi, width, obskind)
+    if (obskind /= KIND_SCALAR) error stop "record_scalar: not a scalar handle"
     b = merge(bin, this%cur_bin, present(bin))
     m = merge(meas, this%cur_meas, present(meas))
     if (b<1 .or. b>this%nbins) error stop "record_scalar: bin out of range"
@@ -452,11 +446,11 @@ contains
   subroutine ms_record_field(this, handle, arr, bin, meas)
     class(MeasurementSystem), intent(inout) :: this
     integer,                 intent(in)    :: handle
-    real(dp),                intent(in)    :: arr(:)   ! flattened field (length = field_width)
+    complex(dp),                intent(in)    :: arr(:)   ! flattened field (length = field_width)
     integer,      intent(in), optional    :: bin, meas
-    integer :: lo, hi, width, mskind, b, m
-    call this%get_range_by_handle(handle, lo, hi, width, mskind)
-    if (mskind /= KIND_FIELD) error stop "record_field: not a field handle"
+    integer :: lo, hi, width, obskind, b, m
+    call this%get_range_by_handle(handle, lo, hi, width, obskind)
+    if (obskind /= KIND_FIELD) error stop "record_field: not a field handle"
     if (size(arr) /= width) error stop "record_field: size(arr)!=field width"
     b = merge(bin, this%cur_bin, present(bin))
     m = merge(meas, this%cur_meas, present(meas))
@@ -470,11 +464,11 @@ contains
     class(MeasurementSystem), intent(inout) :: this
     integer,                 intent(in)    :: handle
     integer,                 intent(in)    :: idx       ! index in the flattened field (1..field_width)
-    real(dp),                intent(in)    :: value
+    complex(dp),                intent(in)    :: value
     integer,      intent(in), optional    :: bin, meas
-    integer :: lo, hi, width, mskind, b, m
-    call this%get_range_by_handle(handle, lo, hi, width, mskind)
-    if (mskind /= KIND_FIELD) error stop "record_field_entry: not a field handle"
+    integer :: lo, hi, width, obskind, b, m
+    call this%get_range_by_handle(handle, lo, hi, width, obskind)
+    if (obskind /= KIND_FIELD) error stop "record_field_entry: not a field handle"
     if (idx<1 .or. idx>width) error stop "record_field_entry: idx out of range"
     b = merge(bin, this%cur_bin, present(bin))
     m = merge(meas, this%cur_meas, present(meas))
@@ -485,11 +479,11 @@ contains
 !======================================================================!
 !                               ANALYSIS                                !
 !======================================================================!
-  subroutine ms_data_analysis(this)
+  subroutine ms_data_analyse(this)
     class(MeasurementSystem), intent(inout) :: this
     ! 这里可以添加更多分析功能
-    
-  end subroutine ms_data_analysis
+
+  end subroutine ms_data_analyse
   subroutine ms_compute_all_bin_means(this, means)
     ! 计算所有观测量在每个 bin 的均值（沿第 3 维求平均）
     ! 返回: means(total_width, nbins)
@@ -503,7 +497,7 @@ contains
     means = 0.0_dp
     do b = 1, this%nbins
       do m = 1, this%nmeas
-        means(:, b) = means(:, b) + this%data(:, m, b)
+        means(:, b) = means(:, b) + real(this%data(:, m, b))
       end do
       means(:, b) = means(:, b) / real(this%nmeas, dp)
     end do

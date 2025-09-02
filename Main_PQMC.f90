@@ -48,7 +48,8 @@ program Pqmc_main
   print*,"setting bf ends."
   ! phonon-field initialize
   print *, 'set phonon field...'
-  call set_pf_main()
+  call set_pf_main() 
+  call readin_slater_pf()
   print *, 'set phonon field ends.'
 #ifdef MPI
   call init_MPI(MPI_block)
@@ -68,15 +69,8 @@ program Pqmc_main
   print *, 'beta,ntime,nblock', beta, ntime, nblock
 #endif
 !simulation begins here
-
-  if (.not. allocated(g)) then
-    call init_g_T0()
-    print*,'init g_T0 finishes'
-  end if
-
-  iteration = (nbin_per_core*one_bin)*meas_interval + warmup
-  forward = .true.
-
+  call init_MC()
+  
   do loop = 1, iteration ! Monte Carlo steps ()
 
     call middle_check()
@@ -163,9 +157,9 @@ program Pqmc_main
   end do ! for MCS
 
 ! data analysis
-  call data_analyse()
+  call Meas_sys%data_analyse()
 ! wrint bin-averaged-per-core data into file
-  call aver_data_output()
+  !call Meas_sys%aver_data_output()
 ! write (mpi-block/core) averaged data into file
 
    !if(myid == 0) call MPI_output_final()
@@ -184,6 +178,21 @@ program Pqmc_main
 #endif
 
 contains
+  subroutine init_MC()
+    implicit none
+    if (.not. allocated(g)) then
+    do i_pf = 1 , n_phonon_field
+      call init_expKV(ppf_list(i_pf))
+
+    end do
+    call init_g_T0()
+    print*,'init g_T0 finishes'
+    end if
+
+  iteration = (nbin_per_core*nmeas_per_bin)*meas_interval + warmup
+  forward = .true.
+    
+  end subroutine
 
   subroutine middle_check()
     implicit none
@@ -256,7 +265,7 @@ contains
     implicit none
     integer :: i_pla
     real(8) ::  factor
-    call readin_slater_pf()
+    
     if (.not. allocated(K_slater)) ALLOCATE (K_slater(Ns, Ns))
     K_slater = 0
     ! build K_slater matrix from typed slater_pf
@@ -339,8 +348,8 @@ contains
         do i_cell = 1, Lat%N_cell
           phase_factor = exp(complex(0d0,sum(phase_k_inter_cell * p_cells(i_cell)%rpos * PI)))
           do i_bf = 1, bf_sets
-            boson_field(p_cells(i_cell)%bf_list, l) = random_range*ran_sysm() + phase_factor*offset
-            boson_field(p_cells(i_cell)%bf_list, l) = boson_field(p_cells(i_cell)%bf_list, l) * phase_intra_cell(i_bf)
+            boson_field(p_cells(i_cell)%bf_list, l) = real((random_range*ran_sysm() + (phase_factor*offset))*phase_intra_cell(i_bf))
+
           end do
         end do
       end do
