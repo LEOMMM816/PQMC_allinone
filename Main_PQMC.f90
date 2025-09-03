@@ -183,7 +183,6 @@ contains
     if (.not. allocated(g)) then
     do i_pf = 1 , n_phonon_field
       call init_expKV(ppf_list(i_pf))
-
     end do
     call init_g_T0()
     print*,'init g_T0 finishes'
@@ -206,7 +205,7 @@ contains
       open (110, file='check_middle.dat', status='old', position='append')
       WRITE (110, *) 'loop',loop
       WRITE (110, *) 'myid',myid
-      write (110, *) 'Size:', La, Lb
+      write (110, *) 'Size:', Lat%dlength
       if(ML_update) then
         write (110, *) 'ML_accept :', real(ML_accept)/(ML_accept + ML_reject)
         write (110, *) 'ML_accept_ratio :', ML_accept_ratio / ML_accept
@@ -263,7 +262,7 @@ contains
 
   SUBROUTINE set_k_slater()
     implicit none
-    integer :: i_pla
+    integer :: i_pla,i_pf
     real(8) ::  factor
     
     if (.not. allocated(K_slater)) ALLOCATE (K_slater(Ns, Ns))
@@ -275,15 +274,27 @@ contains
     end do
 
     
-      allocate(expK(Ns,Ns),expK_half(Ns,Ns),expK_inv(Ns,Ns),expK_inv_half(Ns,Ns))
-      expK = -delt * K_slater
+      allocate(K_mat(Ns,Ns),expK(Ns,Ns),expK_half(Ns,Ns),expK_inv(Ns,Ns),expK_inv_half(Ns,Ns))
+      K_mat = 0d0
+      do i_pf = 1, n_phonon_field
+        if (ppf_list(i_pf)%K_exist) then
+          do i_pla = 1, ppf_list(i_pf)%n_plaquette
+          K_mat(ppf_list(i_pf)%p_data%pla_site_list(:,i_pla), ppf_list(i_pf)%p_data%pla_site_list(:,i_pla))&
+      &  =  K_mat(ppf_list(i_pf)%p_data%pla_site_list(:,i_pla), ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) + &
+      & ppf_list(i_pf)%K_coe * ppf_list(i_pf)%Kmatrix
+      end do
+        end if
+      end do
+      
+      expK = -delt * K_mat
       call expm(expk, Ns)
-      expK_half = -delt/2d0 * K_slater
+      expK_half = -delt/2d0 * K_mat
       call expm(expK_half, Ns)
-      expK_inv = delt * K_slater
+      expK_inv = delt * K_mat
       call expm(expK_inv, Ns)
-      expK_inv_half = delt/2d0 * K_slater
+      expK_inv_half = delt/2d0 * K_mat
       call expm(expK_inv_half, Ns)
+    
     
   END SUBROUTINE
 
@@ -310,7 +321,6 @@ contains
     CALL qdr(Ns, nelec, slater_Q(:, 1:nelec), R_string(1:nelec, 1:nelec), slater_D(1:nelec))
 
     !close(39)
-    deallocate (K_slater)
   end subroutine
 
   subroutine init_boson_field()

@@ -24,6 +24,8 @@ module dqmc_measurements
     integer :: cur_bin = 1, cur_meas = 0
     ! ---- status ----
     logical :: finalized = .false.
+    ! ---- statistics ----
+    real(dp), allocatable :: mean(:,:)  ! mean for each observable (total_width)
 
   contains
     ! ---- init / io ----
@@ -33,7 +35,7 @@ module dqmc_measurements
     procedure :: init_storage         => ms_init_storage
 
     ! ---- run control ----
-    procedure :: begin_measure            => ms_begin_measure
+    procedure :: begin_measure        => ms_begin_measure
     ! ---- take measurement ----
     procedure :: take_measurement     => ms_take_measurement
     ! ---- record (handle only for speed) ----
@@ -46,6 +48,7 @@ module dqmc_measurements
     ! ---- analysis ----
     procedure :: data_analyse         => ms_data_analyse
     procedure :: compute_all_bin_means => ms_compute_all_bin_means
+    procedure :: output_array_data => ms_output_array_data
   end type MeasurementSystem
 
   type(MeasurementSystem) :: Meas_sys
@@ -54,24 +57,23 @@ contains
 !                             TAKE MEASUREMENTS                           !
 !======================================================================!
 
-  SUBROUTINE ms_take_measurement(this,forward, time)
+  SUBROUTINE ms_take_measurement(this, time)
 
     implicit none
 
     class(MeasurementSystem), intent(inout) :: this
-    logical, intent(in) :: forward
     integer, intent(in) :: time
-    integer :: head, bin , handle, N_cell
+    integer :: head, bin , handle, N_cell,La
     integer ::   i,j,c1,c2,s1, s2, s1_next,s2_next,ind
     complex(kind=8) :: factor ! phase factor of the position (should be complex in general)
     complex(dp) :: obs_temp,  t_s1_c, t_s2_c
     type(cell_type), pointer :: pc1,pc2
-
+    La = Lat%dlength(1)
       !! MEASUREMENT BEGINS
     head = this%cur_meas
     bin = this%cur_bin
     N_cell = Lat%N_cell
-
+    !print*,"Taking measurement at time slice ", time, " bin ", bin, " meas ", head
     do c1 = 1, N_cell
       ! preparation
       pc1 => p_cells(c1)
@@ -81,7 +83,6 @@ contains
       obs_temp = 0d0
       obs_temp = obs_temp + 0.5d0 * D * sum(boson_field(pc1%bf_list,time)**2) &
       & - biased_phonon * sum(boson_field(pc1%bf_list,time))
-      obs_temp = obs_temp/N_cell
       call this%record_scalar(handle, obs_temp)
 
       !! obs: phonon kinetic energy
@@ -89,29 +90,30 @@ contains
       obs_temp = 0d0
       obs_temp = obs_temp  - 0.5d0 * M * sum((boson_field(pc1%bf_list,time) &
       & - boson_field(pc1%bf_list,time+1))**2)/(delt)**2
-      obs_temp = obs_temp/N_cell  + 1d0/(2d0*delt)
+      obs_temp = obs_temp + 1d0/(2d0*delt)
       call this%record_scalar(handle, obs_temp)
 
       !! obs: electron kinetic energy along x direction
       handle = this%get_handle('El_KEx')
       obs_temp = 0d0
-      factor = (-1d0)**(1+(s1-1)/La)
-      s1_next = s1 + 2
-      if (mod(s1_next, La) == 1) s1_next = s1_next - La
-      obs_temp = obs_temp + factor * (hop) * 2 * real(g_h(s1_next,s1) + g_h(s1,s1_next))
-      obs_temp = obs_temp/N_cell
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + real(K_mat(s1_next,s1)) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + real(K_mat(s1_next,s1)) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      print*,' '
+      s1 = pc1%sites(1)%id
       call this%record_scalar(handle, obs_temp)
 
       !! obs : electron kinetic energy along y direction
       handle = this%get_handle('El_KEy')
       obs_temp = 0d0
-      factor = (-1d0)**(1+(s1-1)/La)
-      s1_next = s1 + La
-      if(s1_next > Ns) s1_next = s1_next - Ns
-      s1_next = s1_next + 1
-      if (mod(s1_next, La) == 1) s1_next = s1_next - La
-      obs_temp = obs_temp + factor * (-hop)  * 2 * real(g_h(s1_next,s1) + g_h(s1,s1_next))
-      obs_temp = obs_temp/N_cell
+      s1_next = modi(s1 + 3,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 1,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(1)%id
       call this%record_scalar(handle, obs_temp)
 
       !! obs: electron potential energy
@@ -119,61 +121,54 @@ contains
       obs_temp = 0d0
       !obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(s1,time) * (g_h(s1,s1)))
       !obs_temp = obs_temp -  real(ep_parameter**2 * g_h(s1,s1) * g_h(s1,s1)) - ep_parameter**2 * g_h(s1,s1)
-      obs_temp = obs_temp  +  real(ep_parameter)**2 * g_h(s1,s1) * conjg(g_h(s1,s1))
-      obs_temp = obs_temp/N_cell
+      obs_temp = obs_temp  -  real(ep_parameter)**2 * g_h(s1,s1) * conjg(g_h(s1,s1))
       call this%record_scalar(handle, obs_temp)
 
       !! obs: electron-phonon energy
       handle = this%get_handle('ElPH_E')
       obs_temp = 0d0
       obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(s1,time) * (g_h(s1,s1)))
-      obs_temp = obs_temp/N_cell
       CALL this%record_scalar(handle, obs_temp)
 
       !! obs: electron total energy
-      handle = this%get_handle('El_E')
       obs_temp = 0d0
-      factor = (-1d0)**(1+(s1-1)/La)
-      s1_next = s1 + 1
-      if (mod(s1_next, La) == 1) s1_next = s1_next - La
-      obs_temp = obs_temp + factor * (-hop) * 2 * real(g_h(s1_next,s1) + g_h(s1,s1_next))
-      factor = (-1d0)**(1+(s1-1)/La)
-      s1_next = s1 + La
-      if(s1_next > Ns) s1_next = s1_next - Ns
-      s1_next = s1_next + 1
-      if (mod(s1_next, La) == 1) s1_next = s1_next - La
-      obs_temp = obs_temp + factor * (-hop)  * 2 * real(g_h(s1_next,s1)+ g_h(s1,s1_next))
-      if(M < 0.0001d0) then
+      handle = this%get_handle('El_E')
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1_next = modi(s1 + 3,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 1,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(1)%id
+      if(omega > 100000d0) then
         ! hubbard model
         obs_temp = obs_temp -  real(ep_parameter)**2 * g_h(s1,s1) * conjg(g_h(s1,s1))
       else
         !electron-phonon model
         obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(s1,time) * (g_h(s1,s1)))
       end if
-      obs_temp = obs_temp/N_cell
       CALL this%record_scalar(handle, obs_temp)
 
       !! obs : ph_X
       handle = this%get_handle('BF_X')
       obs_temp = 0d0
       obs_temp = obs_temp + (boson_field(s1,time))/Ns
-      this%data(8,head, bin) = this%data(8,head, bin) + obs_temp
-      obs_temp = obs_temp/N_cell
       call this%record_scalar(this%get_handle('BF_X'), obs_temp)
 
       !! obs: electron density
       handle = this%get_handle('El_den')
       obs_temp = 0d0
       obs_temp = obs_temp + 2 * real(g_h(s1,s1))
-      this%data(9,head, bin) = this%data(9,head, bin) + obs_temp
-      obs_temp = obs_temp/N_cell
       call this%record_scalar(handle, obs_temp)
 
       !! obs: double occupancy
       handle = this%get_handle('El_docc')
       obs_temp = 0d0
       obs_temp = obs_temp + (g_h(s1,s1) * conjg(g_h(s1,s1)))
-      obs_temp = obs_temp/N_cell
       call this%record_scalar(handle, obs_temp)
 
       do c2 = 1, N_cell
@@ -187,27 +182,23 @@ contains
         handle = this%get_handle('corf_G1')
         obs_temp = 0d0
         obs_temp = obs_temp + g(s2,s1)
-        obs_temp = obs_temp/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf2: A-A 2-particle
         handle = this%get_handle('corf_G2')
         obs_temp = 0d0
         obs_temp = obs_temp + g_h(s2,s1) * conjg(g_h(s2,s1))
-        obs_temp = obs_temp/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf3: nu_nu
         handle = this%get_handle('corf_nunu')
         obs_temp = 0d0
         obs_temp = obs_temp + g_h(s2,s1) * g(s1,s2) + g_h(s1,s1) * (g_h(s2,s2))
-        obs_temp = obs_temp/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf4: nu_nd
         handle = this%get_handle('corf_nund')
         obs_temp = 0d0
         obs_temp = obs_temp + g_h(s1,s1) * conjg(g_h(s2,s2))
-        obs_temp = obs_temp/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf5: den-den
@@ -215,7 +206,6 @@ contains
         obs_temp = 0d0
         obs_temp = obs_temp + (g_h(s1,s1) + conjg(g_h(s1,s1))) * (g_h(s2,s2) + conjg(g_h(s2,s2)))
         obs_temp = obs_temp + g_h(s2,s1) * g(s1,s2) + conjg(g_h(s2,s1) * g(s1,s2))
-        obs_temp = obs_temp/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf6: X-X
@@ -224,7 +214,6 @@ contains
         s1 =pc1%bf_list(1)
         s2 =pc2%bf_list(1)
         obs_temp = obs_temp + (boson_field(s1,time)) * (boson_field(s2,time))
-        obs_temp = obs_temp/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       end do !for c2
@@ -383,11 +372,12 @@ contains
 
     end if
     if (this%cur_bin > this%nbins) error stop "begin_measure: no more bins left"
-    call this%take_measurement(forward, time)
+    call this%take_measurement(time)
     ! next loop
     if ((forward .and. time == ntime/2 + meas_number) .or. ((.not. forward) .and. time == ntime/2 - meas_number)) then
       ! average over all sites and all measurements in one loop
       this%data(:,this%cur_meas, this%cur_bin) = this%data(:,this%cur_meas, this%cur_bin)/(2*meas_number + 1)
+      this%data(:,this%cur_meas, this%cur_bin) = this%data(:,this%cur_meas, this%cur_bin)/real(Lat%N_cell,dp)
       this%cur_meas = this%cur_meas + 1
       if (this%cur_meas > this%nmeas) then
         ! next bin
@@ -414,8 +404,9 @@ contains
         h = i; return
       end if
     end do
-    h = 0
-    if (h==0) error stop "get_handle: name not found: "//trim(name)
+    h = -1
+    return
+
   end function ms_get_handle
 
   subroutine ms_get_range_by_handle(this, handle, lo, hi, width, obskind)
@@ -433,6 +424,7 @@ contains
     complex(dp),                intent(in)    :: value
     integer,      intent(in), optional    :: bin, meas
     integer :: lo, hi, width, obskind, b, m
+    if(handle == -1) return
     call this%get_range_by_handle(handle, lo, hi, width, obskind)
     if (obskind /= KIND_SCALAR) error stop "record_scalar: not a scalar handle"
     b = merge(bin, this%cur_bin, present(bin))
@@ -449,6 +441,7 @@ contains
     complex(dp),                intent(in)    :: arr(:)   ! flattened field (length = field_width)
     integer,      intent(in), optional    :: bin, meas
     integer :: lo, hi, width, obskind, b, m
+    if(handle == -1) return
     call this%get_range_by_handle(handle, lo, hi, width, obskind)
     if (obskind /= KIND_FIELD) error stop "record_field: not a field handle"
     if (size(arr) /= width) error stop "record_field: size(arr)!=field width"
@@ -467,6 +460,7 @@ contains
     complex(dp),                intent(in)    :: value
     integer,      intent(in), optional    :: bin, meas
     integer :: lo, hi, width, obskind, b, m
+    if(handle == -1) return
     call this%get_range_by_handle(handle, lo, hi, width, obskind)
     if (obskind /= KIND_FIELD) error stop "record_field_entry: not a field handle"
     if (idx<1 .or. idx>width) error stop "record_field_entry: idx out of range"
@@ -476,33 +470,57 @@ contains
     if (m<1 .or. m>this%nmeas) error stop "record_field_entry: meas out of range"
     this%data(lo+idx-1, m, b) = this%data(lo+idx-1, m, b) + value
   end subroutine ms_record_field_entry
+
 !======================================================================!
 !                               ANALYSIS                                !
 !======================================================================!
   subroutine ms_data_analyse(this)
     class(MeasurementSystem), intent(inout) :: this
     ! 这里可以添加更多分析功能
-
+    if (.not.allocated(this%data)) error stop "data_analyse: storage not initialized"
+    if (.not.allocated(this%mean)) allocate(this%mean(this%total_width, this%nbins))
+    call this%compute_all_bin_means()
+    call this%output_array_data()
   end subroutine ms_data_analyse
-  subroutine ms_compute_all_bin_means(this, means)
+  subroutine ms_compute_all_bin_means(this)
     ! 计算所有观测量在每个 bin 的均值（沿第 3 维求平均）
     ! 返回: means(total_width, nbins)
-    class(MeasurementSystem), intent(in)  :: this
-    real(dp), allocatable,    intent(out) :: means(:,:)
-    integer :: b, m
+    class(MeasurementSystem), intent(inout)  :: this
+    integer :: i_b, i_m
 
-    if (.not.allocated(this%data)) error stop "compute_all_bin_means: storage not initialized"
-
-    allocate(means(this%total_width, this%nbins))
-    means = 0.0_dp
-    do b = 1, this%nbins
-      do m = 1, this%nmeas
-        means(:, b) = means(:, b) + real(this%data(:, m, b))
+    this%mean = 0.0_dp
+    do i_b = 1, this%nbins
+      do i_m = 1, this%nmeas
+        this%mean(:, i_b) = this%mean(:, i_b) + real(this%data(:, i_m, i_b))
       end do
-      means(:, b) = means(:, b) / real(this%nmeas, dp)
+      this%mean(:, i_b) = this%mean(:, i_b) / real(this%nmeas, dp)
     end do
   end subroutine ms_compute_all_bin_means
 
+  subroutine ms_output_array_data(this)
+
+    class(MeasurementSystem), intent(in) :: this
+    integer :: i_b,ios,line
+    character(len = 100) :: ci1,ci2,str
+
+    if (.not.allocated(this%mean)) error stop "output_array_data: mean not computed"
+#ifdef MPI
+    write (ci1, '(1i4)') myid
+    str = 'out_core'//trim(adjustl(ci1))//'.dat'
+#else
+    str = 'out_core.dat'
+#endif
+    str = trim(adjustl(output_file))//'data/'//trim(adjustl(str))
+    write(ci2, '(1i4)') this%nbins
+    open(unit=10, file=str, status='replace', iostat=ios)
+    if ( ios /= 0) error stop "output_array_data: cannot open file: "//trim(str)
+    do line = 1, this%total_width
+      ! output array data, one index per line,do not specify observable name.
+      ! The output data is (total_width, nbins)
+      write (unit=10,FMT ='('//trim(adjustl(ci2))//output_format//')',iostat = ios) this%mean(line,:)
+    end do
+    close(10)
+  end subroutine ms_output_array_data
 !======================================================================!
 !                        USER MEASUREMENT PLACEHOLDER                   !
 !======================================================================!

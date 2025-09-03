@@ -32,7 +32,7 @@ MODULE input
 
 ! constant
   real(8),parameter :: e = 2.7182818284590452353602874713526624d0
-  character*30, parameter :: file_name = 'data/'
+  
 ! mpi parameter
   integer :: ierr, myid = 0, numprocs = 1, MPI_block = 1
   integer :: MPI_one_block = 1 !> number of cores in one mpi_block, = 1 if not mpi
@@ -51,9 +51,8 @@ MODULE input
   integer :: ntau = 80, one_bin_tau
 
 ! General ARGUMENTS
-  character(len=100) :: nml_file = 'Creutz_holstein.nml'
+  character(len=100) :: nml_file = 'Creutz_holstein.nml', output_file = 'data/',output_format = 'f18.8'
   integer :: nflv = 1, ncopy = 1 ! number of flavours
-  integer :: La =40, Lb = 2! one row has La sites and one column has Lb sites (La >= Lb >= 1,La > 2,2*2->1*4)
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
   real(8) :: delt = 0.1, beta = 80d0,hop = 1d0
@@ -181,13 +180,18 @@ contains
     implicit none
     ! parameters definition
     one_bin_tau = nmeas_per_bin/(meas_interval_tau/meas_interval)
-    jump_distance = (1d0) * (0.1d0/delt)
+    
     ntime = nint(beta/delt)
     Ns = Lat%Ns
     nblock = ntime/ngroup + 2
-    D = 1d0 * omega**2
-    char_length = sqrt(1d0/(M*omega))
-   
+    if(M < 0.001d0) then
+      omega = 100000000d0
+    char_length = sqrt(1d0/(D*ep_parameter))
+    else
+      omega = sqrt(D/M)
+    char_length = (1d0/(M*omega))
+    end if
+    jump_distance = (1d0) * (0.1d0/delt) * char_length
     filling_factor = filling
     nelec = nint(Ns*filling_factor)
 
@@ -196,15 +200,16 @@ contains
   subroutine init_MPI(mpi_block)
     integer, intent(in) :: mpi_block
     integer :: i_pf
-    ep_parameter = 4d0
-    omega = sqrt(2d0)**(mpi_block)
+    D = 1d0
+    M = 0d0
+    ep_parameter = sqrt(6d0) ! hubbard U = ep^2
     filling = 10d0/40d0
-
+    biased_phonon = 0d0
     call init()
 
     do i_pf = 1, n_phonon_field
       pf_list(i_pf)%K_coe = (-hop)
-      pf_list(i_pf)%V_coe = ep_parameter
+      pf_list(i_pf)%V_coe = 0
     end do
     slater_pf%K_coe = (-hop)
     return
