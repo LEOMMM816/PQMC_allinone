@@ -1,0 +1,60 @@
+intel090.cluster.com
+cp: missing destination file operand after './Creutz_holstein.nml'
+Try 'cp --help' for more information.
+[intel090.cluster.com:3777246] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777236] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777252] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777241] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777243] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777245] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777258] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777255] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777227] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777228] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777231] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777232] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777235] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777234] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777237] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777238] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777239] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777240] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777242] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777244] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777260] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777247] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777250] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777248] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777254] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777251] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777256] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777257] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777261] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777249] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777259] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+[intel090.cluster.com:3777253] mca_base_component_repository_open: unable to open mca_btl_openib: libosmcomp.so.3: cannot open shared object file: No such file or directory (ignored)
+At line 28 of file mod_lattice.f90 (unit = 10)
+Fortran runtime error: Cannot open file 'Creutz_holstein.nml': No such file or directory
+
+Error termination. Backtrace:
+#0  0x7fd67e1c0adc in already_open
+	at ../.././libgfortran/io/open.c:719
+#1  0x41b030 in __lattice_MOD_readin_lattice_para
+	at /storage/wucongjunLab/zhangxiangyu/all_in_one_git/mod_lattice.f90:28
+#2  0x41cbe8 in __lattice_MOD_set_lattice_main
+	at /storage/wucongjunLab/zhangxiangyu/all_in_one_git/mod_lattice.f90:8
+#3  0x437b74 in pqmc_main
+	at /storage/wucongjunLab/zhangxiangyu/all_in_one_git/Main_PQMC.f90:43
+#4  0x4022ac in main
+	at /storage/wucongjunLab/zhangxiangyu/all_in_one_git/Main_PQMC.f90:3
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[11392,1],0]
+  Exit code:    2
+--------------------------------------------------------------------------
