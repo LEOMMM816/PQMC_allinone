@@ -121,13 +121,15 @@ contains
       obs_temp = 0d0
       !obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(s1,time) * (g_h(s1,s1)))
       !obs_temp = obs_temp -  real(ep_parameter**2 * g_h(s1,s1) * g_h(s1,s1)) - ep_parameter**2 * g_h(s1,s1)
-      obs_temp = obs_temp  -  real(ep_parameter)**2 * g_h(s1,s1) * conjg(g_h(s1,s1))
+      obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(1)%id)*conjg(g_h(pc1%sites(1)%id,pc1%sites(1)%id))
+      obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(2)%id)*conjg(g_h(pc1%sites(2)%id,pc1%sites(2)%id))
       call this%record_scalar(handle, obs_temp)
 
       !! obs: electron-phonon energy
       handle = this%get_handle('ElPH_E')
       obs_temp = 0d0
-      obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(s1,time) * (g_h(s1,s1)))
+      obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(1)%id,time) * (g_h(pc1%sites(1)%id,pc1%sites(1)%id)))
+      obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(2)%id,time) * (g_h(pc1%sites(2)%id,pc1%sites(2)%id)))
       CALL this%record_scalar(handle, obs_temp)
 
       !! obs: electron total energy
@@ -146,10 +148,12 @@ contains
       s1 = pc1%sites(1)%id
       if(omega > 100000d0) then
         ! hubbard model
-        obs_temp = obs_temp -  real(ep_parameter)**2 * g_h(s1,s1) * conjg(g_h(s1,s1))
+        obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(1)%id)*conjg(g_h(pc1%sites(1)%id,pc1%sites(1)%id))
+      obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(2)%id)*conjg(g_h(pc1%sites(2)%id,pc1%sites(2)%id))
       else
         !electron-phonon model
-        obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(s1,time) * (g_h(s1,s1)))
+        obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(1)%id,time) * (g_h(pc1%sites(1)%id,pc1%sites(1)%id)))
+      obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(2)%id,time) * (g_h(pc1%sites(2)%id,pc1%sites(2)%id)))
       end if
       CALL this%record_scalar(handle, obs_temp)
 
@@ -157,18 +161,19 @@ contains
       handle = this%get_handle('BF_X')
       obs_temp = 0d0
       obs_temp = obs_temp + (boson_field(s1,time))/Ns
+      obs_temp = obs_temp + (boson_field(s1+1,time))/Ns
       call this%record_scalar(this%get_handle('BF_X'), obs_temp)
 
       !! obs: electron density
       handle = this%get_handle('El_den')
       obs_temp = 0d0
-      obs_temp = obs_temp + 2 * real(g_h(s1,s1))
+      obs_temp = obs_temp + 2 * real(g_h(s1,s1)) + 2 * real(g_h(s1+1,s1+1))
       call this%record_scalar(handle, obs_temp)
 
       !! obs: double occupancy
       handle = this%get_handle('El_docc')
       obs_temp = 0d0
-      obs_temp = obs_temp + (g_h(s1,s1) * conjg(g_h(s1,s1)))
+      obs_temp = obs_temp + (g_h(s1,s1) * conjg(g_h(s1,s1))) + (g_h(s1+1,s1+1) * conjg(g_h(s1+1,s1+1)))
       call this%record_scalar(handle, obs_temp)
 
       do c2 = 1, N_cell

@@ -36,14 +36,12 @@ MODULE input
 ! mpi parameter
   integer :: ierr, myid = 0, numprocs = 1, MPI_block = 1
   integer :: MPI_one_block = 1 !> number of cores in one mpi_block, = 1 if not mpi
-  integer :: MPI_nblock = 1!> = numprocs/MPI_one_block
+  integer :: MPI_nblock = 2!> = numprocs/MPI_one_block
 ! MC parameter
   integer :: warmup = 20, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
   integer :: nbin_per_core = 2, nmeas_per_bin = 20! # of bins and size of one bin
 ! measurement parameter
-  integer :: n_obs = 11 , n_corf = 33, n_ctau = 5 ! number of observables
   integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
-  integer :: data_per_line = 100
   logical :: file_exist
   character*30, allocatable :: obs_name(:),corf_name(:),ctau_name(:)
   integer,allocatable :: corf_length(:)
@@ -191,7 +189,7 @@ contains
       omega = sqrt(D/M)
     char_length = (1d0/(M*omega))
     end if
-    jump_distance = (1d0) * (0.1d0/delt) * char_length
+    jump_distance = (5d0) * (1d0/delt) * char_length
     filling_factor = filling
     nelec = nint(Ns*filling_factor)
 
@@ -202,14 +200,14 @@ contains
     integer :: i_pf
     D = 1d0
     M = 0d0
-    ep_parameter = sqrt(6d0) ! hubbard U = ep^2
+    ep_parameter = sqrt(mpi_block + 2d0) ! hubbard U = ep^2
     filling = 10d0/40d0
     biased_phonon = 0d0
     call init()
 
     do i_pf = 1, n_phonon_field
       pf_list(i_pf)%K_coe = (-hop)
-      pf_list(i_pf)%V_coe = 0
+      pf_list(i_pf)%V_coe = ep_parameter
     end do
     slater_pf%K_coe = (-hop)
     return
