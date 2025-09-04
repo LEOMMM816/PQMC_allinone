@@ -186,7 +186,7 @@ contains
     end if
     ppf%p_data => slater_pf_data
     call set_typed_pf(ppf, pf_dim,K_coe,V_coe,Kmatrix, Vmatrix, pla_tsl_dvec_uc, pla_offset_dvec_uc, pla_int_subsites)
-
+    close(10)
   end subroutine readin_slater_pf
 
   subroutine set_typed_pf(ppf,dim,K_coe,V_coe,Kmatrix,Vmatrix, pla_tsl_dvec_uc, pla_offset_dvec_uc, pla_int_subsites,bf_index)

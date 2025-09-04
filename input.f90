@@ -35,8 +35,8 @@ MODULE input
   
 ! mpi parameter
   integer :: ierr, myid = 0, numprocs = 1, MPI_block = 1
-  integer :: MPI_one_block = 4 !> number of cores in one mpi_block, = 1 if not mpi
-  integer :: MPI_nblock = 8!> = numprocs/MPI_one_block
+  integer :: MPI_one_block = 8 !> number of cores in one mpi_block, = 1 if not mpi
+  integer :: MPI_nblock = 4!> = numprocs/MPI_one_block
 ! MC parameter
   integer :: warmup = 10000, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
   integer :: nbin_per_core = 20, nmeas_per_bin = 1000! # of bins and size of one bin
@@ -46,15 +46,15 @@ MODULE input
   character*30, allocatable :: obs_name(:),corf_name(:),ctau_name(:)
   integer,allocatable :: corf_length(:)
   real(8) :: max_pair = 0d0
-  integer :: ntau = 80, one_bin_tau
+  integer :: ntau = 80, one_bin_tau 
 
 ! General ARGUMENTS
-  character(len=100) :: nml_file = 'Creutz_holstein.nml', output_file = 'data/',output_format = 'f18.8'
+  character(len=100) :: nml_file = 'input.nml', output_file = 'data/',output_format = 'f18.8'
   integer :: nflv = 1, ncopy = 1 ! number of flavours
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
   real(8) :: delt = 0.1, beta = 80d0,hop = 1d0
-  integer :: print_loop = 2000
+  integer :: print_loop = 20
   integer :: lattice_dimension
   real(8) :: prob !> accept probobility
   real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
@@ -198,6 +198,7 @@ contains
   subroutine init_MPI(mpi_block)
     integer, intent(in) :: mpi_block
     integer :: i_pf
+    character(len=20) :: temp_string
     D = 1d0
     M = 0d0
     ep_parameter = sqrt(mpi_block + 2d0) ! hubbard U = ep^2

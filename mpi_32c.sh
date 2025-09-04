@@ -7,6 +7,7 @@
 #SBATCH -x intel124
 #SBATCH --mem-per-cpu=5G
 hostname
+ntasks=32
 jobname=ctL40Oi
 output_dir=$(pwd)/results
 dir_local=/data/$$               #tmp directory private to specific excute compute node  
@@ -25,6 +26,22 @@ cp ./input.f90 $dir_local
 cp ./outputfinal.f90 $dir_local
 cd $dir_local #now we are utilizing the SSD disk locate at compute node
 export OPENBLAS_NUM_THREADS=1
+
+# ------------------------
+TEMPLATE=Creutz_holstein.nml        # your source file
+PREFIX=input            # target prefix
+W=4                          # zero-pad width -> 0000..0127
+OUTDIR=namelists             # new folder to hold the copies
+
+# make the folder (safe if it already exists)
+mkdir -p "$OUTDIR"
+
+# loop and copy
+for i in $(seq 0 $((ntasks-1))); do
+  printf -v tag "%0${W}d" "$i"      # e.g. 0000, 0001, ...
+  cp "$TEMPLATE" "$OUTDIR/${PREFIX}${tag}.nml"
+done
+#-------------------------
 mkdir -p ./data/data ./data/middata ./data/ML_data ./data/raw_data
 mpirun -np 32 ./a.out > out.log 
 
@@ -34,6 +51,7 @@ mpirun -np 32 ./a.out > out.log
 #./a.out $jobname
 
 # copy file and remove tmp directory on node
+rm -r namelists
 cd /data
 cp -r $dir_local $output_dir
 rm -rf $dir_local

@@ -15,6 +15,7 @@ program Pqmc_main
   integer(4) :: count1, count2, count_rate
   integer :: iteration  ! # of Monte Carlo loops
   logical :: forward = .true.
+  character*10 :: ci_myid
 
 !> mpi
 #ifdef MPI
@@ -26,6 +27,8 @@ program Pqmc_main
     print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
     stop 'numprocs!=mpi_nblock*MPI_one_block'
   end if
+  write (ci_myid, '(i4.4)') myid
+  nml_file = 'namelists/input'//trim(adjustl(ci_myid))//'.nml'
   if ( fixedseeds ) then
     call init_rng_by_seed(122)
     print *, 'seed:', ranseeds
