@@ -101,7 +101,6 @@ contains
       s1 = pc1%sites(2)%id
       s1_next = modi(s1 + 2,Lat%Ns)
       obs_temp = obs_temp + real(K_mat(s1_next,s1)) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
-      print*,' '
       s1 = pc1%sites(1)%id
       call this%record_scalar(handle, obs_temp)
 

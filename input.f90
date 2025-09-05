@@ -38,7 +38,7 @@ MODULE input
   integer :: MPI_one_block = 8 !> number of cores in one mpi_block, = 1 if not mpi
   integer :: MPI_nblock = 4!> = numprocs/MPI_one_block
 ! MC parameter
-  integer :: warmup = 10000, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
+  integer :: warmup = 20000, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
   integer :: nbin_per_core = 20, nmeas_per_bin = 1000! # of bins and size of one bin
 ! measurement parameter
   integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
@@ -54,7 +54,7 @@ MODULE input
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
   real(8) :: delt = 0.1, beta = 80d0,hop = 1d0
-  integer :: print_loop = 20
+  integer :: print_loop = 2000
   integer :: lattice_dimension
   real(8) :: prob !> accept probobility
   real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
