@@ -1,0 +1,140 @@
+ &basics
+ n_obs=          16
+ total_width=         130
+ n_bins=          20
+ n_meas_per_bin=          10
+ field_width=          20
+ n_cores=           4
+ MPI_nblock=           4
+ MPI_one_block=           1
+ output_format="f18.8"
+ /
+ 
+ &obs
+ name="BF_KE"
+ kind=           1
+ width=           1
+ offset_lo=           1
+ offset_hi=           1
+ /
+ 
+ &obs
+ name="BF_PE"
+ kind=           1
+ width=           1
+ offset_lo=           2
+ offset_hi=           2
+ /
+ 
+ &obs
+ name="El_KEx"
+ kind=           1
+ width=           1
+ offset_lo=           3
+ offset_hi=           3
+ /
+ 
+ &obs
+ name="El_KEy"
+ kind=           1
+ width=           1
+ offset_lo=           4
+ offset_hi=           4
+ /
+ 
+ &obs
+ name="El_PE"
+ kind=           1
+ width=           1
+ offset_lo=           5
+ offset_hi=           5
+ /
+ 
+ &obs
+ name="ElPH_E"
+ kind=           1
+ width=           1
+ offset_lo=           6
+ offset_hi=           6
+ /
+ 
+ &obs
+ name="El_E"
+ kind=           1
+ width=           1
+ offset_lo=           7
+ offset_hi=           7
+ /
+ 
+ &obs
+ name="BF_X"
+ kind=           1
+ width=           1
+ offset_lo=           8
+ offset_hi=           8
+ /
+ 
+ &obs
+ name="El_den"
+ kind=           1
+ width=           1
+ offset_lo=           9
+ offset_hi=           9
+ /
+ 
+ &obs
+ name="El_docc"
+ kind=           1
+ width=           1
+ offset_lo=          10
+ offset_hi=          10
+ /
+ 
+ &obs
+ name="corf_G1"
+ kind=           2
+ width=          20
+ offset_lo=          11
+ offset_hi=          30
+ /
+ 
+ &obs
+ name="corf_G2"
+ kind=           2
+ width=          20
+ offset_lo=          31
+ offset_hi=          50
+ /
+ 
+ &obs
+ name="corf_nunu"
+ kind=           2
+ width=          20
+ offset_lo=          51
+ offset_hi=          70
+ /
+ 
+ &obs
+ name="corf_nund"
+ kind=           2
+ width=          20
+ offset_lo=          71
+ offset_hi=          90
+ /
+ 
+ &obs
+ name="corf_nn"
+ kind=           2
+ width=          20
+ offset_lo=          91
+ offset_hi=         110
+ /
+ 
+ &obs
+ name="corf_XX"
+ kind=           2
+ width=          20
+ offset_lo=         111
+ offset_hi=         130
+ /
+ 

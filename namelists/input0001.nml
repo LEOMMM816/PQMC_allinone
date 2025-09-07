@@ -1,0 +1,139 @@
+! Cruetz lattice namelist
+! This file defines the lattice parameters for a 1D lattice with two sub-sites per unit
+
+&lat_dim
+dim = 1
+n_subsite_uc = 2
+/
+
+&lat_spatial
+  lat_size = 20
+  lat_vec = 1
+/
+
+&lat_subsite_vector
+  site_vec = 0,
+             0.1
+/
+
+
+&slater
+    pf_dim = 4
+    n_cover = 2
+/
+
+&slater_detail
+    K_coe = (1.0d0,0d0) !> coupling constant for K matrix
+    pla_tsl_dvec_uc = 1
+    pla_offset_dvec_uc = 0
+    pla_int_subsites = 0,1,
+                       1,1,
+                       1,2,
+                       0,2
+    Kmatrix = (0,0),(-1,0),(1,0),(0,0),
+                (-1,0),(0,0),(0,0),(-1,0),
+                (1,0),(0,0),(0,0),(1,0),
+                (0,0),(-1,0),(1,0),(0,0)
+/
+
+&pf_basic
+  id = 1,2,3,4
+  K_exist = .true.,.true.,.false.,.false.
+  V_exist = .false.,.false.,.true.,.true.
+  pf_dim = 4,4,1,1
+  n_cover = 1,1,0.5,0.5
+/ 
+
+
+&pf_pos
+      pla_tsl_dvec_uc = 2 
+      pla_offset_dvec_uc = 0
+     pla_int_subsites = 0,1,
+                       1,1,
+                       1,2,
+                       0,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(-1,0),(1,0),(0,0),
+                (-1,0),(0,0),(0,0),(-1,0),
+                (1,0),(0,0),(0,0),(1,0),
+                (0,0),(-1,0),(1,0),(0,0)
+/
+
+
+&pf_pos
+      pla_tsl_dvec_uc = 2 
+      pla_offset_dvec_uc = 1
+      pla_int_subsites = 0,1,
+                       1,1,
+                       1,2,
+                       0,2
+/
+
+&pf_K
+      K_coe = (1.0d0,0d0)  !> coupling constant for K matrix
+      Kmatrix = (0,0),(-1,0),(1,0),(0,0),
+                (-1,0),(0,0),(0,0),(-1,0),
+                (1,0),(0,0),(0,0),(1,0),
+                (0,0),(-1,0),(1,0),(0,0)
+/
+
+
+
+&pf_pos
+      pla_tsl_dvec_uc = 1 
+      pla_offset_dvec_uc = 0
+      pla_int_subsites = 0,1
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 1 !> index of the coupled boson field
+      Vmatrix = (0,1) !> V matrix
+/
+
+&pf_pos
+      pla_tsl_dvec_uc = 1 
+      pla_offset_dvec_uc = 0
+      pla_int_subsites = 0,2
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 2 !> index of the coupled boson field
+      Vmatrix = (0,1) !> V matrix
+/
+
+
+&bf_basics
+    bf_sets = 2 ! number of boson fields
+    ising = .false. ! ising type or not
+    continuous = .true. ! continuous type or not
+    import_ph_field = .false. ! import phonon field from file or not
+/
+
+&bf_initial
+    phase_intra_cell = (1,0),(1,0) ! size of n_bf, phases of intra-cell boson fields
+    phase_k_inter_cell = 0 ! size of Lat%dim, k-space distribution of phase of bfs,in unit of pi
+    random_range = 1 ! range of random number for initial boson field, in unit of character length
+    offset = 0 ! range of random number for initial boson field, in unit of character length
+/
+
+&observable name="BF_KE",   obskind="scalar"/
+&observable name="BF_PE",   obskind="scalar"/
+&observable name="El_KEx",  obskind="scalar"/
+&observable name="El_KEy",  obskind="scalar"/
+&observable name="El_PE",   obskind="scalar"/
+&observable name="ElPH_E",  obskind="scalar"/
+&observable name="El_E",    obskind="scalar"/
+&observable name="BF_X",    obskind="scalar"/
+&observable name="El_den",  obskind="scalar"/
+&observable name="El_docc", obskind="scalar"/
+&observable name="corf_G1",   obskind="field"/
+&observable name="corf_G2",   obskind="field"/
+&observable name="corf_nunu", obskind="field"/
+&observable name="corf_nund", obskind="field"/
+&observable name="corf_nn",   obskind="field"/
+&observable name="corf_XX",   obskind="field"/

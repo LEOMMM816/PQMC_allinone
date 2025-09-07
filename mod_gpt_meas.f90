@@ -17,7 +17,6 @@ module dqmc_measurements
     integer :: nobs = 0
     integer :: total_width = 0
     integer :: field_width = 0
-    integer,allocatable :: handles(:)
     ! ---- data buffer ----
     complex(dp), allocatable :: data(:,:,:) ! [total_width, nbins, nmeas]
     integer :: nbins = 0, nmeas = 0
@@ -48,7 +47,9 @@ module dqmc_measurements
     ! ---- analysis ----
     procedure :: data_analyse         => ms_data_analyse
     procedure :: compute_all_bin_means => ms_compute_all_bin_means
+    ! ---- output ----
     procedure :: output_array_data => ms_output_array_data
+    procedure :: output_reading_guide => ms_output_reading_guide
   end type MeasurementSystem
 
   type(MeasurementSystem) :: Meas_sys
@@ -161,7 +162,7 @@ contains
       obs_temp = 0d0
       obs_temp = obs_temp + (boson_field(s1,time))/Ns
       obs_temp = obs_temp + (boson_field(s1+1,time))/Ns
-      call this%record_scalar(this%get_handle('BF_X'), obs_temp)
+      call this%record_scalar(this%get_handle('BF_X'), obs_temp) 
 
       !! obs: electron density
       handle = this%get_handle('El_den')
@@ -485,7 +486,9 @@ contains
     if (.not.allocated(this%mean)) allocate(this%mean(this%total_width, this%nbins))
     call this%compute_all_bin_means()
     call this%output_array_data()
+    call this%output_reading_guide()
   end subroutine ms_data_analyse
+
   subroutine ms_compute_all_bin_means(this)
     ! 计算所有观测量在每个 bin 的均值（沿第 3 维求平均）
     ! 返回: means(total_width, nbins)
@@ -525,22 +528,49 @@ contains
     end do
     close(10)
   end subroutine ms_output_array_data
+
+  subroutine ms_output_reading_guide(this)
+    class(MeasurementSystem), intent(in) :: this
+    integer :: i, lun, ios
+    character(len=100) :: ci1,ci2,str
+#ifdef MPI
+    if(myid/=0) return
+#endif
+    str = trim(adjustl(output_file))//'data/'//'reading_guide.nml'
+    open(newunit=lun, file=str, status='replace', action='write', iostat=ios)
+    if (ios /= 0) error stop "output_reading_guide: cannot open file: "//trim(str)
+    write(lun, *) '&basics'
+    write(lun, *) 'n_obs=', this%nobs
+    write(lun, *) 'total_width=', this%total_width
+    write(lun, *) 'n_bins=', this%nbins
+    write(lun, *) 'n_meas_per_bin=', this%nmeas
+    write(lun, *) 'field_width=', this%field_width
+#ifdef MPI
+    write(lun, *) 'n_cores=', numprocs
+    write(lun, *) 'MPI_nblock=',MPI_nblock
+    write(lun, *) 'MPI_one_block=',MPI_one_block
+#endif
+    write(lun, *) 'output_format="', trim(adjustl(output_format))//'"'
+    write(lun, *) '/' 
+    write(lun, *) ''
+    
+    do i=1,this%nobs
+    write(lun,*) '&obs'
+    write(lun,*) 'name="',trim(this%names(i))//'"'
+    write(lun,*) 'kind=', this%kinds(i)
+    write(lun,*) 'width=', this%widths(i)
+    write(lun,*) 'offset_lo=', this%off_lo(i)
+    write(lun,*) 'offset_hi=', this%off_hi(i)
+    write(lun,*) '/'
+    write(lun,*) ''
+    end do
+    close(lun)    
+
+  end subroutine ms_output_reading_guide
 !======================================================================!
 !                        USER MEASUREMENT PLACEHOLDER                   !
 !======================================================================!
-!  你可以在主程序里这样使用：
-!    call M%start_bin(b)
-!    do s=1,nmeas_per_bin
-!      call M%begin_measurement()
-!      ! >>> YOUR MEASUREMENT CODE HERE <<<
-!      ! 例如：
-!      !   call M%record_scalar(h_energy, energy_value)
-!      !   call M%record_field (h_green,  gf_flattened(:))
-!    end do
-!
-!  建议在初始化后一次性用 get_handle 拿到所有需要的 handle：
-!    h_energy = M%get_handle("energy")
-!    h_green  = M%get_handle("green_fn")
+!  
 !======================================================================!
 
 end module dqmc_measurements
