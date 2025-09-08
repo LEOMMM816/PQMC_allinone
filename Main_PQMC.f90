@@ -22,7 +22,7 @@ program Pqmc_main
   call MPI_INIT(ierr)
   CALL MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
   CALL MPI_COMM_rank(MPI_COMM_WORLD, myid, ierr)
-  MPI_block = myid/MPI_one_block
+  MPI_block = myid/MPI_one_block + 1
   if(numprocs .NE. mpi_nblock*MPI_one_block) then
     print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
     stop 'numprocs!=mpi_nblock*MPI_one_block'
@@ -168,7 +168,12 @@ program Pqmc_main
    !if(myid == 0) call MPI_output_final()
 !write detailed data into file
  ! if (record_ph_field) call output_phonon_field()
-
+! output info_sheet
+#ifdef MPI
+  if (mod(myid,MPI_one_block) == 0) call mpi_output_inforsheet()
+#else
+  call mpi_output_inforsheet()
+#endif
 ! output error information
   print *, 'largest error in', myid, 'process is', err_fast_max
 ! run time

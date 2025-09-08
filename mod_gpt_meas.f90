@@ -517,7 +517,7 @@ contains
 #else
     str = 'out_core.dat'
 #endif
-    str = trim(adjustl(output_file))//'data/'//trim(adjustl(str))
+    str = trim(adjustl(output_addr))//'data/'//trim(adjustl(str))
     write(ci2, '(1i4)') this%nbins
     open(unit=10, file=str, status='replace', iostat=ios)
     if ( ios /= 0) error stop "output_array_data: cannot open file: "//trim(str)
@@ -536,7 +536,7 @@ contains
 #ifdef MPI
     if(myid/=0) return
 #endif
-    str = trim(adjustl(output_file))//'data/'//'reading_guide.nml'
+    str = trim(adjustl(output_addr))//'data/'//reading_guide
     open(newunit=lun, file=str, status='replace', action='write', iostat=ios)
     if (ios /= 0) error stop "output_reading_guide: cannot open file: "//trim(str)
     write(lun, *) '&basics'

@@ -2,7 +2,7 @@
 # delete the data directory if it exists
 rm -rf ./data
 # create the data directory
-mkdir -p ./data/data ./data/middata ./data/ML_data ./data/raw_data
+mkdir -p ./data/data ./data/out_files
 # ------------------------
 ntasks=4
 TEMPLATE=Creutz_holstein.nml        # your source file
@@ -24,6 +24,7 @@ mpifort input.f90 mod_matrixlib.f90 mod_nrtype.f90 mod_nrutil.f90 mod_ranstate.f
  -cpp -DMPI -lopenblas -g -O0 -fbacktrace -ffpe-trap=invalid,zero,overflow -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable -finit-real=snan
 mpirun -np 4 ./a.out -> out.log
 rm -rf ./namelists
-#gfortran input.f90 outputfinal.f90 -cpp -DMPI -fcheck=all -g
-#./a.out test > out.log
+# post process
+gfortran outputnew.f90 -cpp -DMPI -fcheck=all -g
+./a.out > out.log
 
