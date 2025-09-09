@@ -192,32 +192,82 @@ CONTAINS
   subroutine dexpm(mat, n)
     implicit none
     integer, intent(in) :: n
+    logical :: Hermitian
     real(8) :: v(n)
     real(8) :: mat(n, n), exp_mat(n, n)
+    complex(8) :: c_mat(n, n)
     integer :: i, j
-
-    call eigen(n, mat, v)
-    do j = 1, n
-      do i = 1, n
-        exp_mat(i, j) = sum(mat(i, :)*exp(v(:))*mat(j, :))
+    if(n==0) stop 'n=0 in dexpm'
+    if(n==1) then
+      mat(1,1) = exp(mat(1,1))
+      return
+    end if
+    c_mat = transpose(mat)
+    if(maxval(abs(mat - c_mat)) < 1d-7) then
+      Hermitian = .true.
+    else if( maxval(abs(mat + c_mat)) < 1d-7) then
+      Hermitian = .false.
+    else 
+      stop 'matrix is neither symmetric nor anti-symmetric in dexpm'
+    end if
+    if(Hermitian) then
+      call eigen(n, mat, v)
+      do j = 1, n
+        do i = 1, n
+          exp_mat(i, j) = sum(mat(i, :)*exp(v(:))*mat(j, :))
+        end do
       end do
-    end do
-    mat = exp_mat
+    else
+      ! anti-Hermitian matrix
+      c_mat = complex(0d0,1d0) * mat
+      call eigen(n, c_mat, v)
+      do j = 1, n
+        do i = 1, n
+          exp_mat(i, j) = real(sum(c_mat(i, :)*exp(complex(0d0,-1d0) * v(:))*conjg(c_mat(j, :))))
+        end do
+      end do
 
+    end if
+    mat = exp_mat
+    return
   end subroutine
   subroutine zexpm(mat, n)
     implicit none
     integer, intent(in) :: n
+    logical :: Hermitian
     real(8) :: v(n)
-    complex(8) :: mat(n, n), exp_mat(n, n)
+    complex(8) :: mat(n, n), exp_mat(n, n),c_mat(n,n)
     integer :: i, j
-    call eigen(n, mat, v)
-    do j = 1, n
-      do i = 1, n
-        exp_mat(i, j) = sum(mat(i, :)*exp(v(:))*conjg(mat(j, :)))
-
+    if(n==0) stop 'n=0 in dexpm'
+    if(n==1) then
+      mat(1,1) = exp(mat(1,1))
+      return
+    end if
+    c_mat = conjg(mat)
+    if(maxval(abs(mat - c_mat)) < 1d-7) then
+      Hermitian = .true.
+    else if(maxval(abs(mat + c_mat)) < 1d-7) then
+      Hermitian = .false.
+    else 
+      stop 'matrix is neither Hermitian nor anti-Hermitian in zexpm'
+    end if
+    if(Hermitian) then
+      call eigen(n, mat, v)
+      do j = 1, n
+        do i = 1, n
+          exp_mat(i, j) = sum(mat(i, :)*exp(v(:))*conjg(mat(j, :)))
+        end do
       end do
-    end do
+    else
+      ! anti-Hermitian matrix
+      c_mat = complex(0d0,1d0) * mat
+      call eigen(n, c_mat, v)
+      do j = 1, n
+        do i = 1, n
+          exp_mat(i, j) = sum(mat(i, :)*exp(complex(0d0,-1d0) * v(:))*conjg(mat(j, :)))
+        end do
+      end do
+    end if
     mat = exp_mat
   end subroutine
   FUNCTION dtrace(n, a)

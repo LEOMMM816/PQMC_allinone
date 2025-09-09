@@ -12,23 +12,33 @@ jobname=ctL40Oi
 output_dir=$(pwd)/results
 dir_local=/data/$$               #tmp directory private to specific excute compute node  
 mkdir -p $dir_local              #$$ refer to  unique pid of spccific job
-
 module load gcc/9.4.0
 module load openmpi/4.1.0
-export OPENBLAS_NUM_THREADS=1 
 module load OpenBLAS/0.3.13 
-mpifort input.f90 mod_matrixlib.f90 mod_nrtype.f90 mod_nrutil.f90 mod_ranstate.f90 mod_lattice.f90 mod_phonon_field.f90 mod_evolution.f90 mod_update.f90 mod_gpt_meas.f90 Main_PQMC.f90 \
- -cpp -DMPI -lopenblas -g -O3 
-cp ./Creutz_holstein.nml $dir_local
-cp ./a.out $dir_local
-cp ./cp_middle.sh $dir_local
-cp ./input.f90 $dir_local
-cp ./outputfinal.f90 $dir_local
+export OPENBLAS_NUM_THREADS=1
+# delete the data directory if it exists
+rm -rf ./data
+rm -rf ./*.out
+rm -rf ./*.log
+# create the data directory
+mkdir -p ./data/data ./data/out_files
+# ------------------------
+# compile the fortran code
+cd ./code
+mpifort input.f90 mod_matrixlib.f90 mod_nrtype.f90 mod_nrutil.f90 mod_ranstate.f90 mod_lattice.f90 mod_phonon_field.f90 mod_evolution.f90 mod_update.f90 mod_meas.f90 Main_PQMC.f90 \
+ -cpp -DMPI -lopenblas -g -O3 -o main.out
+cp ./main.out $dir_local
+cd ..
+# copy necessary files to the tmp directory on node
+cp -r ./data $dir_local
+cp -r ./cp_middle.sh $dir_local
+cp -r ./code $dir_local
+cp -r ./model $dir_local
 cd $dir_local #now we are utilizing the SSD disk locate at compute node
 export OPENBLAS_NUM_THREADS=1
 
 # ------------------------
-TEMPLATE=Creutz_holstein.nml        # your source file
+TEMPLATE=model/Creutz_holstein.nml        # your source file
 PREFIX=input            # target prefix
 W=4                          # zero-pad width -> 0000..0127
 OUTDIR=namelists             # new folder to hold the copies
@@ -42,16 +52,18 @@ for i in $(seq 0 $((ntasks-1))); do
   cp "$TEMPLATE" "$OUTDIR/${PREFIX}${tag}.nml"
 done
 #-------------------------
-mkdir -p ./data/data ./data/middata ./data/ML_data ./data/raw_data
-mpirun -np 32 ./a.out > out.log 
-
-# go to the output directory and output final results
-
-#gfortran input.f90 outputfinal.f90 -cpp -DMPI 
-#./a.out $jobname
+# run the fortran code
+mpirun -np "$ntasks" ./main.out > main.log 
 
 # copy file and remove tmp directory on node
 rm -r namelists
+# post process
+cd ./code
+gfortran outputnew.f90 -cpp -DMPI -fcheck=all -g -o pp.out
+cp pp.out ../
+cd ..
+./pp.out > pp.log
+# copy the whole directory back to storage directory
 cd /data
-cp -r $dir_local $output_dir
+cp -a $dir_local $output_dir
 rm -rf $dir_local

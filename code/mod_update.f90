@@ -75,7 +75,6 @@ contains
         R_elec = R_elec * det(ppf%dim,R_mat_sub)! R_elec = det(I + delta*G_h)
         R_elec = (R_elec*conjg(R_elec))**ncopy
         R = R*abs(R_elec)
-
         ! calculate the acceptance probability
         if (R >= 0d0) then
           if (Metropolis) then
@@ -116,7 +115,7 @@ contains
           g_sub = idx(ppf%dim) - g_h_sub
           ln_cw = ln_cw + log(abs(R_elec))
         end if
-      end do
+      end do  ! end of local update for one plaquette
 
       if (update_accept) then
          !! final update ph & g
@@ -127,8 +126,9 @@ contains
         g_part_nd = g_h(:, site_list)
         g_part_dn = g(site_list, :)
         call get_expKV(Delta_sub,ppf, old_bf, inv=.true.)
+        ! now Delta_sub = exp(delt*KV), the old one; p_data%* contains the new ones: exp(-delt*KV')
         Delta_sub = matmul(Delta_sub, p_data%expKV(:,:,i_pla,time)) - idx(ppf%dim) ! Delta_sub = expKV * exp(-delt*KV') - I
-
+        
         R_mat_sub = idx(ppf%dim) + Delta_sub* g_h_sub
         call inverse(ppf%dim,R_mat_sub) ! R_mat_sub => R_mat_sub^(-1)
         R_mat_sub = matmul(Delta_sub,R_mat_sub) ! R_mat_sub  => Delta_sub * R_mat_sub^(-1)
@@ -143,7 +143,7 @@ contains
         negative_accept = negative_accept + 1
         !print*,'non-accepted ln_cw:',ln_cw
       end if
-    end do
+    end do ! end of loop over plaquettes
 
   end subroutine
 
@@ -155,17 +155,9 @@ contains
     ph_af = boson_field(bf_index, modi(time + 1, ntime))
     ph_now = boson_field(bf_index, time)
     ph_new = ph_now + bf_jump
-    !delta_energy = bf_jump * (delt**(-2)*(2 *(-boson_field(bond,modi(time+1,ntime))-boson_field(bond,modi(time-1,ntime))+ &
-    !& 2*boson_field(bond,time))) + 2*omega*omega*boson_field(bond,time)) &
-    !& + bf_jump**2 *(2*delt**(-2)+omega**2)
     E_1 = 0.5*M*((ph_be - ph_now)**2 + (ph_af - ph_now)**2)/(delt)**2 + 0.5*D*ph_now**2 - biased_phonon * ph_now
     E_2 = 0.5*M*((ph_be - ph_new)**2 + (ph_af - ph_new)**2)/(delt)**2 + 0.5*D*ph_new**2 - biased_phonon * ph_new
     delta_energy = (E_2 - E_1)
-    !if(.true.) then
-    !delta_energy_K = delta_energy_K + abs(0.5  * ((ph_be - ph_new)**2 + (ph_af - ph_new)**2)/(delt*omega)**2 - &
-    !& 0.5  * ((ph_be - ph_now)**2 + (ph_af - ph_now)**2)/(delt*omega)**2)
-    !delta_energy_P = delta_energy_P + abs(0.5 * D *(ph_new**2 - ph_now**2))
-    !end if
   end subroutine
 
   FUNCTION calculate_Delta(ppf,i_pla, time,bf_new) result(re)

@@ -241,7 +241,6 @@ contains
       !WRITE(110,'(1f18.6)') err_fast_max
       !write(110,*)'delta_energy_E,delta_energy_K,delta_energy_P:',delta_energy_E,delta_energy_K,delta_energy_P
       !WRITE(110,'(3f18.6)') delta_energy_E,delta_energy_K,delta_energy_P
-      write(110, *) 'max_pair:',max_pair
       call system_clock(count2)
       WRITE (110, *) 'time spent', real(count2 - count1)/real(count_rate)
       write (110, *) ''

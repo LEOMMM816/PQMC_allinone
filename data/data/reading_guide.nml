@@ -4,8 +4,8 @@
  n_bins=          20
  n_meas_per_bin=          10
  field_width=          20
- n_cores=           4
- MPI_nblock=           4
+ n_cores=           1
+ MPI_nblock=           1
  MPI_one_block=           1
  output_format="f18.8"
  /
