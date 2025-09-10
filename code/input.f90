@@ -306,7 +306,7 @@ contains
     write(unit, '(a)') repeat(' ', 3) // 'For Hubbard model, e_TE = (e_KE + e_PE) '
     write(unit, '(a)') repeat(' ', 3) // 'For Holstein model, e_TE = (e_KE + e_ph_E) '
     write(unit, '(a)') repeat(' ', 3) // 'All observables are divided by Ns except N_tot'
-    write(unit, '(a)') ''
+    write(unit, '(a)') '#--observables--#'
     close(unit)
     
     ! create a .nml file to store the task_name of the info_sheet

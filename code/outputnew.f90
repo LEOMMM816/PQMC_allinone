@@ -118,10 +118,12 @@ contains
         do i_core = 1 , MPI_one_block
           do i_bin = 1,n_bins
             temp_sum = temp_sum + &
-            & sum((obs_list(i_obs)%block_mean(i_bin,i_core,:,i_block) - obs_list(i_obs)%out_mean(:,i_block))**2,1)
+            & (obs_list(i_obs)%block_mean(i_bin,i_core,:,i_block) - obs_list(i_obs)%out_mean(:,i_block))**2
+
           end do
         end do
         obs_list(i_obs)%out_err(:,i_block) = sqrt(temp_sum/real(MPI_one_block*n_bins-1)/real(MPI_one_block*n_bins))
+
       end do
       deallocate(temp_sum)
     end do
@@ -133,15 +135,36 @@ contains
 
   subroutine output_results(i_block)
     integer,intent(in) :: i_block
-    integer :: i_obs,line,i
+    integer :: i_obs,line,i,count
     character(len=100) ::ci1,filename
+    character(len = 100):: readin_line
+    logical :: found = .false.
     namelist /file/ filename
     write(ci1,'(I4)') i_block
     ci1 = trim(prefix2)//'b'//trim(adjustl(ci1))//'.nml'
     open(unit=30,file=ci1,status='old',action='read')
     read(30,nml=file)
     close(30)
-    open(unit=30,file=trim(filename),status='old',action='write',position='append')
+    !--------------open the file and truncate it------------------!
+    open(unit=30,file=trim(filename),status='old',action='readwrite', &
+       form='formatted', access='sequential')
+    rewind(30)
+    count = 0
+    do while (.not.found)
+      count = count + 1
+      read(30,'(A)') readin_line
+      print*,trim(adjustl(readin_line))
+      if(trim(adjustl(readin_line)) == '#--observables--#') then
+        found = .true.
+        endfile(30)    
+        exit
+      end if
+    end do
+    close(30)
+    !--------------append the data to the end of the file---------!
+
+    open(unit=30,file=trim(filename),status='old',action='readwrite',position='append')
+    write(30,*)' '
     write(30,'(A15,A6,A18,A18)') 'Name           ','Index','Average','Error'
     write(30,'(A)') ' '
     do i_obs=1,n_obs
@@ -151,6 +174,9 @@ contains
       do line = 1,obs_list(i_obs)%width
         write(30,'(A15,1I6,1'//trim(output_format)//',1'//trim(output_format)//')') adjustl(obs_list(i_obs)%name),line,&
         & obs_list(i_obs)%out_mean(line,i_block),obs_list(i_obs)%out_err(line,i_block)
+        if(obs_list(i_obs)%width > 1) then
+          write(*,'(1'//trim(output_format)//')') obs_list(i_obs)%out_err(line,i_block)
+        end if
       end do
       write(30,*)' '
     end do
