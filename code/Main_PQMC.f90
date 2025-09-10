@@ -22,10 +22,14 @@ program Pqmc_main
   call MPI_INIT(ierr)
   CALL MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
   CALL MPI_COMM_rank(MPI_COMM_WORLD, myid, ierr)
+  MPI_nblock = CPPBLOCK
+  MPI_one_block = CPPPERBLOCK
   MPI_block = myid/MPI_one_block + 1
   if(numprocs .NE. mpi_nblock*MPI_one_block) then
     print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
     stop 'numprocs!=mpi_nblock*MPI_one_block'
+  ELSE IF(myid == 0) then
+    print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
   end if
   write (ci_myid, '(i4.4)') myid
   nml_file = 'namelists/input'//trim(adjustl(ci_myid))//'.nml'

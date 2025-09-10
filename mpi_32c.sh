@@ -7,7 +7,9 @@
 #SBATCH -x intel124
 #SBATCH --mem-per-cpu=5G
 hostname
-ntasks=32
+nblock=4
+nperblock=8
+ntasks=$(( nblock * nperblock ))
 jobname=ctL40Oi
 output_dir=$(pwd)/results
 dir_local=/data/$$               #tmp directory private to specific excute compute node  
@@ -26,7 +28,7 @@ mkdir -p ./data/data ./data/out_files
 # compile the fortran code
 cd ./code
 mpifort input.f90 mod_matrixlib.f90 mod_nrtype.f90 mod_nrutil.f90 mod_ranstate.f90 mod_lattice.f90 mod_phonon_field.f90 mod_evolution.f90 mod_update.f90 mod_meas.f90 Main_PQMC.f90 \
- -cpp -DMPI -lopenblas -g -O3 -o main.out
+ -cpp -DMPI -DCPPBLOCK=$nblock -DCPPPERBLOCK=$nperblock -lopenblas -g -O3 -o main.out
 cp ./main.out $dir_local
 cd ..
 # copy necessary files to the tmp directory on node

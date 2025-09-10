@@ -7,7 +7,7 @@ n_subsite_uc = 2
 /
 
 &lat_spatial
-  lat_size = 20
+  lat_size = 40
   lat_vec = 1
 /
 
