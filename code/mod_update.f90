@@ -277,7 +277,7 @@ contains
     real(8) :: phi, amplitude
     integer :: i_bf,i_cell
     bf_jump = 0d0
-
+    
     do i_bf = 1, bf_sets
       phi = 2d0*pi*rands()
       amplitude = distance/Lat%N_cell*ran_sysm()
