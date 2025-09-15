@@ -38,8 +38,8 @@ MODULE input
   integer :: MPI_one_block = 1 !> number of cores in one mpi_block, = 1 if not mpi
   integer :: MPI_nblock = 1!> = numprocs/MPI_one_block
 ! MC parameter
-  integer :: warmup = 2000, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
-  integer :: nbin_per_core = 20, nmeas_per_bin = 1000! # of bins and size of one bin
+  integer :: warmup = 20, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
+  integer :: nbin_per_core = 20, nmeas_per_bin = 10! # of bins and size of one bin
 ! measurement parameter
   integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
   logical :: file_exist
@@ -200,7 +200,7 @@ contains
     D = 1d0
     M = 0d0
     ep_parameter = sqrt(mpi_block + 2d0) ! hubbard U = ep^2
-    filling = 10d0/40d0
+    filling = 0.5d0
     biased_phonon = 0d0
     call init()
 

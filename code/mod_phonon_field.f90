@@ -114,11 +114,11 @@ contains
       read(10, nml=pf_pos)
       if(ppf%K_exist) then
         read(10, nml=pf_K)
-        K_coe = K_coe * hop
+        ! K_coe = K_coe * hop
       end if
       if(ppf%V_exist) then
         read(10, nml=pf_V)
-        V_coe = ep_parameter * V_coe
+        ! V_coe = ep_parameter * V_coe
       end if
       ppf%p_data => pf_data_list(ppf%id)
       call set_typed_pf(ppf,ppf%dim,K_coe,V_coe, &

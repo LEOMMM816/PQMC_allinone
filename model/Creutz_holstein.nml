@@ -132,7 +132,7 @@ n_subsite_uc = 2
 &observable name="El_den",  obskind="scalar"/
 &observable name="El_docc", obskind="scalar"/
 &observable name="corf_G1",   obskind="field"/
-&observable name="corf_G2",   obskind="field"/
+&observable name="corf_G2",   obskind="field"/  
 &observable name="corf_nunu", obskind="field"/
 &observable name="corf_nund", obskind="field"/
 &observable name="corf_nn",   obskind="field"/

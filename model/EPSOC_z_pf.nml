@@ -5,7 +5,7 @@
 
 &lat_dim
 dim = 2
-n_subsite_uc = 1
+n_subsite_uc = 2
 /
 
 &lat_spatial
@@ -15,115 +15,165 @@ n_subsite_uc = 1
 /
 
 &lat_subsite_vector
-  site_vec = 0,0
+  site_vec = 0,0,
+            0,0
 /
 
-&pf1
-  id = 1
-  updateable = .true.
-  dim = 2
-  n_cover = 1
-/
-
-&pfdetail
-      K_coe = -1.0d0 !> coupling constant for K matrix
-      V_coe = 1.0d0 !> coupling constant for V matrix
-      coupled_bf = 1 !> index of the coupled boson field
-      pla_tsl_vec = 2,0,
-                   1,1 
-      pla_tsl_offset_vec = 0,0
-      pla_int_vec = 0,0,
-                    1,0
-      Kmatrix = (0,0),(1,0),
-                (1,0),(0,0)
-      Vmatrix = (0,0),(0,1),
-                (0,-1),(0,0)
-/
-
-&pf1
-  id = 2
-  updateable = .true.
-  dim = 2
-  n_cover = 1
-/
-
-&pfdetail
-      K_coe = -1.0d0 !> coupling constant for K matrix
-      V_coe = 1.0d0 !> coupling constant for V matrix
-      coupled_bf = 1 !> index of the coupled boson field
-      pla_tsl_vec = 2,0,
-                   1,1 
-      pla_tsl_offset_vec = 1,0
-      pla_int_vec = 0,0,
-                    1,0
-      Kmatrix = (0,0),(1,0),
-                (1,0),(0,0)
-      Vmatrix = (0,0),(0,1),
-                (0,-1),(0,0)
-/
-
-&pf1
-  id = 3
-  updateable = .true.
-  dim = 2
-  n_cover = 1
-/
-
-&pfdetail
-K_coe = -1.0d0 !> coupling constant for K matrix
-      V_coe = 1.0d0 !> coupling constant for V matrix
-      coupled_bf = 2 !> index of the coupled boson field
-      pla_tsl_vec = 2,0,
-                   1,1 
-      pla_tsl_offset_vec = 0,0
-      pla_int_vec = 0,0,
-                    0,1
-      Kmatrix = (0,0),(1,0),
-                (1,0),(0,0)
-      Vmatrix = (0,0),(0,1),
-                (0,-1),(0,0)
-/
-
-&pf1
-  id = 4
-  updateable = .true.
-  dim = 2
-  n_cover = 1
-/
-
-&pfdetail
-K_coe = -1.0d0 !> coupling constant for K matrix
-      V_coe = 1.0d0 !> coupling constant for V matrix
-      coupled_bf = 2 !> index of the coupled boson field
-      pla_tsl_vec = 2,0,
-                   1,1 
-      pla_tsl_offset_vec = 0,1
-      pla_int_vec = 0,0,
-                    0,1
-      Kmatrix = (0,0),(1,0),
-                (1,0),(0,0)
-      Vmatrix = (0,0),(0,1),
-                (0,-1),(0,0)
-/
 
 &slater
-    dim = 3
+    pf_dim = 6
     n_cover = 3
-    updateable = .false.
 /
 
 &slater_detail
-
-    K_coe = -1.0d0 !> coupling constant for K matrix
-    pla_tsl_vec = 1,0,
-                   0,1 
-    pla_tsl_offset_vec = 0,0
-    pla_int_vec = 0,0,
-                  1,0
-                  0,1
-    Kmatrix = 0,1,1,
-              1,0,0,
-              1,0,0
+    K_coe = (1.0d0,0d0) !> coupling constant for K matrix
+    pla_tsl_dvec_uc = 1,0,
+                      0,1
+    pla_offset_dvec_uc = 0,0
+    pla_int_subsites = 0,0,1,
+                       0,0,2,
+                       1,0,1,
+                       1,0,2,
+                       0,1,1,
+                       0,1,2
+    Kmatrix = (10,0),(0,0),(1,0),(0,0),(1,0),(0,0),
+              (0,0),(0,0),(0,0),(1,0),(0,0),(1,0),
+              (1,0),(0,0),(10,0),(0,0),(0,0),(0,0),
+              (0,0),(1,0),(0,0),(0,0),(0,0),(0,0),
+              (1,0),(0,0),(0,0),(0,0),(10,0),(0,0),
+              (0,0),(1,0),(0,0),(0,0),(0,0),(0,0)
 /
 
+&pf_basic
+  id = 1,2,3,4
+  K_exist = .true.,.true.,.true.,.true.
+  V_exist = .true.,.true.,.true.,.true.
+  pf_dim = 4,4,4,4
+  n_cover = 1,1,1,1
+/ 
 
+! pf 1 : sigma_y along x direction
+&pf_pos 
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 0,0
+     pla_int_subsites = 0,0,1,
+                       0,0,2,
+                       1,0,1,
+                       1,0,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 1 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(1,0),
+                (0,0),(0,0),(-1,0),(0,0),
+                (0,0),(-1,0),(0,0),(0,0),
+                (1,0),(0,0),(0,0),(0,0) ! i sigma_y
+/
+
+! pf 2 : sigma_y along x direction, off by (1,0)
+&pf_pos
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 1,0
+     pla_int_subsites = 0,0,1,
+                       0,0,2,
+                       1,0,1,
+                       1,0,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 1 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(1,0),
+                (0,0),(0,0),(-1,0),(0,0),
+                (0,0),(-1,0),(0,0),(0,0),
+                (1,0),(0,0),(0,0),(0,0) ! i sigma_y
+/
+
+! pf 3 : sigma_x along y direction
+&pf_pos
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 0,0
+     pla_int_subsites = 0,0,1,
+                        0,0,2,
+                        0,1,1,
+                        0,1,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 2 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(0,1),
+                (0,0),(0,0),(0,1),(0,0),
+                (0,0),(0,-1),(0,0),(0,0),
+                (0,-1),(0,0),(0,0),(0,0) ! i sigma_x
+/
+
+! pf 4 : sigma_x along y direction, off by (0,1)
+&pf_pos
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 0,1
+     pla_int_subsites = 0,0,1,
+                        0,0,2,
+                        0,1,1,
+                        0,1,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 2 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(0,1),
+                (0,0),(0,0),(0,1),(0,0),
+                (0,0),(0,-1),(0,0),(0,0),
+                (0,-1),(0,0),(0,0),(0,0) ! i sigma_x
+/
+
+&bf_basics
+    bf_sets = 2 ! number of boson fields
+    ising = .false. ! ising type or not
+    continuous = .true. ! continuous type or not
+    import_ph_field = .false. ! import phonon field from file or not
+/
+
+&bf_initial
+    phase_intra_cell = (1,0),(-1,0) ! size of n_bf, phases of intra-cell boson fields
+    phase_k_inter_cell = 1,1! size of Lat%dim, k-space distribution of phase of bfs,in unit of pi
+    random_range = 1 ! range of random number for initial boson field, in unit of character length
+    offset = 2 ! range of random number for initial boson field, in unit of character length
+/
