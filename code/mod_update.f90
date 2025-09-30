@@ -6,6 +6,10 @@ module update
 
 contains
 
+!======================================================================!
+!                             LOCAL UPDATE                             !
+!======================================================================!
+
   subroutine update_phonon_field(ppf, time)
 
     !> update phonon field, calculate exp(delta E), if accepted, update Kmat, green function
@@ -17,9 +21,9 @@ contains
     integer, intent(in) :: time
     type(pf_type), intent(in) :: ppf
     type(pf_data_type), pointer :: p_data
-    complex(kind=8) :: R_elec ! relative boltzmann weight &
-    real(8) :: R, delta_energy, bf_jump, delta_energy_elec
-    real(8) :: old_bf
+    complex(kind=8) :: R,R_elec ! relative boltzmann weight &
+    real(8) ::  delta_energy, bf_jump, delta_energy_elec
+    real(8) :: old_bf,prob
     complex(8), dimension(ppf%dim,ppf%dim) :: expKV_old,expK_inv_old
     complex(8),dimension(ppf%dim,ppf%dim) :: Delta_sub,  R_mat_sub, R_temp_sub, g_h_sub,g_sub
     complex(8), dimension(Ns, Ns) :: g_temp
@@ -45,13 +49,15 @@ contains
     delta_energy_elec = 0d0
     bf_jump = 0d0
     R_temp_sub = 0d0
+
     flag = .true.
-    update_accept = .false.
+    
       !! fix two end points
     if ( time ==1 .or. time == ntime ) return
       !! preparation
 
     do i_pla = 1 , ppf%n_plaquette
+      
       ! get the site index of the plaquette
       site_list = p_data%pla_site_list(:,i_pla)
       ! get the old field value
@@ -60,44 +66,35 @@ contains
       ! get g_sub and g_h_sub
       g_h_sub = g_h(site_list, site_list)
       g_sub = idx(ppf%dim) - g_h_sub
+      update_accept = .false.
       do i = 1, n_local_update
+        R = 1d0
+        R_elec = 1d0
         ! new bf_jump value
         bf_jump = jump_distance*ran_sysm()
         ! calculate energy difference due to boson field: delta_energy
         call cal_energy_difference(p_data%bf_list(i_pla), time, bf_jump, delta_energy)
         delta_energy = -delt*delta_energy
-        R = exp(delta_energy)
-        ! calculate det(B')/det(B), energy difference due to electrons
-        R_elec = 1d0
+        R = R * exp(delta_energy)
         p_bf = p_bf + bf_jump ! update boson field
-        Delta_sub = calculate_Delta(ppf,i_pla,time,p_bf)
-        R_mat_sub = idx(ppf%dim) + matmul(g_h_sub,Delta_sub) !> R_sub = I  + G_h_sub * Delta_sub
-        R_elec = R_elec * det(ppf%dim,R_mat_sub)! R_elec = det(I + delta*G_h)
-        R_elec = (R_elec*conjg(R_elec))**ncopy
-        R = R*abs(R_elec)
-        ! calculate the acceptance probability
-        if (R >= 0d0) then
-          if (Metropolis) then
-            prob = real(R)
-            if (greatest_decent) then
-              prob = floor(prob)
-            end if
-          else!heat bath
-            prob = real(R/(1 + R)) ! accept probobility
-          end if
-          !print*,"P = ",prob
+        if(real(R) > 10d-6 .and. real(R)<10d100) then
+          ! calculate det(B')/det(B), energy difference due to electrons
+          Delta_sub = calculate_Delta(ppf,i_pla,time,p_bf)
+          R_mat_sub = idx(ppf%dim) + matmul(g_h_sub,Delta_sub) !> R_sub = I  + G_h_sub * Delta_sub
+          R_elec = R_elec * det(ppf%dim,R_mat_sub)! R_elec = det(I + delta*G_h)
+          IF(TR_weight) R_elec = R_elec * CONJG(R_elec) ! for TR system, the weight is squared
+          R_elec = R_elec**ncopy
+          ! total weight ratio
+          R = R*(R_elec)
+          !print*, 'i_pla,time,bf_jump,delta_energy,R_elec,R:',i_pla,time,bf_jump,delta_energy,R_elec,R
+          ! calculate the acceptance probability
 
+          call cal_prob(log(R), prob)
         else
-          print *, "SIGN PROBLEM,R:", R, 'in updating phonon field'
-          print *, 'time,i_pf,i_pla:', time, ppf%id, i_pla
-          print *, 'R_mat_sub:', R_mat_sub
-          print *, 'Delta_sub:', Delta_sub
-          print *, 'g_h_sub:', g_h_sub
-          stop
+          prob = 0d0
         end if
-
         ! acceptance test
-
+        !if(.true.) then
         if ((prob < rands())) then
           ! reject
           p_bf = p_bf - bf_jump
@@ -113,11 +110,12 @@ contains
           R_temp_sub = matmul(Delta_sub,R_mat_sub)
           g_h_sub = g_h_sub + matmul(matmul(g_h_sub,R_temp_sub),g_sub)
           g_sub = idx(ppf%dim) - g_h_sub
-          ln_cw = ln_cw + log(abs(R_elec))
+          ln_cw = ln_cw + log(real(R_elec))
         end if
       end do  ! end of local update for one plaquette
 
       if (update_accept) then
+        !if(.false.) then
          !! final update ph & g
         positive_accept = positive_accept + 1
         ! update green functiuon
@@ -128,8 +126,8 @@ contains
         call get_expKV(Delta_sub,ppf, old_bf, inv=.true.)
         ! now Delta_sub = exp(delt*KV), the old one; p_data%* contains the new ones: exp(-delt*KV')
         Delta_sub = matmul(Delta_sub, p_data%expKV(:,:,i_pla,time)) - idx(ppf%dim) ! Delta_sub = expKV * exp(-delt*KV') - I
-        
-        R_mat_sub = idx(ppf%dim) + Delta_sub* g_h_sub
+
+        R_mat_sub = idx(ppf%dim) + matmul(g_h_sub,Delta_sub)
         call inverse(ppf%dim,R_mat_sub) ! R_mat_sub => R_mat_sub^(-1)
         R_mat_sub = matmul(Delta_sub,R_mat_sub) ! R_mat_sub  => Delta_sub * R_mat_sub^(-1)
         g_h = g_h + matmul(matmul(g_part_nd,R_mat_sub),g_part_dn)
@@ -141,6 +139,7 @@ contains
       else
         p_bf = old_bf
         negative_accept = negative_accept + 1
+        ! if not accepted, restore the old boson field
         !print*,'non-accepted ln_cw:',ln_cw
       end if
     end do ! end of loop over plaquettes
@@ -158,6 +157,19 @@ contains
     E_1 = 0.5*M*((ph_be - ph_now)**2 + (ph_af - ph_now)**2)/(delt)**2 + 0.5*D*ph_now**2 - biased_phonon * ph_now
     E_2 = 0.5*M*((ph_be - ph_new)**2 + (ph_af - ph_new)**2)/(delt)**2 + 0.5*D*ph_new**2 - biased_phonon * ph_new
     delta_energy = (E_2 - E_1)
+    if(.false.) then
+    print*, 'ph_be,ph_now,ph_af:',ph_be,ph_now,ph_af
+    print*, 'Ek_1:',0.5*M*((ph_be - ph_now)**2 + (ph_af - ph_now)**2)/(delt)**2
+    print*, 'Ep_1:',0.5*D*ph_now**2
+    print*, 'E_1:',E_1
+    print*, 'ph_be,ph_new,ph_af:',ph_be,ph_new,ph_af
+    print*, 'Ek_2:',0.5*M*((ph_be - ph_new)**2 + (ph_af - ph_new)**2)/(delt)**2
+    print*, 'Ep_2:',0.5*D*ph_new**2
+    print*, 'E_2:',E_2
+    print*, 'delta_energy:',delta_energy
+    
+    stop
+    end if
   end subroutine
 
   FUNCTION calculate_Delta(ppf,i_pla, time,bf_new) result(re)
@@ -167,19 +179,22 @@ contains
     complex(8) :: re(ppf%dim, ppf%dim)
     real(8),pointer ::  bf_new
     real(8) :: bf_value
+    integer :: i,j
     bf_value = bf_new
     call get_expKV(re,ppf,bf_value,inv = .false.) ! re = expKV
     re = matmul(ppf%p_data%expKV_inv(:,:,i_pla,time),re) - idx(ppf%dim) ! delta_sub = exp(delt*KV) * exp(-delt*KV') - I
     ! p_Data%expKV_inv(:,:,i_pla,time) is exp(delt*KV)
   end FUNCTION
 
+!======================================================================!
+!                            GLOBAL UPDATE                             !
+!======================================================================!
+
   subroutine update_global()
     implicit NONE
     real(8) :: oldfield(Ns, ntime)
-    real(8) :: oldconfigurationweight
-
-    real(kind=8) :: R ! relative boltzmann weight
-    real(8) :: ph_ln_cw
+    complex(8) :: oldconfigurationweight
+    real(8) :: ph_ln_cw,prob
     oldfield = boson_field
     oldconfigurationweight = ln_cw
 
@@ -187,30 +202,14 @@ contains
 
     call generate_newfield_global() ! generate new pf and sum over the weight caused by energy difference
 
-    ph_ln_cw = ln_cw
+    ph_ln_cw = real(ln_cw)
 
     call cal_new_weight() ! calculate the relative weight caused by det()
     !print*,'ln_cw:',ln_cw
     !print*,'ph_ln_cw:',ph_ln_cw
     !print*,'ln_cw + ph_ln_cw - oldconfigurationweight:',ln_cw + ph_ln_cw - oldconfigurationweight
-    R = exp(min(10d0, ln_cw + ph_ln_cw - oldconfigurationweight))
-    if (R > -0.0000001) then
-      if (Metropolis) then
-        prob = min(1d0, real(R))
-        if (greatest_decent) then
-          prob = floor(prob)
-        end if
-      else
-        prob = real(R/(1 + R)) ! accept probobility
 
-      end if
-      print*,"global update: P = ",prob
-    else
-      print *, "SIGN PROBLEM,R:", R, 'in global update phonon field'
-      print *, 'ln_cw,oldconfigurationweight:', ln_cw, oldconfigurationweight
-      prob = real(R)
-      stop
-    end if
+    call cal_prob(ln_cw + ph_ln_cw - oldconfigurationweight,prob)
 
     if (ran() < prob) then ! accept this global update
       global_accept = global_accept + 1
@@ -277,7 +276,7 @@ contains
     real(8) :: phi, amplitude
     integer :: i_bf,i_cell
     bf_jump = 0d0
-    
+
     do i_bf = 1, bf_sets
       phi = 2d0*pi*rands()
       amplitude = distance/Lat%N_cell*ran_sysm()
@@ -294,7 +293,7 @@ contains
     ! the Q,D,R are not changed in this subroutine
     implicit none
     integer flv, p, d, flag, i, i_pf,i_pla
-    real(8) :: lndet
+    complex(8) :: lndet
     complex(8), allocatable :: tmat(:, :), lmat(:, :), rmat(:, :), expKV_temp(:,:)
     ln_cw = 0d0
 
@@ -305,7 +304,7 @@ contains
     lmat = conjg(transpose(Q_string(:, 1:nelec, nblock)))
 
     do i = 1, d
-      lndet = lndet + log(abs(d_string(i, nblock)))
+      lndet = lndet + log((d_string(i, nblock)))
     end do
 
     flag = 0
@@ -331,7 +330,7 @@ contains
       flag = 0
       call zlq(d, ns, lmat, tmat)
       do i = 1, d
-        lndet = lndet + log(abs(tmat(i, i)))
+        lndet = lndet + log((tmat(i, i)))
       end do
       !print*,'lndet for time',p,'is',lndet
     end do
@@ -339,15 +338,45 @@ contains
     rmat = Q_string(:, 1:nelec, 1)
 
     do i = 1, d
-      lndet = lndet + log(abs(d_string(i, 1)))
+      lndet = lndet + log((d_string(i, 1)))
     end do
 
     tmat = matmul(lmat, rmat)
-    lndet = lndet + log(abs(det(d, tmat)))
+    lndet = lndet + log((det(d, tmat)))
     !print*,'lndet:',log(abs(det(d,tmat)))
+    if(TR_weight) lndet = lndet * conjg(lndet)
+    ln_cw = ln_cw + lndet * ncopy
+    ln_cw = complex(real(ln_cw),mod(aimag(ln_cw),2*pi)) ! make sure weight is in the principal branch
+  end subroutine
 
-    ln_cw = ln_cw + lndet * ncopy * 2
+!======================================================================!
+!                            Metropolis accept                         !
+!======================================================================!
 
+  subroutine cal_prob(w, prob)
+    implicit none
+    complex(8), intent(in) :: w
+    real(8), intent(out) :: prob
+    real(8) :: R_temp
+    complex(8) :: weight
+    ! weight is the energy differece between two configurations
+    ! prob is the acceptance probability
+    ! R should be exp(weight)
+    weight = w
+    weight = complex(real(weight),mod(aimag(weight),2*pi)) ! make sure weight is in the principal branch
+    if(abs(aimag(weight)) > 1d-3) then
+      print *, "SIGN PROBLEM,weight:", weight
+      stop
+    end if
+    R_temp = exp(min(10d0, real(weight)))
+    if (Metropolis) then
+      prob = min(1d0, real(R_temp))
+      if (greatest_decent) then
+        prob = floor(prob)
+      end if
+    else!heat bath
+      prob = real(R_temp/(1 + R_temp)) ! accept probobility
+    end if
   end subroutine
 
 end module update

@@ -10,6 +10,7 @@ contains
     ! calculate without B_string tech from time = 1 to ntime, yielding green function at time = ntime+1
     integer :: i, p, block_num, i_pf , i_pla
     complex(8), allocatable :: lmat(:, :), rmat(:, :), PBP(:, :)
+    complex(8),allocatable :: lmat_T(:,:), rmat_T(:, :), PBP_T(:, :)
     type(pf_data_type),pointer :: p_data
     IF (.not. allocated(g)) allocate (g(Ns, Ns))
     IF (.not. allocated(g_h)) allocate (g_h(Ns, Ns))
@@ -59,22 +60,13 @@ contains
     !ln_cw = ln_cw + sum(log(D_string(1:nelec,flv,nblock-1)))
          !! abs only for sign problem free to avoid minus value of D_string
 
-    ln_cw = ln_cw + sum(log(abs(D_string(1:nelec, :))))
     lmat = conjg(transpose(Q_string(:, 1:nelec, nblock)))
-    ! calculate g =  1 - rmat * (lmat*rmat)^(-1) * lmat
+    call cal_g_and_det(lmat,rmat)
 
-    PBP = matmul(lmat, rmat) !lmat*rmat->PBP
-    ln_cw = ln_cw + log(abs(det(nelec, PBP))) !> abs for real only
-
-    call inverse(nelec, PBP) ! PBP^(-1) -> PBP
-
-    g_h(:, :) = MATMUL(rmat, matmul(PBP, lmat))
-    g(:, :) = -g_h(:, :)
-    forall (i=1:Ns) g(i, i) = g(i, i) + 1d0
+    
 
     deallocate (rmat, lmat, PBP)
 
-    ln_cw = ln_cw*2*ncopy
     !print*,'max g:',maxval(abs(g_h))
 
   end SUBROUTINE
@@ -89,7 +81,7 @@ contains
     integer :: i, p, block_num,i_pf
     complex(8), allocatable :: lmat(:, :), rmat(:, :), PBP(:, :)
     complex(8) :: gfast(ns, ns)
-    real(8) :: ln_cw_fast
+    complex(8) :: ln_cw_fast
     ln_cw_fast = ln_cw
     ln_cw = 0d0
     !print*,'qmat:',qmat
@@ -115,7 +107,7 @@ contains
       !& R_string(1:nelec,1:nelec,flv,block_num-1)) !
       lmat = conjg(transpose(Q_string(:, 1:nelec, block_num + 1)))
       !update ln_cw
-      ln_cw = ln_cw + sum(log(abs(D_string(1:nelec, :))))
+      
       !ln_cw = ln_cw + sum(log(D_string(1:nelec,flv,block_num+1)))
     else !evolve backwards
 
@@ -138,52 +130,31 @@ contains
       D_string(1:nelec, block_num) = D_string(1:nelec, block_num)
       !R_string(1:nelec,1:nelec,flv,block_num) = matmul(R_string(1:nelec,1:nelec,flv,block_num+1),&
       !& R_string(1:nelec,1:nelec,flv,block_num)) ! attention that R_string was not hermitian_conjugated
-
       rmat = Q_string(:, 1:nelec, block_num - 1)
-
-      ln_cw = ln_cw + sum(log(abs(D_string(1:nelec, :))))
       !ln_cw = ln_cw + sum(log(D_string(1:nelec,flv,block_num-1)))
     end if
     ! calculate g =  1 - rmat * (lmat*rmat)^(-1) * lmat
-
-    PBP = matmul(lmat, rmat) !lmat*rmat->PBP
-    ln_cw = ln_cw + log(abs(det(nelec, PBP)))
-    call inverse(nelec, PBP) ! PBP^(-1) -> PBP
-    if(debug) then
-      print*,'rmat:',rmat
-      print*,'lmat:',lmat
-      print*,'PBP:',PBP
-    end if
-    g_h(:, :) = MATMUL(rmat, matmul(PBP, lmat))
-    g(:, :) = -g_h(:, :)
-    forall (i=1:Ns) g(i, i) = g(i, i) + 1d0
-
+    call cal_g_and_det(lmat,rmat)
     ! calculate difference between fast updating g and scratch
     ! difference
     err_fast = maxval(abs(gfast - g(:, :)))
-
     if (err_fast > err_fast_max) then
-
       print *, 'time:', time, 'error_fast: ', err_fast, 'loop:', loop, 'myid:', myid
       err_fast_max = err_fast
       print *, 'gfast:', maxval(abs(gfast))
       print *, 'g:', maxval(abs(g(:, :)))
       !stop 'Error in update: difference too large'
     end if
-    deallocate (rmat, lmat, PBP)
-
-    ln_cw = ln_cw*2*ncopy
-    err_fast = abs(exp(ln_cw - ln_cw_fast) - 1)
+    err_fast = abs((real(ln_cw - ln_cw_fast)))
     if (err_fast > err_fast_max) then
       err_fast_max = err_fast
       print *, 'time:', time, 'error_fast_det: ', err_fast, 'loop:', loop, 'myid:', myid
       print *, 'lnw_fast,lnw_from_scratch:', ln_cw_fast, ln_cw
       !stop 'Error in update lnw: difference too large'
     end if
-
+    deallocate (rmat, lmat, PBP)
   end SUBROUTINE
 
-    
   subroutine get_g_scratch_tau(time,rmat,mat)
     implicit none
     !> calculate gf from scratch especially for tau and update the rmat matrix
@@ -222,7 +193,6 @@ contains
     end if
 
   end subroutine get_g_scratch_tau
-
 
   SUBROUTINE left_evolve(time, mat, n,i_pf,two_way)
     !mat -> expK1*expK2...expKn*mat*exp-Kn...*exp-K2*exp-K1
@@ -265,4 +235,48 @@ contains
 
   end SUBROUTINE right_evolve
 
+  subroutine cal_g_and_det(lmat,rmat)
+    implicit none
+    integer :: i
+    complex(8), intent(in) :: lmat(nelec,Ns), rmat(Ns,nelec)
+    complex(8),allocatable :: PBP(:,:)
+    complex(8) :: lmat_T(2*nelec,Ns), rmat_T(Ns,2*nelec)
+    complex(8) :: inner_prod(nelec,nelec)
+    ln_cw = 0d0
+    if(.true.) then
+      allocate(PBP(nelec,nelec))
+      PBP = matmul(lmat,rmat)
+      ln_cw = ln_cw + log((det(nelec, PBP))) !> abs for real only
+      ln_cw = ln_cw + sum(log((D_string)))
+      call inverse(nelec, PBP) ! PBP^(-1) -> PBP
+      g_h(:, :) = MATMUL(rmat, matmul(PBP, lmat))
+    else
+      allocate(PBP(2*nelec,2*nelec))
+      rmat_T(:,1:nelec) = rmat(:,1:nelec)
+      rmat_T(:,nelec+1:2*nelec) = conjg(MATMUL(TR_mat,rmat(:,1:nelec)))
+      lmat_T(1:nelec,:) = lmat(1:nelec,:)
+      lmat_T(nelec+1:2*nelec,:) = conjg(MATMUL(lmat(1:nelec,:),transpose(TR_mat)))
+      PBP = matmul(lmat_T,rmat_T)
+      do i = 1, 2*nelec
+        !print*,'rmat:',i,rmat_T(:,i)
+      end do
+      inner_prod = matmul(conjg(transpose(Rmat_T(:,1: nelec))),lmat_T(:,1: nelec))
+      do i = 1 , nelec
+         print*,'max inner_prod:', abs(inner_prod(i,:))
+      end do
+      ! print*,'inner_prod:',inner_prod
+      print*,'det inner_prod:',det(nelec,inner_prod)
+      print*,'det PBP:',det(2*nelec,PBP)
+      
+      ln_cw = ln_cw + log(abs(det(2*nelec, PBP))) !> abs for real only      
+      ln_cw = ln_cw + sum(log(abs(D_string))) * 2
+      call inverse(2*nelec, PBP) ! PBP^(-1) -> PBP
+      g_h(:, :) = MATMUL(rmat_T, matmul(PBP, lmat_T))
+      stop
+    end if
+    g(:, :) = -g_h(:, :)
+    forall (i=1:Ns) g(i, i) = g(i, i) + 1d0
+    ln_cw = ln_cw*ncopy
+    ln_cw = complex(real(ln_cw),mod(aimag(ln_cw),2*pi)) ! make sure weight is in the principal branch
+  end subroutine cal_g_and_det
 end module evolution

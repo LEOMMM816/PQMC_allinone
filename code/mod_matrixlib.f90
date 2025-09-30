@@ -1,5 +1,5 @@
 MODULE matrixlib
-
+  
   INTERFACE trace
     MODULE PROCEDURE dtrace, ztrace
   END INTERFACE
@@ -207,7 +207,7 @@ CONTAINS
       Hermitian = .true.
     else if( maxval(abs(mat + c_mat)) < 1d-7) then
       Hermitian = .false.
-    else 
+    else
       stop 'matrix is neither symmetric nor anti-symmetric in dexpm'
     end if
     if(Hermitian) then
@@ -243,12 +243,12 @@ CONTAINS
       mat(1,1) = exp(mat(1,1))
       return
     end if
-    c_mat = conjg(mat)
+    c_mat = transpose(conjg(mat))
     if(maxval(abs(mat - c_mat)) < 1d-7) then
       Hermitian = .true.
     else if(maxval(abs(mat + c_mat)) < 1d-7) then
       Hermitian = .false.
-    else 
+    else
       stop 'matrix is neither Hermitian nor anti-Hermitian in zexpm'
     end if
     if(Hermitian) then
@@ -521,6 +521,7 @@ CONTAINS
   END FUNCTION
 
   FUNCTION zdet(n, a)
+    use, intrinsic :: ieee_arithmetic
     IMPLICIT NONE
     INTEGER i, n, info, ipvt(n)
     COMPLEX(8) a(n, n), b(n, n), zdet
@@ -541,6 +542,7 @@ CONTAINS
     !zdet=0d0
     DO i = 1, n
       IF (ipvt(i) /= i) info = -info
+      
       zdet = zdet*b(i, i)
       !zdet=zdet+log(b(i,i))
     END DO

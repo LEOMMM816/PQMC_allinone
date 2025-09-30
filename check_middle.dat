@@ -1,4860 +1,1036 @@
- loop           4
- myid           1
- Size:          20
- local_update accept ratio:  0.642606497    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.06700003    
- 
- loop           8
+ loop           2
  myid           0
- Size:          20
- local_update accept ratio:  0.618546367    
+ Size:           8           8
+ local_update accept ratio:  0.962784946    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.17700005    
+ time spent   18.5419998    
+ 
+ loop           4
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.955277741    
+ error_fast:   9.9999999999999995E-007
+ time spent   51.5719986    
  
  loop           6
- myid           1
- Size:          20
- local_update accept ratio:  0.653273821    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.69700003    
- 
- loop          10
  myid           0
- Size:          20
- local_update accept ratio:  0.639974952    
+ Size:           8           8
+ local_update accept ratio:  0.948960423    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.79299998    
- 
- loop           8
- myid           1
- Size:          20
- local_update accept ratio:  0.652944863    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.29500008    
- 
- loop          12
- myid           0
- Size:          20
- local_update accept ratio:  0.638518155    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.38100004    
- 
- loop          10
- myid           1
- Size:          20
- local_update accept ratio:  0.662124038    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.91499996    
- 
- loop          14
- myid           0
- Size:          20
- local_update accept ratio:  0.644251227    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.01900005    
- 
- loop          12
- myid           1
- Size:          20
- local_update accept ratio:  0.667606533    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.57699990    
- 
- loop          16
- myid           0
- Size:          20
- local_update accept ratio:  0.648214281    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.66499996    
- 
- loop          14
- myid           1
- Size:          20
- local_update accept ratio:  0.680733085    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.28599977    
- 
- loop          18
- myid           0
- Size:          20
- local_update accept ratio:  0.650986850    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.34899998    
- 
- loop          16
- myid           1
- Size:          20
- local_update accept ratio:  0.681062043    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.90399981    
- 
- loop          20
- myid           0
- Size:          20
- local_update accept ratio:  0.653477430    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.97499990    
- 
- loop          18
- myid           1
- Size:          20
- local_update accept ratio:  0.677412271    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.53000021    
- 
- loop          22
- myid           0
- Size:          20
- local_update accept ratio:  0.655764401    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.59399986    
- 
- loop          20
- myid           1
- Size:          20
- local_update accept ratio:  0.685996234    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.19700003    
- 
- loop          24
- myid           0
- Size:          20
- local_update accept ratio:  0.655059516    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.22100019    
- 
- loop          22
- myid           1
- Size:          20
- local_update accept ratio:  0.684273183    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.82800007    
- 
- loop          26
- myid           0
- Size:          20
- local_update accept ratio:  0.658129692    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.83300018    
- 
- loop          28
- myid           0
- Size:          20
- local_update accept ratio:  0.654072702    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.45400047    
- 
- loop          24
- myid           1
- Size:          20
- local_update accept ratio:  0.681391001    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.46899986    
- 
- loop          26
- myid           1
- Size:          20
- local_update accept ratio:  0.678540111    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.10200024    
- 
- loop          30
- myid           0
- Size:          20
- local_update accept ratio:  0.660072029    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.11499977    
- 
- loop          28
- myid           1
- Size:          20
- local_update accept ratio:  0.694580197    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.74600029    
- 
- loop          32
- myid           0
- Size:          20
- local_update accept ratio:  0.655372798    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.75399971    
- 
- loop          34
- myid           0
- Size:          20
- local_update accept ratio:  0.659085214    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.3830004    
- 
- loop          30
- myid           1
- Size:          20
- local_update accept ratio:  0.687656641    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.38799953    
- 
- loop          36
- myid           0
- Size:          20
- local_update accept ratio:  0.659210503    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.0120001    
- 
- loop          32
- myid           1
- Size:          20
- local_update accept ratio:  0.690993130    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.0600004    
- 
- loop          38
- myid           0
- Size:          20
- local_update accept ratio:  0.664473712    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.6549997    
- 
- loop          34
- myid           1
- Size:          20
- local_update accept ratio:  0.690711141    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.7240000    
- 
- loop          40
- myid           0
- Size:          20
- local_update accept ratio:  0.657816410    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.2720003    
- 
- loop          36
- myid           1
- Size:          20
- local_update accept ratio:  0.681907892    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.3640003    
- 
- loop          42
- myid           0
- Size:          20
- local_update accept ratio:  0.647869647    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.8970003    
- 
- loop          38
- myid           1
- Size:          20
- local_update accept ratio:  0.701738715    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.0229998    
- 
- loop          44
- myid           0
- Size:          20
- local_update accept ratio:  0.658928573    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.5290003    
- 
- loop          40
- myid           1
- Size:          20
- local_update accept ratio:  0.697572052    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.6840000    
- 
- loop          46
- myid           0
- Size:          20
- local_update accept ratio:  0.660823941    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.1639996    
- 
- loop          42
- myid           1
- Size:          20
- local_update accept ratio:  0.688455522    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.3290005    
- 
- loop          48
- myid           0
- Size:          20
- local_update accept ratio:  0.659351528    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.7959995    
- 
- loop          44
- myid           1
- Size:          20
- local_update accept ratio:  0.693201780    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.9729996    
- 
- loop          50
- myid           0
- Size:          20
- local_update accept ratio:  0.666055739    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.4449997    
- 
- loop          46
- myid           1
- Size:          20
- local_update accept ratio:  0.697070777    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.6490002    
- 
- loop          52
- myid           0
- Size:          20
- local_update accept ratio:  0.661011934    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.0760002    
- 
- loop          48
- myid           1
- Size:          20
- local_update accept ratio:  0.695582688    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.2959995    
- 
- loop          54
- myid           0
- Size:          20
- local_update accept ratio:  0.662077069    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.7189999    
- 
- loop          50
- myid           1
- Size:          20
- local_update accept ratio:  0.688016891    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.9809999    
- 
- loop          56
- myid           0
- Size:          20
- local_update accept ratio:  0.661983073    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.3479996    
- 
- loop          52
- myid           1
- Size:          20
- local_update accept ratio:  0.688706160    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.5979996    
- 
- loop          58
- myid           0
- Size:          20
- local_update accept ratio:  0.667528212    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.0219994    
- 
- loop          54
- myid           1
- Size:          20
- local_update accept ratio:  0.700234950    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.3099995    
- 
- loop          60
- myid           0
- Size:          20
- local_update accept ratio:  0.664332688    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.7199993    
- 
- loop          56
- myid           1
- Size:          20
- local_update accept ratio:  0.697916687    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.0049992    
- 
- loop          58
- myid           1
- Size:          20
- local_update accept ratio:  0.696115315    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.6340008    
- 
- loop          60
- myid           1
- Size:          20
- local_update accept ratio:  0.689771295    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   19.2509995    
+ time spent   84.2139969    
  
  loop           2
  myid           0
- Size:          20
- local_update accept ratio:  0.599812031    
+ Size:           8           8
+ local_update accept ratio:  0.796554029    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.458999991    
+ time spent   15.6840000    
  
  loop           4
  myid           0
- Size:          20
- local_update accept ratio:  0.608270705    
+ Size:           8           8
+ local_update accept ratio:  0.763386130    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.03999996    
- 
- loop           2
- myid           1
- Size:          20
- local_update accept ratio:  0.626315773    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.519999981    
+ time spent   42.6800003    
  
  loop           6
  myid           0
- Size:          20
- local_update accept ratio:  0.618374050    
+ Size:           8           8
+ local_update accept ratio:  0.731733024    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.69099998    
- 
- loop           4
- myid           1
- Size:          20
- local_update accept ratio:  0.642528176    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.15900004    
+ time spent   68.5950012    
  
  loop           8
  myid           0
- Size:          20
- local_update accept ratio:  0.623684227    
+ Size:           8           8
+ local_update accept ratio:  0.711066663    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.30299997    
- 
- loop           6
- myid           1
- Size:          20
- local_update accept ratio:  0.647728682    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.78799999    
+ time spent   94.0270004    
  
  loop          10
  myid           0
- Size:          20
- local_update accept ratio:  0.634508133    
+ Size:           8           8
+ local_update accept ratio:  0.690584302    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.92400002    
+ time spent   118.983002    
+ 
+ loop           2
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.795231104    
+ error_fast:   9.9999999999999995E-007
+ time spent   15.7969999    
+ 
+ loop           4
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.763628840    
+ error_fast:   9.9999999999999995E-007
+ time spent   42.8079987    
+ 
+ loop           6
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.737792015    
+ error_fast:   9.9999999999999995E-007
+ time spent   69.0770035    
  
  loop           8
- myid           1
- Size:          20
- local_update accept ratio:  0.660761297    
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.709798515    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.40599990    
+ time spent   94.6669998    
+ 
+ loop          10
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.695848703    
+ error_fast:   9.9999999999999995E-007
+ time spent   119.698997    
  
  loop          12
  myid           0
- Size:          20
- local_update accept ratio:  0.632221162    
+ Size:           8           8
+ local_update accept ratio:  0.687280834    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.51999998    
- 
- loop          10
- myid           1
- Size:          20
- local_update accept ratio:  0.671506882    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.02600002    
+ time spent   144.748993    
  
  loop          14
  myid           0
- Size:          20
- local_update accept ratio:  0.643577695    
+ Size:           8           8
+ local_update accept ratio:  0.673949480    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.12099981    
- 
- loop          12
- myid           1
- Size:          20
- local_update accept ratio:  0.672196090    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.68700004    
+ time spent   169.190002    
  
  loop          16
  myid           0
- Size:          20
- local_update accept ratio:  0.648104608    
+ Size:           8           8
+ local_update accept ratio:  0.664575219    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.77299976    
+ time spent   193.367996    
+ 
+ loop           2
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.993839264    
+ error_fast:   9.9999999999999995E-007
+ time spent   19.3649998    
+ 
+ loop           4
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.993334353    
+ error_fast:   9.9999999999999995E-007
+ time spent   54.4399986    
+ 
+ loop           6
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.992414534    
+ error_fast:   9.9999999999999995E-007
+ time spent   89.2210007    
+ 
+ loop           8
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.992676735    
+ error_fast:   3.0880994785028849E-006
+ time spent   124.047997    
+ 
+ loop          10
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.991956592    
+ error_fast:   3.0880994785028849E-006
+ time spent   158.850998    
+ 
+ loop          12
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.992332339    
+ error_fast:   5.3454212477615726E-006
+ time spent   193.589005    
+ 
+ loop           2
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.994465470    
+ error_fast:   9.9999999999999995E-007
+ time spent   19.3670006    
+ 
+ loop           4
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.992903769    
+ error_fast:   9.9999999999999995E-007
+ time spent   54.3139992    
+ 
+ loop           6
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.992199242    
+ error_fast:   9.9999999999999995E-007
+ time spent   89.4430008    
+ 
+ loop           2
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.133924097    
+ error_fast:   9.9999999999999995E-007
+ time spent   5.74300003    
+ 
+ loop           4
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.115050413    
+ error_fast:   9.9999999999999995E-007
+ time spent   14.9209995    
+ 
+ loop           2
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.512517214    
+ error_fast:   9.9999999999999995E-007
+ time spent   11.9759998    
+ 
+ loop           4
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.492132694    
+ error_fast:   9.9999999999999995E-007
+ time spent   33.0569992    
+ 
+ loop           6
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.471004516    
+ error_fast:   9.9999999999999995E-007
+ time spent   53.2330017    
+ 
+ loop           8
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.459653676    
+ error_fast:   9.9999999999999995E-007
+ time spent   72.9599991    
+ 
+ loop           2
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.511045516    
+ error_fast:   9.9999999999999995E-007
+ time spent   11.8450003    
+ 
+ loop           4
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.493162096    
+ error_fast:   9.9999999999999995E-007
+ time spent   33.1790009    
+ 
+ loop           6
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.469372332    
+ error_fast:   9.9999999999999995E-007
+ time spent   53.0569992    
+ 
+ loop           8
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.461078405    
+ error_fast:   9.9999999999999995E-007
+ time spent   72.5670013    
+ 
+ loop          10
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.455035061    
+ error_fast:   9.9999999999999995E-007
+ time spent   91.8300018    
+ 
+ loop          12
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452620089    
+ error_fast:   9.9999999999999995E-007
+ time spent   111.109001    
  
  loop          14
- myid           1
- Size:          20
- local_update accept ratio:  0.682706773    
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452717930    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.36800003    
+ time spent   130.490005    
+ 
+ loop          16
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.450839192    
+ error_fast:   9.9999999999999995E-007
+ time spent   149.888000    
  
  loop          18
  myid           0
- Size:          20
- local_update accept ratio:  0.648637235    
+ Size:           8           8
+ local_update accept ratio:  0.452483088    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.42500019    
- 
- loop          16
- myid           1
- Size:          20
- local_update accept ratio:  0.676080823    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.01100016    
+ time spent   169.039993    
  
  loop          20
  myid           0
- Size:          20
- local_update accept ratio:  0.658991218    
+ Size:           8           8
+ local_update accept ratio:  0.449817598    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.05399990    
- 
- loop          18
- myid           1
- Size:          20
- local_update accept ratio:  0.686669827    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.65399981    
+ time spent   188.214005    
  
  loop          22
  myid           0
- Size:          20
- local_update accept ratio:  0.655137837    
+ Size:           8           8
+ local_update accept ratio:  0.450302958    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.67700005    
- 
- loop          20
- myid           1
- Size:          20
- local_update accept ratio:  0.681563258    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.30100012    
+ time spent   207.414993    
  
  loop          24
  myid           0
- Size:          20
- local_update accept ratio:  0.649702370    
+ Size:           8           8
+ local_update accept ratio:  0.451852918    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.30499983    
+ time spent   226.513000    
  
  loop          26
  myid           0
- Size:          20
- local_update accept ratio:  0.654746234    
+ Size:           8           8
+ local_update accept ratio:  0.452604413    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.91699982    
- 
- loop          22
- myid           1
- Size:          20
- local_update accept ratio:  0.683255017    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.93200016    
+ time spent   245.820999    
  
  loop          28
  myid           0
- Size:          20
- local_update accept ratio:  0.656328321    
+ Size:           8           8
+ local_update accept ratio:  0.452209115    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.54199982    
- 
- loop          24
- myid           1
- Size:          20
- local_update accept ratio:  0.682158530    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.57399988    
+ time spent   265.201996    
  
  loop          30
  myid           0
- Size:          20
- local_update accept ratio:  0.663800120    
+ Size:           8           8
+ local_update accept ratio:  0.451136649    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.17700005    
- 
- loop          26
- myid           1
- Size:          20
- local_update accept ratio:  0.694016278    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.23099995    
+ time spent   284.610992    
  
  loop          32
  myid           0
- Size:          20
- local_update accept ratio:  0.657565773    
+ Size:           8           8
+ local_update accept ratio:  0.453187615    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.81599998    
- 
- loop          28
- myid           1
- Size:          20
- local_update accept ratio:  0.692324579    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.89700031    
+ time spent   304.018005    
  
  loop          34
  myid           0
- Size:          20
- local_update accept ratio:  0.653195500    
+ Size:           8           8
+ local_update accept ratio:  0.454338372    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.4870005    
- 
- loop          30
- myid           1
- Size:          20
- local_update accept ratio:  0.695394754    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.60099983    
+ time spent   323.321991    
  
  loop          36
  myid           0
- Size:          20
- local_update accept ratio:  0.657565773    
+ Size:           8           8
+ local_update accept ratio:  0.452479184    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.1459999    
- 
- loop          32
- myid           1
- Size:          20
- local_update accept ratio:  0.685353994    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.2810001    
+ time spent   342.484985    
  
  loop          38
  myid           0
- Size:          20
- local_update accept ratio:  0.664207399    
+ Size:           8           8
+ local_update accept ratio:  0.451766819    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.8129997    
- 
- loop          34
- myid           1
- Size:          20
- local_update accept ratio:  0.691948593    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.9790001    
+ time spent   362.024994    
  
  loop          40
  myid           0
- Size:          20
- local_update accept ratio:  0.659367144    
+ Size:           8           8
+ local_update accept ratio:  0.451344103    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.4560003    
- 
- loop          36
- myid           1
- Size:          20
- local_update accept ratio:  0.679010034    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.6099997    
+ time spent   381.300995    
  
  loop          42
  myid           0
- Size:          20
- local_update accept ratio:  0.662969947    
+ Size:           8           8
+ local_update accept ratio:  0.452952772    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.0749998    
- 
- loop          38
- myid           1
- Size:          20
- local_update accept ratio:  0.694877803    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.2510004    
+ time spent   400.533997    
  
  loop          44
  myid           0
- Size:          20
- local_update accept ratio:  0.660306990    
+ Size:           8           8
+ local_update accept ratio:  0.451081842    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.7089996    
- 
- loop          40
- myid           1
- Size:          20
- local_update accept ratio:  0.691854656    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.9069996    
+ time spent   420.079010    
  
  loop          46
  myid           0
- Size:          20
- local_update accept ratio:  0.664426684    
+ Size:           8           8
+ local_update accept ratio:  0.452557445    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.3459997    
- 
- loop          42
- myid           1
- Size:          20
- local_update accept ratio:  0.694423556    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.6090002    
+ time spent   439.576996    
  
  loop          48
  myid           0
- Size:          20
- local_update accept ratio:  0.652412295    
+ Size:           8           8
+ local_update accept ratio:  0.452984095    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.9960003    
- 
- loop          44
- myid           1
- Size:          20
- local_update accept ratio:  0.696710527    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.2690001    
+ time spent   459.049988    
  
  loop          50
  myid           0
- Size:          20
- local_update accept ratio:  0.650516927    
+ Size:           8           8
+ local_update accept ratio:  0.451418459    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.6680002    
- 
- loop          46
- myid           1
- Size:          20
- local_update accept ratio:  0.697196126    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.9549999    
+ time spent   478.256012    
  
  loop          52
  myid           0
- Size:          20
- local_update accept ratio:  0.659194887    
+ Size:           8           8
+ local_update accept ratio:  0.451383233    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.3479996    
- 
- loop          48
- myid           1
- Size:          20
- local_update accept ratio:  0.702694237    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.6689997    
+ time spent   497.425995    
  
  loop          54
  myid           0
- Size:          20
- local_update accept ratio:  0.659132183    
+ Size:           8           8
+ local_update accept ratio:  0.451128811    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.9750004    
- 
- loop          50
- myid           1
- Size:          20
- local_update accept ratio:  0.688800097    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.3090000    
+ time spent   516.723999    
  
  loop          56
  myid           0
- Size:          20
- local_update accept ratio:  0.656610250    
+ Size:           8           8
+ local_update accept ratio:  0.451872498    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.5949993    
- 
- loop          52
- myid           1
- Size:          20
- local_update accept ratio:  0.690209925    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.9449997    
+ time spent   536.106018    
  
  loop          58
  myid           0
- Size:          20
- local_update accept ratio:  0.658396006    
+ Size:           8           8
+ local_update accept ratio:  0.451340169    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.2600002    
- 
- loop          54
- myid           1
- Size:          20
- local_update accept ratio:  0.685432315    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.6399994    
+ time spent   555.445984    
  
  loop          60
  myid           0
- Size:          20
- local_update accept ratio:  0.657847762    
+ Size:           8           8
+ local_update accept ratio:  0.451665044    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.8950005    
+ time spent   574.870972    
  
- loop          56
- myid           1
- Size:          20
- local_update accept ratio:  0.688220561    
+ loop          62
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452017307    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.2970009    
+ time spent   594.364014    
  
- loop          58
- myid           1
- Size:          20
- local_update accept ratio:  0.684774458    
+ loop          64
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453293294    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.9230003    
+ time spent   613.655029    
  
- loop          60
- myid           1
- Size:          20
- local_update accept ratio:  0.692105234    
+ loop          66
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452549636    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   19.5520000    
+ time spent   633.041016    
+ 
+ loop          68
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452835351    
+ error_fast:   9.9999999999999995E-007
+ time spent   652.473022    
+ 
+ loop          70
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452486992    
+ error_fast:   9.9999999999999995E-007
+ time spent   671.956970    
+ 
+ loop          72
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451731592    
+ error_fast:   9.9999999999999995E-007
+ time spent   691.216980    
+ 
+ loop          74
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451481074    
+ error_fast:   9.9999999999999995E-007
+ time spent   710.703003    
+ 
+ loop          76
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.450929195    
+ error_fast:   9.9999999999999995E-007
+ time spent   730.031982    
+ 
+ loop          78
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451571107    
+ error_fast:   9.9999999999999995E-007
+ time spent   749.546997    
+ 
+ loop          80
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451802045    
+ error_fast:   9.9999999999999995E-007
+ time spent   768.864014    
+ 
+ loop          82
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452087760    
+ error_fast:   9.9999999999999995E-007
+ time spent   788.169983    
+ 
+ loop          84
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453293294    
+ error_fast:   9.9999999999999995E-007
+ time spent   807.497009    
+ 
+ loop          86
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.449406624    
+ error_fast:   9.9999999999999995E-007
+ time spent   826.825989    
+ 
+ loop          88
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452522218    
+ error_fast:   9.9999999999999995E-007
+ time spent   846.291016    
+ 
+ loop          90
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453328520    
+ error_fast:   9.9999999999999995E-007
+ time spent   865.494019    
+ 
+ loop          92
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452941030    
+ error_fast:   9.9999999999999995E-007
+ time spent   884.775024    
+ 
+ loop          94
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452079952    
+ error_fast:   9.9999999999999995E-007
+ time spent   904.085999    
+ 
+ loop          96
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452506572    
+ error_fast:   9.9999999999999995E-007
+ time spent   923.338013    
+ 
+ loop          98
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452659220    
+ error_fast:   9.9999999999999995E-007
+ time spent   942.984985    
+ 
+ loop         100
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452436119    
+ error_fast:   9.9999999999999995E-007
+ time spent   962.283997    
+ 
+ loop         102
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453481168    
+ error_fast:   9.9999999999999995E-007
+ time spent   981.866028    
+ 
+ loop         104
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.450663030    
+ error_fast:   9.9999999999999995E-007
+ time spent   1001.03998    
+ 
+ loop         106
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.449645370    
+ error_fast:   9.9999999999999995E-007
+ time spent   1020.38000    
+ 
+ loop         108
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451708108    
+ error_fast:   9.9999999999999995E-007
+ time spent   1039.84302    
+ 
+ loop         110
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452342182    
+ error_fast:   9.9999999999999995E-007
+ time spent   1059.12903    
+ 
+ loop         112
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451809883    
+ error_fast:   9.9999999999999995E-007
+ time spent   1078.80200    
+ 
+ loop         114
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453735590    
+ error_fast:   9.9999999999999995E-007
+ time spent   1098.14197    
+ 
+ loop         116
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451986015    
+ error_fast:   9.9999999999999995E-007
+ time spent   1117.31104    
+ 
+ loop         118
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452772737    
+ error_fast:   9.9999999999999995E-007
+ time spent   1136.47498    
+ 
+ loop         120
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452162147    
+ error_fast:   9.9999999999999995E-007
+ time spent   1155.87195    
+ 
+ loop         122
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451892078    
+ error_fast:   9.9999999999999995E-007
+ time spent   1175.19897    
+ 
+ loop         124
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451426297    
+ error_fast:   9.9999999999999995E-007
+ time spent   1194.48401    
+ 
+ loop         126
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452964514    
+ error_fast:   9.9999999999999995E-007
+ time spent   1213.72205    
+ 
+ loop         128
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453332454    
+ error_fast:   9.9999999999999995E-007
+ time spent   1233.08398    
+ 
+ loop         130
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452933222    
+ error_fast:   9.9999999999999995E-007
+ time spent   1252.44995    
+ 
+ loop         132
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452760994    
+ error_fast:   9.9999999999999995E-007
+ time spent   1271.80200    
+ 
+ loop         134
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452001661    
+ error_fast:   9.9999999999999995E-007
+ time spent   1291.08899    
+ 
+ loop         136
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453128904    
+ error_fast:   9.9999999999999995E-007
+ time spent   1310.36304    
+ 
+ loop         138
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452663153    
+ error_fast:   9.9999999999999995E-007
+ time spent   1329.80200    
+ 
+ loop         140
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451485008    
+ error_fast:   9.9999999999999995E-007
+ time spent   1349.07202    
+ 
+ loop         142
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451719850    
+ error_fast:   9.9999999999999995E-007
+ time spent   1368.37305    
+ 
+ loop         144
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452612251    
+ error_fast:   9.9999999999999995E-007
+ time spent   1387.92395    
+ 
+ loop         146
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451512396    
+ error_fast:   9.9999999999999995E-007
+ time spent   1407.31396    
+ 
+ loop         148
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452064276    
+ error_fast:   9.9999999999999995E-007
+ time spent   1426.81494    
+ 
+ loop         150
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451618075    
+ error_fast:   9.9999999999999995E-007
+ time spent   1446.30505    
+ 
+ loop         152
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451950788    
+ error_fast:   9.9999999999999995E-007
+ time spent   1465.61206    
+ 
+ loop         154
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452201277    
+ error_fast:   9.9999999999999995E-007
+ time spent   1485.16602    
+ 
+ loop         156
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452486992    
+ error_fast:   9.9999999999999995E-007
+ time spent   1504.57397    
+ 
+ loop         158
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452389151    
+ error_fast:   9.9999999999999995E-007
+ time spent   1524.00806    
+ 
+ loop         160
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453105420    
+ error_fast:   9.9999999999999995E-007
+ time spent   1543.38196    
+ 
+ loop         162
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451892078    
+ error_fast:   9.9999999999999995E-007
+ time spent   1562.71899    
+ 
+ loop         164
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453727782    
+ error_fast:   9.9999999999999995E-007
+ time spent   1581.91602    
+ 
+ loop         166
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453563362    
+ error_fast:   9.9999999999999995E-007
+ time spent   1601.21594    
+ 
+ loop         168
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.450976163    
+ error_fast:   9.9999999999999995E-007
+ time spent   1620.73596    
+ 
+ loop         170
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451473266    
+ error_fast:   9.9999999999999995E-007
+ time spent   1639.95703    
+ 
+ loop         172
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453234583    
+ error_fast:   9.9999999999999995E-007
+ time spent   1659.45801    
+ 
+ loop         174
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451805949    
+ error_fast:   9.9999999999999995E-007
+ time spent   1678.75305    
+ 
+ loop         176
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.450792223    
+ error_fast:   9.9999999999999995E-007
+ time spent   1698.02100    
+ 
+ loop         178
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452126920    
+ error_fast:   9.9999999999999995E-007
+ time spent   1717.38599    
+ 
+ loop         180
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452040792    
+ error_fast:   9.9999999999999995E-007
+ time spent   1737.07605    
+ 
+ loop         182
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452166051    
+ error_fast:   9.9999999999999995E-007
+ time spent   1756.62500    
+ 
+ loop         184
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452318698    
+ error_fast:   9.9999999999999995E-007
+ time spent   1775.92798    
+ 
+ loop         186
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452557445    
+ error_fast:   9.9999999999999995E-007
+ time spent   1795.25500    
+ 
+ loop         188
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453739524    
+ error_fast:   9.9999999999999995E-007
+ time spent   1814.64600    
+ 
+ loop         190
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452533960    
+ error_fast:   9.9999999999999995E-007
+ time spent   1834.26294    
+ 
+ loop         192
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452111244    
+ error_fast:   9.9999999999999995E-007
+ time spent   1853.66101    
+ 
+ loop         194
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451539785    
+ error_fast:   9.9999999999999995E-007
+ time spent   1872.95203    
+ 
+ loop         196
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453062385    
+ error_fast:   9.9999999999999995E-007
+ time spent   1892.40002    
+ 
+ loop         198
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451993823    
+ error_fast:   9.9999999999999995E-007
+ time spent   1911.61096    
+ 
+ loop         200
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453234583    
+ error_fast:   9.9999999999999995E-007
+ time spent   1931.04297    
+ 
+ loop         202
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.453629911    
+ error_fast:   9.9999999999999995E-007
+ time spent   1950.54395    
+ 
+ loop         204
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451011389    
+ error_fast:   9.9999999999999995E-007
+ time spent   1969.88403    
+ 
+ loop         206
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451430202    
+ error_fast:   9.9999999999999995E-007
+ time spent   1989.22095    
+ 
+ loop         208
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451813787    
+ error_fast:   9.9999999999999995E-007
+ time spent   2008.37598    
+ 
+ loop         210
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451774657    
+ error_fast:   9.9999999999999995E-007
+ time spent   2027.95605    
+ 
+ loop         212
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.450776547    
+ error_fast:   9.9999999999999995E-007
+ time spent   2047.38501    
+ 
+ loop         214
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451700270    
+ error_fast:   9.9999999999999995E-007
+ time spent   2066.79102    
+ 
+ loop         216
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.449931115    
+ error_fast:   9.9999999999999995E-007
+ time spent   2085.97705    
+ 
+ loop         218
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.452306956    
+ error_fast:   9.9999999999999995E-007
+ time spent   2105.25098    
+ 
+ loop         220
+ myid           0
+ Size:           8           8
+ local_update accept ratio:  0.451731592    
+ error_fast:   9.9999999999999995E-007
+ time spent   2124.67310    
  
  loop           2
  myid           0
- Size:          20
- local_update accept ratio:  0.591071427    
+ Size:           8           8
+ local_update accept ratio:  0.513581872    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.432000011    
+ time spent   11.6899996    
  
  loop           4
  myid           0
- Size:          20
- local_update accept ratio:  0.607847750    
+ Size:           8           8
+ local_update accept ratio:  0.493079901    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.986999989    
- 
- loop           2
- myid           1
- Size:          20
- local_update accept ratio:  0.631171703    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.463000000    
+ time spent   32.5279999    
  
  loop           6
  myid           0
- Size:          20
- local_update accept ratio:  0.621224940    
+ Size:           8           8
+ local_update accept ratio:  0.470053375    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.57200003    
- 
- loop           4
- myid           1
- Size:          20
- local_update accept ratio:  0.641087115    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.12300003    
+ time spent   52.2739983    
  
  loop           8
  myid           0
- Size:          20
- local_update accept ratio:  0.623229921    
+ Size:           8           8
+ local_update accept ratio:  0.459454060    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.23699999    
- 
- loop           6
- myid           1
- Size:          20
- local_update accept ratio:  0.633442998    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.73399997    
+ time spent   71.8040009    
  
  loop          10
  myid           0
- Size:          20
- local_update accept ratio:  0.628038824    
+ Size:           8           8
+ local_update accept ratio:  0.454855025    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.83699989    
- 
- loop           8
- myid           1
- Size:          20
- local_update accept ratio:  0.653681099    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.36500001    
- 
- loop          12
- myid           0
- Size:          20
- local_update accept ratio:  0.630639076    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.45499992    
- 
- loop          10
- myid           1
- Size:          20
- local_update accept ratio:  0.671412885    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.96499991    
- 
- loop          14
- myid           0
- Size:          20
- local_update accept ratio:  0.642308891    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.04300022    
- 
- loop          12
- myid           1
- Size:          20
- local_update accept ratio:  0.680122197    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.61599994    
- 
- loop          16
- myid           0
- Size:          20
- local_update accept ratio:  0.654855907    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.68400002    
- 
- loop          14
- myid           1
- Size:          20
- local_update accept ratio:  0.680482447    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.24499989    
- 
- loop          18
- myid           0
- Size:          20
- local_update accept ratio:  0.640789449    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.29400015    
- 
- loop          16
- myid           1
- Size:          20
- local_update accept ratio:  0.679542601    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.98199987    
- 
- loop          20
- myid           0
- Size:          20
- local_update accept ratio:  0.653273821    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.01800013    
- 
- loop          18
- myid           1
- Size:          20
- local_update accept ratio:  0.673590243    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.61700010    
- 
- loop          22
- myid           0
- Size:          20
- local_update accept ratio:  0.654902875    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.64799976    
- 
- loop          20
- myid           1
- Size:          20
- local_update accept ratio:  0.691791952    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.30600023    
- 
- loop          24
- myid           0
- Size:          20
- local_update accept ratio:  0.652114689    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.32600021    
- 
- loop          22
- myid           1
- Size:          20
- local_update accept ratio:  0.687092721    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.96799994    
- 
- loop          26
- myid           0
- Size:          20
- local_update accept ratio:  0.655780077    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.96799994    
- 
- loop          28
- myid           0
- Size:          20
- local_update accept ratio:  0.649514437    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.58300018    
- 
- loop          24
- myid           1
- Size:          20
- local_update accept ratio:  0.691698015    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.60300016    
- 
- loop          30
- myid           0
- Size:          20
- local_update accept ratio:  0.657659769    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.19200039    
- 
- loop          26
- myid           1
- Size:          20
- local_update accept ratio:  0.686528802    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.22099972    
- 
- loop          32
- myid           0
- Size:          20
- local_update accept ratio:  0.664395392    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.80599976    
- 
- loop          28
- myid           1
- Size:          20
- local_update accept ratio:  0.694564521    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.85700035    
- 
- loop          34
- myid           0
- Size:          20
- local_update accept ratio:  0.667951107    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.4309998    
- 
- loop          30
- myid           1
- Size:          20
- local_update accept ratio:  0.678790748    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.47599983    
- 
- loop          36
- myid           0
- Size:          20
- local_update accept ratio:  0.652694225    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.0590000    
- 
- loop          32
- myid           1
- Size:          20
- local_update accept ratio:  0.693452358    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.1230001    
- 
- loop          38
- myid           0
- Size:          20
- local_update accept ratio:  0.660698593    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.6700001    
- 
- loop          34
- myid           1
- Size:          20
- local_update accept ratio:  0.689144731    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.7550001    
- 
- loop          40
- myid           0
- Size:          20
- local_update accept ratio:  0.662938595    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.3710003    
- 
- loop          36
- myid           1
- Size:          20
- local_update accept ratio:  0.690883458    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.4610004    
- 
- loop          42
- myid           0
- Size:          20
- local_update accept ratio:  0.657800734    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.9700003    
- 
- loop          38
- myid           1
- Size:          20
- local_update accept ratio:  0.699749351    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.0790005    
- 
- loop          44
- myid           0
- Size:          20
- local_update accept ratio:  0.659837067    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.6040001    
- 
- loop          40
- myid           1
- Size:          20
- local_update accept ratio:  0.684116542    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.7240000    
- 
- loop          46
- myid           0
- Size:          20
- local_update accept ratio:  0.666275084    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.2069998    
- 
- loop          42
- myid           1
- Size:          20
- local_update accept ratio:  0.693295717    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.3409996    
- 
- loop          48
- myid           0
- Size:          20
- local_update accept ratio:  0.654699266    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.8490000    
- 
- loop          44
- myid           1
- Size:          20
- local_update accept ratio:  0.700924158    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.0139999    
- 
- loop          50
- myid           0
- Size:          20
- local_update accept ratio:  0.656328321    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.4670000    
- 
- loop          46
- myid           1
- Size:          20
- local_update accept ratio:  0.699075818    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.6590004    
- 
- loop          52
- myid           0
- Size:          20
- local_update accept ratio:  0.656516314    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.0779991    
- 
- loop          48
- myid           1
- Size:          20
- local_update accept ratio:  0.686403513    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.2700005    
- 
- loop          54
- myid           0
- Size:          20
- local_update accept ratio:  0.661622822    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.6779995    
- 
- loop          50
- myid           1
- Size:          20
- local_update accept ratio:  0.701112151    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.9080000    
- 
- loop          56
- myid           0
- Size:          20
- local_update accept ratio:  0.654777586    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.2929993    
- 
- loop          52
- myid           1
- Size:          20
- local_update accept ratio:  0.689332724    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.5200005    
- 
- loop          58
- myid           0
- Size:          20
- local_update accept ratio:  0.658850253    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.9150009    
- 
- loop          54
- myid           1
- Size:          20
- local_update accept ratio:  0.697399735    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.1849995    
- 
- loop          60
- myid           0
- Size:          20
- local_update accept ratio:  0.656109035    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.5580006    
- 
- loop          56
- myid           1
- Size:          20
- local_update accept ratio:  0.695551395    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.8680000    
- 
- loop          58
- myid           1
- Size:          20
- local_update accept ratio:  0.700062633    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.4799995    
- 
- loop          60
- myid           1
- Size:          20
- local_update accept ratio:  0.698355258    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   19.0860004    
+ time spent   91.0169983    
  
  loop           2
  myid           0
- Size:          20
- local_update accept ratio:  0.570989966    
+ Size:           8           8
+ local_update accept ratio:  0.514020205    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.430000007    
- 
- loop           4
- myid           0
- Size:          20
- local_update accept ratio:  0.606140375    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.00500000    
- 
- loop           2
- myid           1
- Size:          20
- local_update accept ratio:  0.625532568    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.460999995    
- 
- loop           6
- myid           0
- Size:          20
- local_update accept ratio:  0.612437367    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.59300005    
- 
- loop           4
- myid           1
- Size:          20
- local_update accept ratio:  0.628759384    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.05999994    
- 
- loop           8
- myid           0
- Size:          20
- local_update accept ratio:  0.622368395    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.19099998    
- 
- loop           6
- myid           1
- Size:          20
- local_update accept ratio:  0.651002526    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.67200005    
- 
- loop          10
- myid           0
- Size:          20
- local_update accept ratio:  0.624232471    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.79699993    
- 
- loop           8
- myid           1
- Size:          20
- local_update accept ratio:  0.663815796    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.25999999    
- 
- loop          12
- myid           0
- Size:          20
- local_update accept ratio:  0.641040087    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.38899994    
- 
- loop          10
- myid           1
- Size:          20
- local_update accept ratio:  0.684351504    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.86199999    
- 
- loop          14
- myid           0
- Size:          20
- local_update accept ratio:  0.635025084    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.97199988    
- 
- loop          12
- myid           1
- Size:          20
- local_update accept ratio:  0.671741843    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.47799993    
- 
- loop          16
- myid           0
- Size:          20
- local_update accept ratio:  0.644063294    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.58400011    
- 
- loop          14
- myid           1
- Size:          20
- local_update accept ratio:  0.672023833    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.14499998    
- 
- loop          18
- myid           0
- Size:          20
- local_update accept ratio:  0.645347774    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.24800014    
- 
- loop          16
- myid           1
- Size:          20
- local_update accept ratio:  0.684821427    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.76700020    
- 
- loop          20
- myid           0
- Size:          20
- local_update accept ratio:  0.655968070    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.86299992    
- 
- loop          18
- myid           1
- Size:          20
- local_update accept ratio:  0.681939244    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.40600014    
- 
- loop          22
- myid           0
- Size:          20
- local_update accept ratio:  0.640413523    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.48400021    
- 
- loop          20
- myid           1
- Size:          20
- local_update accept ratio:  0.689066410    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.01499987    
- 
- loop          24
- myid           0
- Size:          20
- local_update accept ratio:  0.660620272    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.09000015    
- 
- loop          22
- myid           1
- Size:          20
- local_update accept ratio:  0.686043262    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.63000011    
- 
- loop          26
- myid           0
- Size:          20
- local_update accept ratio:  0.653822064    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.70100021    
- 
- loop          24
- myid           1
- Size:          20
- local_update accept ratio:  0.682753742    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.24800014    
- 
- loop          28
- myid           0
- Size:          20
- local_update accept ratio:  0.656187356    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.31299973    
- 
- loop          26
- myid           1
- Size:          20
- local_update accept ratio:  0.695065796    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.88899994    
- 
- loop          30
- myid           0
- Size:          20
- local_update accept ratio:  0.663862765    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.94799995    
- 
- loop          28
- myid           1
- Size:          20
- local_update accept ratio:  0.687280715    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.52700043    
- 
- loop          32
- myid           0
- Size:          20
- local_update accept ratio:  0.661575794    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.59399986    
- 
- loop          30
- myid           1
- Size:          20
- local_update accept ratio:  0.689786971    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.19299984    
- 
- loop          34
- myid           0
- Size:          20
- local_update accept ratio:  0.658067048    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.2410002    
- 
- loop          32
- myid           1
- Size:          20
- local_update accept ratio:  0.698261261    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.81000042    
- 
- loop          36
- myid           0
- Size:          20
- local_update accept ratio:  0.663189232    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.8520002    
- 
- loop          34
- myid           1
- Size:          20
- local_update accept ratio:  0.691635311    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.5109997    
- 
- loop          38
- myid           0
- Size:          20
- local_update accept ratio:  0.676644742    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.5550003    
- 
- loop          36
- myid           1
- Size:          20
- local_update accept ratio:  0.698417902    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.1269999    
- 
- loop          40
- myid           0
- Size:          20
- local_update accept ratio:  0.668781340    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.1660004    
- 
- loop          38
- myid           1
- Size:          20
- local_update accept ratio:  0.692888498    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.7799997    
- 
- loop          42
- myid           0
- Size:          20
- local_update accept ratio:  0.657691121    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.8129997    
- 
- loop          40
- myid           1
- Size:          20
- local_update accept ratio:  0.693546355    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
  time spent   12.4090004    
  
- loop          44
- myid           0
- Size:          20
- local_update accept ratio:  0.659680426    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.4480000    
- 
- loop          42
- myid           1
- Size:          20
- local_update accept ratio:  0.689160407    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.0880003    
- 
- loop          46
- myid           0
- Size:          20
- local_update accept ratio:  0.660808265    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.1190004    
- 
- loop          44
- myid           1
- Size:          20
- local_update accept ratio:  0.695582688    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.7449999    
- 
- loop          48
- myid           0
- Size:          20
- local_update accept ratio:  0.668781340    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.7639999    
- 
- loop          46
- myid           1
- Size:          20
- local_update accept ratio:  0.686732471    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.4040003    
- 
- loop          50
- myid           0
- Size:          20
- local_update accept ratio:  0.661372185    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.4160004    
- 
- loop          48
- myid           1
- Size:          20
- local_update accept ratio:  0.694642842    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.0100002    
- 
- loop          52
- myid           0
- Size:          20
- local_update accept ratio:  0.664223075    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.0179996    
- 
- loop          50
- myid           1
- Size:          20
- local_update accept ratio:  0.690100253    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.6420002    
- 
- loop          54
- myid           0
- Size:          20
- local_update accept ratio:  0.662797630    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.6529999    
- 
- loop          52
- myid           1
- Size:          20
- local_update accept ratio:  0.692355871    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.2549992    
- 
- loop          56
- myid           0
- Size:          20
- local_update accept ratio:  0.658693612    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.2570000    
- 
- loop          54
- myid           1
- Size:          20
- local_update accept ratio:  0.690538824    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.8640003    
- 
- loop          58
- myid           0
- Size:          20
- local_update accept ratio:  0.671694875    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.8649998    
- 
- loop          56
- myid           1
- Size:          20
- local_update accept ratio:  0.695520043    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.4950008    
- 
- loop          60
- myid           0
- Size:          20
- local_update accept ratio:  0.665867805    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.4979992    
- 
- loop          58
- myid           1
- Size:          20
- local_update accept ratio:  0.692716181    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.1690006    
- 
- loop          60
- myid           1
- Size:          20
- local_update accept ratio:  0.697947979    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.7679996    
- 
- loop          20
- myid           0
- Size:          20
- local_update accept ratio:  0.630207121    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.05299997    
- 
- loop          20
- myid           1
- Size:          20
- local_update accept ratio:  0.663464606    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.50099993    
- 
- loop          20
- myid           2
- Size:          20
- local_update accept ratio:  0.685443878    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.78900003    
- 
- loop          20
- myid           3
- Size:          20
- local_update accept ratio:  0.703639030    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.05299997    
- 
- loop          40
- myid           1
- Size:          20
- local_update accept ratio:  0.688480556    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.4790001    
- 
- loop          40
- myid           0
- Size:          20
- local_update accept ratio:  0.658261299    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.7779999    
- 
- loop          40
- myid           2
- Size:          20
- local_update accept ratio:  0.712067664    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.0389996    
- 
- loop          40
- myid           3
- Size:          20
- local_update accept ratio:  0.730339885    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.3360004    
- 
- loop          60
- myid           1
- Size:          20
- local_update accept ratio:  0.693280101    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   21.0289993    
- 
- loop          60
- myid           0
- Size:          20
- local_update accept ratio:  0.661574244    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   22.7789993    
- 
- loop          60
- myid           2
- Size:          20
- local_update accept ratio:  0.710722089    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   21.0720005    
- 
- loop          60
- myid           3
- Size:          20
- local_update accept ratio:  0.727877498    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   22.2910004    
- 
- loop          80
- myid           0
- Size:          20
- local_update accept ratio:  0.661038518    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   29.0510006    
- 
- loop          80
- myid           2
- Size:          20
- local_update accept ratio:  0.716052651    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   27.8069992    
- 
- loop          80
- myid           1
- Size:          20
- local_update accept ratio:  0.693029463    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   29.7409992    
- 
- loop          80
- myid           3
- Size:          20
- local_update accept ratio:  0.728870630    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   30.8299999    
- 
- loop         100
- myid           0
- Size:          20
- local_update accept ratio:  0.665838003    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   36.4959984    
- 
- loop         100
- myid           2
- Size:          20
- local_update accept ratio:  0.714091480    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   34.6279984    
- 
- loop         100
- myid           1
- Size:          20
- local_update accept ratio:  0.692291677    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   37.5219994    
- 
- loop         100
- myid           3
- Size:          20
- local_update accept ratio:  0.732218027    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   38.1559982    
- 
- loop         120
- myid           0
- Size:          20
- local_update accept ratio:  0.663016915    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   43.9000015    
- 
- loop         120
- myid           2
- Size:          20
- local_update accept ratio:  0.715018809    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   42.3230019    
- 
- loop         120
- myid           1
- Size:          20
- local_update accept ratio:  0.692877531    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   45.0660019    
- 
- loop         120
- myid           3
- Size:          20
- local_update accept ratio:  0.729483068    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   46.0730019    
- 
- loop         140
- myid           0
- Size:          20
- local_update accept ratio:  0.664580226    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   50.8559990    
- 
- loop         140
- myid           2
- Size:          20
- local_update accept ratio:  0.713416338    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   49.5499992    
- 
- loop         140
- myid           1
- Size:          20
- local_update accept ratio:  0.690391600    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   52.2840004    
- 
- loop         140
- myid           3
- Size:          20
- local_update accept ratio:  0.729006886    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   53.9640007    
- 
- loop         160
- myid           0
- Size:          20
- local_update accept ratio:  0.664534748    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   58.5639992    
- 
- loop         160
- myid           2
- Size:          20
- local_update accept ratio:  0.712323010    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   56.7229996    
- 
- loop         160
- myid           1
- Size:          20
- local_update accept ratio:  0.692025363    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   59.4500008    
- 
- loop         180
- myid           0
- Size:          20
- local_update accept ratio:  0.662474930    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   65.1169968    
- 
- loop         160
- myid           3
- Size:          20
- local_update accept ratio:  0.728170455    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   62.5159988    
- 
- loop         180
- myid           2
- Size:          20
- local_update accept ratio:  0.712528169    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   65.1159973    
- 
- loop         180
- myid           1
- Size:          20
- local_update accept ratio:  0.691857755    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   66.3499985    
- 
- loop         200
- myid           0
- Size:          20
- local_update accept ratio:  0.660297632    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   72.1809998    
- 
- loop         180
- myid           3
- Size:          20
- local_update accept ratio:  0.728723347    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   70.0260010    
- 
- loop         200
- myid           1
- Size:          20
- local_update accept ratio:  0.688327074    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   73.1719971    
- 
- loop         200
- myid           2
- Size:          20
- local_update accept ratio:  0.712006569    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   72.7060013    
- 
- loop         220
- myid           0
- Size:          20
- local_update accept ratio:  0.661271930    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   78.6650009    
- 
- loop         200
- myid           3
- Size:          20
- local_update accept ratio:  0.729638159    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   78.4169998    
- 
- loop         220
- myid           1
- Size:          20
- local_update accept ratio:  0.693608999    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   81.1470032    
- 
- loop         220
- myid           2
- Size:          20
- local_update accept ratio:  0.712099016    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   80.2949982    
- 
- loop         240
- myid           0
- Size:          20
- local_update accept ratio:  0.664774418    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   85.2020035    
- 
- loop         220
- myid           3
- Size:          20
- local_update accept ratio:  0.728090525    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   86.9390030    
- 
- loop         240
- myid           2
- Size:          20
- local_update accept ratio:  0.716632187    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   87.9929962    
- 
- loop         240
- myid           1
- Size:          20
- local_update accept ratio:  0.693007529    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   89.8369980    
- 
- loop         260
- myid           0
- Size:          20
- local_update accept ratio:  0.661693275    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   91.5940018    
- 
- loop         260
- myid           2
- Size:          20
- local_update accept ratio:  0.710817695    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   95.5090027    
- 
- loop         240
- myid           3
- Size:          20
- local_update accept ratio:  0.732642531    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   95.3209991    
- 
- loop         280
- myid           0
- Size:          20
- local_update accept ratio:  0.660634398    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   98.7129974    
- 
- loop         260
- myid           1
- Size:          20
- local_update accept ratio:  0.692924500    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   97.7149963    
- 
- loop         280
- myid           2
- Size:          20
- local_update accept ratio:  0.713078022    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   103.431999    
- 
- loop         260
- myid           3
- Size:          20
- local_update accept ratio:  0.730812967    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   102.731003    
- 
- loop         300
- myid           0
- Size:          20
- local_update accept ratio:  0.664826155    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   106.252998    
- 
- loop         280
- myid           1
- Size:          20
- local_update accept ratio:  0.691405058    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   105.543999    
- 
- loop         300
- myid           2
- Size:          20
- local_update accept ratio:  0.710476220    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   110.773003    
- 
- loop         280
- myid           3
- Size:          20
- local_update accept ratio:  0.727542281    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   110.264000    
- 
- loop         300
- myid           1
- Size:          20
- local_update accept ratio:  0.690418243    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   113.126999    
- 
- loop         300
- myid           3
- Size:          20
- local_update accept ratio:  0.730302334    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   116.464996    
- 
  loop           2
  myid           0
- Size:          20
- local_update accept ratio:  0.592857122    
+ Size:           8           8
+ local_update accept ratio:  0.516321719    
  error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.81500006    
- 
- loop           4
- myid           0
- Size:          20
- local_update accept ratio:  0.602725565    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.14200020    
- 
- loop           6
- myid           0
- Size:          20
- local_update accept ratio:  0.641369045    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.40900040    
- 
- loop           8
- myid           0
- Size:          20
- local_update accept ratio:  0.635776937    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.8070002    
- 
- loop          10
- myid           0
- Size:          20
- local_update accept ratio:  0.638157904    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.1510000    
- 
- loop          12
- myid           0
- Size:          20
- local_update accept ratio:  0.635651648    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.6739998    
- 
- loop          14
- myid           0
- Size:          20
- local_update accept ratio:  0.653571427    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   21.9139996    
- 
- loop          16
- myid           0
- Size:          20
- local_update accept ratio:  0.662719309    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   25.8670006    
- 
- loop          18
- myid           0
- Size:          20
- local_update accept ratio:  0.666838944    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   29.0779991    
- 
- loop           2
- myid           0
- Size:          20
- local_update accept ratio:  0.609429836    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent  0.470999986    
- 
- loop           4
- myid           0
- Size:          20
- local_update accept ratio:  0.608129680    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.04600000    
- 
- loop           6
- myid           0
- Size:          20
- local_update accept ratio:  0.634633482    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   1.62500000    
- 
- loop           8
- myid           0
- Size:          20
- local_update accept ratio:  0.648214281    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.21399999    
- 
- loop          10
- myid           0
- Size:          20
- local_update accept ratio:  0.645802021    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   2.79699993    
- 
- loop          12
- myid           0
- Size:          20
- local_update accept ratio:  0.660980582    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.38599992    
- 
- loop          14
- myid           0
- Size:          20
- local_update accept ratio:  0.645222425    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   3.96900010    
- 
- loop          16
- myid           0
- Size:          20
- local_update accept ratio:  0.660792589    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   4.56099987    
- 
- loop          18
- myid           0
- Size:          20
- local_update accept ratio:  0.658677936    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.15299988    
- 
- loop          20
- myid           0
- Size:          20
- local_update accept ratio:  0.667982459    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   5.75000000    
- 
- loop          22
- myid           0
- Size:          20
- local_update accept ratio:  0.670770705    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.34800005    
- 
- loop          24
- myid           0
- Size:          20
- local_update accept ratio:  0.672556400    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   6.94500017    
- 
- loop          26
- myid           0
- Size:          20
- local_update accept ratio:  0.665209889    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   7.53700018    
- 
- loop          28
- myid           0
- Size:          20
- local_update accept ratio:  0.677083313    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.13899994    
- 
- loop          30
- myid           0
- Size:          20
- local_update accept ratio:  0.664066434    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   8.73099995    
- 
- loop          32
- myid           0
- Size:          20
- local_update accept ratio:  0.679025710    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.33699989    
- 
- loop          34
- myid           0
- Size:          20
- local_update accept ratio:  0.675579548    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   9.93999958    
- 
- loop          36
- myid           0
- Size:          20
- local_update accept ratio:  0.668295741    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   10.5360003    
- 
- loop          38
- myid           0
- Size:          20
- local_update accept ratio:  0.674530089    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.1459999    
- 
- loop          40
- myid           0
- Size:          20
- local_update accept ratio:  0.679667890    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   11.7539997    
- 
- loop          42
- myid           0
- Size:          20
- local_update accept ratio:  0.680357158    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.3590002    
- 
- loop          44
- myid           0
- Size:          20
- local_update accept ratio:  0.676785707    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   12.9600000    
- 
- loop          46
- myid           0
- Size:          20
- local_update accept ratio:  0.680090845    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   13.5740004    
- 
- loop          48
- myid           0
- Size:          20
- local_update accept ratio:  0.681328297    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.1759996    
- 
- loop          50
- myid           0
- Size:          20
- local_update accept ratio:  0.688643456    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   14.7819996    
- 
- loop          52
- myid           0
- Size:          20
- local_update accept ratio:  0.667669177    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.3739996    
- 
- loop          54
- myid           0
- Size:          20
- local_update accept ratio:  0.688753128    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   15.9829998    
- 
- loop          56
- myid           0
- Size:          20
- local_update accept ratio:  0.678759396    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   16.5939999    
- 
- loop          58
- myid           0
- Size:          20
- local_update accept ratio:  0.673919201    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.1959991    
- 
- loop          60
- myid           0
- Size:          20
- local_update accept ratio:  0.672869682    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   17.7989998    
- 
- loop          62
- myid           0
- Size:          20
- local_update accept ratio:  0.683427334    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   18.4039993    
- 
- loop          64
- myid           0
- Size:          20
- local_update accept ratio:  0.687061429    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   19.0079994    
- 
- loop          66
- myid           0
- Size:          20
- local_update accept ratio:  0.676347136    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   19.6040001    
- 
- loop          68
- myid           0
- Size:          20
- local_update accept ratio:  0.674592733    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   20.2029991    
- 
- loop          70
- myid           0
- Size:          20
- local_update accept ratio:  0.688831449    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   20.8090000    
- 
- loop          72
- myid           0
- Size:          20
- local_update accept ratio:  0.684617817    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   21.4109993    
- 
- loop          74
- myid           0
- Size:          20
- local_update accept ratio:  0.682706773    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   22.0189991    
- 
- loop          76
- myid           0
- Size:          20
- local_update accept ratio:  0.680827081    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   22.6289997    
- 
- loop          78
- myid           0
- Size:          20
- local_update accept ratio:  0.681704283    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   23.2320004    
- 
- loop          80
- myid           0
- Size:          20
- local_update accept ratio:  0.673856497    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   23.8309994    
- 
- loop          82
- myid           0
- Size:          20
- local_update accept ratio:  0.686434865    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   24.4319992    
- 
- loop          84
- myid           0
- Size:          20
- local_update accept ratio:  0.676895380    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   25.0330009    
- 
- loop          86
- myid           0
- Size:          20
- local_update accept ratio:  0.672619045    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   25.6299992    
- 
- loop          88
- myid           0
- Size:          20
- local_update accept ratio:  0.679229319    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   26.2320004    
- 
- loop          90
- myid           0
- Size:          20
- local_update accept ratio:  0.675375938    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   26.8400002    
- 
- loop          92
- myid           0
- Size:          20
- local_update accept ratio:  0.670473039    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   27.4370003    
- 
- loop          94
- myid           0
- Size:          20
- local_update accept ratio:  0.664677322    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   28.0370007    
- 
- loop          96
- myid           0
- Size:          20
- local_update accept ratio:  0.678336442    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   28.6380005    
- 
- loop          98
- myid           0
- Size:          20
- local_update accept ratio:  0.683067024    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   29.2439995    
- 
- loop         100
- myid           0
- Size:          20
- local_update accept ratio:  0.680733085    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   29.8449993    
- 
- loop         102
- myid           0
- Size:          20
- local_update accept ratio:  0.679902911    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   30.4489994    
- 
- loop         104
- myid           0
- Size:          20
- local_update accept ratio:  0.673809528    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   31.0499992    
- 
- loop         106
- myid           0
- Size:          20
- local_update accept ratio:  0.669110298    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   31.6469994    
- 
- loop         108
- myid           0
- Size:          20
- local_update accept ratio:  0.681954861    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   32.2599983    
- 
- loop         110
- myid           0
- Size:          20
- local_update accept ratio:  0.677991867    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   32.8629990    
- 
- loop         112
- myid           0
- Size:          20
- local_update accept ratio:  0.675877213    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   33.4669991    
- 
- loop         114
- myid           0
- Size:          20
- local_update accept ratio:  0.683020055    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   34.0760002    
- 
- loop         116
- myid           0
- Size:          20
- local_update accept ratio:  0.680905402    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   34.6879997    
- 
- loop         118
- myid           0
- Size:          20
- local_update accept ratio:  0.672211766    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   35.2869987    
- 
- loop         120
- myid           0
- Size:          20
- local_update accept ratio:  0.681939244    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   35.8930016    
- 
- loop         122
- myid           0
- Size:          20
- local_update accept ratio:  0.673715532    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   36.4949989    
- 
- loop         124
- myid           0
- Size:          20
- local_update accept ratio:  0.674608409    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   37.0940018    
- 
- loop         126
- myid           0
- Size:          20
- local_update accept ratio:  0.672211766    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   37.6910019    
- 
- loop         128
- myid           0
- Size:          20
- local_update accept ratio:  0.670629680    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   38.2859993    
- 
- loop         130
- myid           0
- Size:          20
- local_update accept ratio:  0.681563258    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   38.8909988    
- 
- loop         132
- myid           0
- Size:          20
- local_update accept ratio:  0.674812019    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   39.4949989    
- 
- loop         134
- myid           0
- Size:          20
- local_update accept ratio:  0.684288859    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   40.1010017    
- 
- loop         136
- myid           0
- Size:          20
- local_update accept ratio:  0.671835840    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   40.7019997    
- 
- loop         138
- myid           0
- Size:          20
- local_update accept ratio:  0.670614064    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   41.2999992    
- 
- loop         140
- myid           0
- Size:          20
- local_update accept ratio:  0.672180474    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   41.9010010    
- 
- loop         142
- myid           0
- Size:          20
- local_update accept ratio:  0.681625962    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   42.5029984    
- 
- loop         144
- myid           0
- Size:          20
- local_update accept ratio:  0.681719899    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   43.1170006    
- 
- loop         146
- myid           0
- Size:          20
- local_update accept ratio:  0.682691097    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   43.7210007    
- 
- loop         148
- myid           0
- Size:          20
- local_update accept ratio:  0.665836453    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   44.3160019    
- 
- loop         150
- myid           0
- Size:          20
- local_update accept ratio:  0.672023833    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   44.9169998    
- 
- loop         152
- myid           0
- Size:          20
- local_update accept ratio:  0.674780726    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   45.5169983    
- 
- loop         154
- myid           0
- Size:          20
- local_update accept ratio:  0.676253140    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   46.1199989    
- 
- loop         156
- myid           0
- Size:          20
- local_update accept ratio:  0.674185455    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   46.7239990    
- 
- loop         158
- myid           0
- Size:          20
- local_update accept ratio:  0.676206112    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   47.3240013    
- 
- loop         160
- myid           0
- Size:          20
- local_update accept ratio:  0.677835226    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   47.9230003    
- 
- loop         162
- myid           0
- Size:          20
- local_update accept ratio:  0.677208662    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   48.5330009    
- 
- loop         164
- myid           0
- Size:          20
- local_update accept ratio:  0.675375938    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   49.1389999    
- 
- loop         166
- myid           0
- Size:          20
- local_update accept ratio:  0.679260671    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   49.7439995    
- 
- loop         168
- myid           0
- Size:          20
- local_update accept ratio:  0.675046980    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   50.3530006    
- 
- loop         170
- myid           0
- Size:          20
- local_update accept ratio:  0.677976191    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   50.9599991    
- 
- loop         172
- myid           0
- Size:          20
- local_update accept ratio:  0.675454259    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   51.5690002    
- 
- loop         174
- myid           0
- Size:          20
- local_update accept ratio:  0.676597774    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   52.1759987    
- 
- loop         176
- myid           0
- Size:          20
- local_update accept ratio:  0.675595224    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   52.7799988    
- 
- loop         178
- myid           0
- Size:          20
- local_update accept ratio:  0.675861537    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   53.3829994    
- 
- loop         180
- myid           0
- Size:          20
- local_update accept ratio:  0.674483061    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   53.9879990    
- 
- loop         182
- myid           0
- Size:          20
- local_update accept ratio:  0.672117770    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   54.5919991    
- 
- loop         184
- myid           0
- Size:          20
- local_update accept ratio:  0.673276961    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   55.1920013    
- 
- loop         186
- myid           0
- Size:          20
- local_update accept ratio:  0.678508759    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   55.7939987    
- 
- loop         188
- myid           0
- Size:          20
- local_update accept ratio:  0.673010647    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   56.3909988    
- 
- loop         190
- myid           0
- Size:          20
- local_update accept ratio:  0.675704896    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   56.9939995    
- 
- loop         192
- myid           0
- Size:          20
- local_update accept ratio:  0.670723677    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   57.5960007    
- 
- loop         194
- myid           0
- Size:          20
- local_update accept ratio:  0.675094008    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   58.2099991    
- 
- loop         196
- myid           0
- Size:          20
- local_update accept ratio:  0.675877213    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   58.8100014    
- 
- loop         198
- myid           0
- Size:          20
- local_update accept ratio:  0.669674158    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   59.4049988    
- 
- loop         200
- myid           0
- Size:          20
- local_update accept ratio:  0.677255630    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   60.0079994    
- 
- loop         202
- myid           0
- Size:          20
- local_update accept ratio:  0.681500614    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   60.6150017    
- 
- loop         204
- myid           0
- Size:          20
- local_update accept ratio:  0.670441747    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   61.2099991    
- 
- loop         206
- myid           0
- Size:          20
- local_update accept ratio:  0.679542601    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   61.8129997    
- 
- loop         208
- myid           0
- Size:          20
- local_update accept ratio:  0.680059552    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   62.4160004    
- 
- loop         210
- myid           0
- Size:          20
- local_update accept ratio:  0.666431725    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   63.0169983    
- 
- loop         212
- myid           0
- Size:          20
- local_update accept ratio:  0.680748761    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   63.6150017    
- 
- loop         214
- myid           0
- Size:          20
- local_update accept ratio:  0.680654764    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   64.2180023    
- 
- loop         216
- myid           0
- Size:          20
- local_update accept ratio:  0.677568913    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   64.8199997    
- 
- loop         218
- myid           0
- Size:          20
- local_update accept ratio:  0.667763174    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   65.4160004    
- 
- loop         220
- myid           0
- Size:          20
- local_update accept ratio:  0.674404740    
- error_fast:   9.9999999999999995E-007
- max_pair:   0.0000000000000000     
- time spent   66.0199966    
- 
- loop           2
- myid           0
- Size:          20
- local_update accept ratio:  0.599749386    
- error_fast:   9.9999999999999995E-007
- time spent  0.444999993    
- 
- loop           4
- myid           0
- Size:          20
- local_update accept ratio:  0.614050746    
- error_fast:   9.9999999999999995E-007
- time spent   1.00899994    
- 
- loop           6
- myid           0
- Size:          20
- local_update accept ratio:  0.635181725    
- error_fast:   9.9999999999999995E-007
- time spent   1.58299994    
- 
- loop           8
- myid           0
- Size:          20
- local_update accept ratio:  0.635134697    
- error_fast:   9.9999999999999995E-007
- time spent   2.16700006    
- 
- loop          10
- myid           0
- Size:          20
- local_update accept ratio:  0.662750602    
- error_fast:   9.9999999999999995E-007
- time spent   2.75900006    
- 
- loop          12
- myid           0
- Size:          20
- local_update accept ratio:  0.646929801    
- error_fast:   9.9999999999999995E-007
- time spent   3.34200001    
- 
- loop          14
- myid           0
- Size:          20
- local_update accept ratio:  0.653618395    
- error_fast:   9.9999999999999995E-007
- time spent   3.92899990    
- 
- loop          16
- myid           0
- Size:          20
- local_update accept ratio:  0.657706738    
- error_fast:   9.9999999999999995E-007
- time spent   4.51999998    
- 
- loop          18
- myid           0
- Size:          20
- local_update accept ratio:  0.667136610    
- error_fast:   9.9999999999999995E-007
- time spent   5.10699987    
- 
- loop          20
- myid           0
- Size:          20
- local_update accept ratio:  0.663048267    
- error_fast:   9.9999999999999995E-007
- time spent   5.70300007    
- 
- loop          22
- myid           0
- Size:          20
- local_update accept ratio:  0.675532579    
- error_fast:   9.9999999999999995E-007
- time spent   6.30299997    
- 
- loop          24
- myid           0
- Size:          20
- local_update accept ratio:  0.669094622    
- error_fast:   9.9999999999999995E-007
- time spent   6.90199995    
- 
- loop          26
- myid           0
- Size:          20
- local_update accept ratio:  0.663236201    
- error_fast:   9.9999999999999995E-007
- time spent   7.49499989    
- 
- loop          28
- myid           0
- Size:          20
- local_update accept ratio:  0.673245609    
- error_fast:   9.9999999999999995E-007
- time spent   8.09399986    
- 
- loop          30
- myid           0
- Size:          20
- local_update accept ratio:  0.680654764    
- error_fast:   9.9999999999999995E-007
- time spent   8.69900036    
- 
- loop          32
- myid           0
- Size:          20
- local_update accept ratio:  0.679934204    
- error_fast:   9.9999999999999995E-007
- time spent   9.30599976    
- 
- loop          34
- myid           0
- Size:          20
- local_update accept ratio:  0.669893503    
- error_fast:   9.9999999999999995E-007
- time spent   9.89999962    
- 
- loop          36
- myid           0
- Size:          20
- local_update accept ratio:  0.674843371    
- error_fast:   9.9999999999999995E-007
- time spent   10.4980001    
- 
- loop          38
- myid           0
- Size:          20
- local_update accept ratio:  0.671647847    
- error_fast:   9.9999999999999995E-007
- time spent   11.0909996    
- 
- loop          40
- myid           0
- Size:          20
- local_update accept ratio:  0.668013811    
- error_fast:   9.9999999999999995E-007
- time spent   11.6870003    
- 
- loop          42
- myid           0
- Size:          20
- local_update accept ratio:  0.683317661    
- error_fast:   9.9999999999999995E-007
- time spent   12.2910004    
- 
- loop          44
- myid           0
- Size:          20
- local_update accept ratio:  0.677474916    
- error_fast:   9.9999999999999995E-007
- time spent   12.8909998    
- 
- loop          46
- myid           0
- Size:          20
- local_update accept ratio:  0.673151612    
- error_fast:   9.9999999999999995E-007
- time spent   13.4860001    
- 
- loop          48
- myid           0
- Size:          20
- local_update accept ratio:  0.682550132    
- error_fast:   9.9999999999999995E-007
- time spent   14.0880003    
- 
- loop          50
- myid           0
- Size:          20
- local_update accept ratio:  0.677647233    
- error_fast:   9.9999999999999995E-007
- time spent   14.6890001    
- 
- loop          52
- myid           0
- Size:          20
- local_update accept ratio:  0.667261899    
- error_fast:   9.9999999999999995E-007
- time spent   15.2830000    
- 
- loop          54
- myid           0
- Size:          20
- local_update accept ratio:  0.680200517    
- error_fast:   9.9999999999999995E-007
- time spent   15.8830004    
- 
- loop          56
- myid           0
- Size:          20
- local_update accept ratio:  0.671553910    
- error_fast:   9.9999999999999995E-007
- time spent   16.4790001    
- 
- loop          58
- myid           0
- Size:          20
- local_update accept ratio:  0.678931713    
- error_fast:   9.9999999999999995E-007
- time spent   17.0820007    
- 
- loop          60
- myid           0
- Size:          20
- local_update accept ratio:  0.677130342    
- error_fast:   9.9999999999999995E-007
- time spent   17.6819992    
- 
- loop          62
- myid           0
- Size:          20
- local_update accept ratio:  0.678242505    
- error_fast:   9.9999999999999995E-007
- time spent   18.2810001    
- 
- loop          64
- myid           0
- Size:          20
- local_update accept ratio:  0.681641579    
- error_fast:   9.9999999999999995E-007
- time spent   18.8850002    
- 
- loop          66
- myid           0
- Size:          20
- local_update accept ratio:  0.674389124    
- error_fast:   9.9999999999999995E-007
- time spent   19.4869995    
- 
- loop          68
- myid           0
- Size:          20
- local_update accept ratio:  0.670692384    
- error_fast:   9.9999999999999995E-007
- time spent   20.0869999    
- 
- loop          70
- myid           0
- Size:          20
- local_update accept ratio:  0.677255630    
- error_fast:   9.9999999999999995E-007
- time spent   20.6889992    
- 
- loop          72
- myid           0
- Size:          20
- local_update accept ratio:  0.676926672    
- error_fast:   9.9999999999999995E-007
- time spent   21.2859993    
- 
- loop          74
- myid           0
- Size:          20
- local_update accept ratio:  0.680513799    
- error_fast:   9.9999999999999995E-007
- time spent   21.8850002    
- 
- loop          76
- myid           0
- Size:          20
- local_update accept ratio:  0.677866518    
- error_fast:   9.9999999999999995E-007
- time spent   22.4899998    
- 
- loop          78
- myid           0
- Size:          20
- local_update accept ratio:  0.667888463    
- error_fast:   9.9999999999999995E-007
- time spent   23.0879993    
- 
- loop          80
- myid           0
- Size:          20
- local_update accept ratio:  0.675281942    
- error_fast:   9.9999999999999995E-007
- time spent   23.7040005    
- 
- loop          82
- myid           0
- Size:          20
- local_update accept ratio:  0.677302659    
- error_fast:   9.9999999999999995E-007
- time spent   24.3050003    
- 
- loop          84
- myid           0
- Size:          20
- local_update accept ratio:  0.671506882    
- error_fast:   9.9999999999999995E-007
- time spent   24.9069996    
- 
- loop          86
- myid           0
- Size:          20
- local_update accept ratio:  0.688126564    
- error_fast:   9.9999999999999995E-007
- time spent   25.5139999    
- 
- loop          88
- myid           0
- Size:          20
- local_update accept ratio:  0.670708001    
- error_fast:   9.9999999999999995E-007
- time spent   26.1089993    
- 
- loop          90
- myid           0
- Size:          20
- local_update accept ratio:  0.670488715    
- error_fast:   9.9999999999999995E-007
- time spent   26.7029991    
- 
- loop          92
- myid           0
- Size:          20
- local_update accept ratio:  0.674514413    
- error_fast:   9.9999999999999995E-007
- time spent   27.2989998    
- 
- loop          94
- myid           0
- Size:          20
- local_update accept ratio:  0.678947389    
- error_fast:   9.9999999999999995E-007
- time spent   27.8950005    
- 
- loop          96
- myid           0
- Size:          20
- local_update accept ratio:  0.671130955    
- error_fast:   9.9999999999999995E-007
- time spent   28.4899998    
- 
- loop          98
- myid           0
- Size:          20
- local_update accept ratio:  0.677427948    
- error_fast:   9.9999999999999995E-007
- time spent   29.0879993    
- 
- loop         100
- myid           0
- Size:          20
- local_update accept ratio:  0.677835226    
- error_fast:   9.9999999999999995E-007
- time spent   29.6840000    
- 
- loop         102
- myid           0
- Size:          20
- local_update accept ratio:  0.678837717    
- error_fast:   9.9999999999999995E-007
- time spent   30.2800007    
- 
- loop         104
- myid           0
- Size:          20
- local_update accept ratio:  0.676879704    
- error_fast:   9.9999999999999995E-007
- time spent   30.8780003    
- 
- loop         106
- myid           0
- Size:          20
- local_update accept ratio:  0.676801383    
- error_fast:   9.9999999999999995E-007
- time spent   31.4759998    
- 
- loop         108
- myid           0
- Size:          20
- local_update accept ratio:  0.682894766    
- error_fast:   9.9999999999999995E-007
- time spent   32.0760002    
- 
- loop         110
- myid           0
- Size:          20
- local_update accept ratio:  0.677349627    
- error_fast:   9.9999999999999995E-007
- time spent   32.6730003    
- 
- loop         112
- myid           0
- Size:          20
- local_update accept ratio:  0.675438583    
- error_fast:   9.9999999999999995E-007
- time spent   33.2700005    
- 
- loop         114
- myid           0
- Size:          20
- local_update accept ratio:  0.683474302    
- error_fast:   9.9999999999999995E-007
- time spent   33.8699989    
- 
- loop         116
- myid           0
- Size:          20
- local_update accept ratio:  0.673574567    
- error_fast:   9.9999999999999995E-007
- time spent   34.4659996    
- 
- loop         118
- myid           0
- Size:          20
- local_update accept ratio:  0.677631557    
- error_fast:   9.9999999999999995E-007
- time spent   35.0699997    
- 
- loop         120
- myid           0
- Size:          20
- local_update accept ratio:  0.681516290    
- error_fast:   9.9999999999999995E-007
- time spent   35.6759987    
- 
- loop         122
- myid           0
- Size:          20
- local_update accept ratio:  0.665366530    
- error_fast:   9.9999999999999995E-007
- time spent   36.2789993    
- 
- loop         124
- myid           0
- Size:          20
- local_update accept ratio:  0.678508759    
- error_fast:   9.9999999999999995E-007
- time spent   36.8800011    
- 
- loop         126
- myid           0
- Size:          20
- local_update accept ratio:  0.683208048    
- error_fast:   9.9999999999999995E-007
- time spent   37.4860001    
- 
- loop         128
- myid           0
- Size:          20
- local_update accept ratio:  0.677412271    
- error_fast:   9.9999999999999995E-007
- time spent   38.0859985    
- 
- loop         130
- myid           0
- Size:          20
- local_update accept ratio:  0.681641579    
- error_fast:   9.9999999999999995E-007
- time spent   38.6889992    
- 
- loop         132
- myid           0
- Size:          20
- local_update accept ratio:  0.673323929    
- error_fast:   9.9999999999999995E-007
- time spent   39.2900009    
- 
- loop         134
- myid           0
- Size:          20
- local_update accept ratio:  0.677490592    
- error_fast:   9.9999999999999995E-007
- time spent   39.9039993    
- 
- loop         136
- myid           0
- Size:          20
- local_update accept ratio:  0.685745597    
- error_fast:   9.9999999999999995E-007
- time spent   40.5410004    
- 
- loop         138
- myid           0
- Size:          20
- local_update accept ratio:  0.665272534    
- error_fast:   9.9999999999999995E-007
- time spent   41.1409988    
- 
- loop         140
- myid           0
- Size:          20
- local_update accept ratio:  0.676441073    
- error_fast:   9.9999999999999995E-007
- time spent   41.7500000    
- 
- loop         142
- myid           0
- Size:          20
- local_update accept ratio:  0.691306412    
- error_fast:   9.9999999999999995E-007
- time spent   42.3720016    
- 
- loop         144
- myid           0
- Size:          20
- local_update accept ratio:  0.679244995    
- error_fast:   9.9999999999999995E-007
- time spent   42.9729996    
- 
- loop         146
- myid           0
- Size:          20
- local_update accept ratio:  0.663424194    
- error_fast:   9.9999999999999995E-007
- time spent   43.5750008    
- 
- loop         148
- myid           0
- Size:          20
- local_update accept ratio:  0.677052021    
- error_fast:   9.9999999999999995E-007
- time spent   44.1720009    
- 
- loop         150
- myid           0
- Size:          20
- local_update accept ratio:  0.662500024    
- error_fast:   9.9999999999999995E-007
- time spent   44.7649994    
- 
- loop         152
- myid           0
- Size:          20
- local_update accept ratio:  0.682565808    
- error_fast:   9.9999999999999995E-007
- time spent   45.3670006    
- 
- loop         154
- myid           0
- Size:          20
- local_update accept ratio:  0.684038222    
- error_fast:   9.9999999999999995E-007
- time spent   45.9690018    
- 
- loop         156
- myid           0
- Size:          20
- local_update accept ratio:  0.668640375    
- error_fast:   9.9999999999999995E-007
- time spent   46.5639992    
- 
- loop         158
- myid           0
- Size:          20
- local_update accept ratio:  0.666619658    
- error_fast:   9.9999999999999995E-007
- time spent   47.1559982    
- 
- loop         160
- myid           0
- Size:          20
- local_update accept ratio:  0.679620922    
- error_fast:   9.9999999999999995E-007
- time spent   47.7550011    
- 
- loop         162
- myid           0
- Size:          20
- local_update accept ratio:  0.680216193    
- error_fast:   9.9999999999999995E-007
- time spent   48.3540001    
- 
- loop         164
- myid           0
- Size:          20
- local_update accept ratio:  0.669533193    
- error_fast:   9.9999999999999995E-007
- time spent   48.9440002    
- 
- loop         166
- myid           0
- Size:          20
- local_update accept ratio:  0.675783217    
- error_fast:   9.9999999999999995E-007
- time spent   49.5410004    
- 
- loop         168
- myid           0
- Size:          20
- local_update accept ratio:  0.682252526    
- error_fast:   9.9999999999999995E-007
- time spent   50.1389999    
- 
- loop         170
- myid           0
- Size:          20
- local_update accept ratio:  0.682847738    
- error_fast:   9.9999999999999995E-007
- time spent   50.7939987    
- 
- loop         172
- myid           0
- Size:          20
- local_update accept ratio:  0.676832736    
- error_fast:   9.9999999999999995E-007
- time spent   51.4080009    
- 
- loop         174
- myid           0
- Size:          20
- local_update accept ratio:  0.679981232    
- error_fast:   9.9999999999999995E-007
- time spent   52.0190010    
- 
- loop         176
- myid           0
- Size:          20
- local_update accept ratio:  0.679636598    
- error_fast:   9.9999999999999995E-007
- time spent   52.6300011    
- 
- loop         178
- myid           0
- Size:          20
- local_update accept ratio:  0.674310803    
- error_fast:   9.9999999999999995E-007
- time spent   53.2379990    
- 
- loop         180
- myid           0
- Size:          20
- local_update accept ratio:  0.674075842    
- error_fast:   9.9999999999999995E-007
- time spent   53.8380013    
- 
- loop         182
- myid           0
- Size:          20
- local_update accept ratio:  0.666541338    
- error_fast:   9.9999999999999995E-007
- time spent   54.4309998    
- 
- loop         184
- myid           0
- Size:          20
- local_update accept ratio:  0.683552623    
- error_fast:   9.9999999999999995E-007
- time spent   55.0359993    
- 
- loop         186
- myid           0
- Size:          20
- local_update accept ratio:  0.672822654    
- error_fast:   9.9999999999999995E-007
- time spent   55.6339989    
- 
- loop         188
- myid           0
- Size:          20
- local_update accept ratio:  0.670739353    
- error_fast:   9.9999999999999995E-007
- time spent   56.2330017    
- 
- loop         190
- myid           0
- Size:          20
- local_update accept ratio:  0.680498123    
- error_fast:   9.9999999999999995E-007
- time spent   56.8359985    
- 
- loop         192
- myid           0
- Size:          20
- local_update accept ratio:  0.671036959    
- error_fast:   9.9999999999999995E-007
- time spent   57.4329987    
- 
- loop         194
- myid           0
- Size:          20
- local_update accept ratio:  0.685729921    
- error_fast:   9.9999999999999995E-007
- time spent   58.0340004    
- 
- loop         196
- myid           0
- Size:          20
- local_update accept ratio:  0.666478693    
- error_fast:   9.9999999999999995E-007
- time spent   58.6310005    
- 
- loop         198
- myid           0
- Size:          20
- local_update accept ratio:  0.671553910    
- error_fast:   9.9999999999999995E-007
- time spent   59.2330017    
- 
- loop         200
- myid           0
- Size:          20
- local_update accept ratio:  0.676472425    
- error_fast:   9.9999999999999995E-007
- time spent   59.8330002    
- 
- loop         202
- myid           0
- Size:          20
- local_update accept ratio:  0.673449278    
- error_fast:   9.9999999999999995E-007
- time spent   60.4280014    
- 
- loop         204
- myid           0
- Size:          20
- local_update accept ratio:  0.680999398    
- error_fast:   9.9999999999999995E-007
- time spent   61.0349998    
- 
- loop         206
- myid           0
- Size:          20
- local_update accept ratio:  0.677615941    
- error_fast:   9.9999999999999995E-007
- time spent   61.6389999    
- 
- loop         208
- myid           0
- Size:          20
- local_update accept ratio:  0.682706773    
- error_fast:   9.9999999999999995E-007
- time spent   62.2379990    
- 
- loop         210
- myid           0
- Size:          20
- local_update accept ratio:  0.675673544    
- error_fast:   9.9999999999999995E-007
- time spent   62.8349991    
- 
- loop         212
- myid           0
- Size:          20
- local_update accept ratio:  0.672478080    
- error_fast:   9.9999999999999995E-007
- time spent   63.4339981    
- 
- loop         214
- myid           0
- Size:          20
- local_update accept ratio:  0.668812633    
- error_fast:   9.9999999999999995E-007
- time spent   64.0270004    
- 
- loop         216
- myid           0
- Size:          20
- local_update accept ratio:  0.686967432    
- error_fast:   9.9999999999999995E-007
- time spent   64.6299973    
- 
- loop         218
- myid           0
- Size:          20
- local_update accept ratio:  0.676378429    
- error_fast:   9.9999999999999995E-007
- time spent   65.2300034    
- 
- loop         220
- myid           0
- Size:          20
- local_update accept ratio:  0.681500614    
- error_fast:   9.9999999999999995E-007
- time spent   65.8300018    
- 
- loop           2
- myid           0
- Size:          20
- local_update accept ratio:  0.603446126    
- error_fast:   9.9999999999999995E-007
- time spent  0.446000010    
- 
- loop           4
- myid           0
- Size:          20
- local_update accept ratio:  0.621365905    
- error_fast:   9.9999999999999995E-007
- time spent   1.01699996    
- 
- loop           6
- myid           0
- Size:          20
- local_update accept ratio:  0.641791999    
- error_fast:   9.9999999999999995E-007
- time spent   1.59500003    
- 
- loop           8
- myid           0
- Size:          20
- local_update accept ratio:  0.638706148    
- error_fast:   9.9999999999999995E-007
- time spent   2.17799997    
- 
- loop          10
- myid           0
- Size:          20
- local_update accept ratio:  0.638048232    
- error_fast:   9.9999999999999995E-007
- time spent   2.76200008    
- 
- loop          12
- myid           0
- Size:          20
- local_update accept ratio:  0.646961153    
- error_fast:   9.9999999999999995E-007
- time spent   3.35100007    
- 
- loop          14
- myid           0
- Size:          20
- local_update accept ratio:  0.655905366    
- error_fast:   9.9999999999999995E-007
- time spent   3.94300008    
- 
- loop          16
- myid           0
- Size:          20
- local_update accept ratio:  0.661121547    
- error_fast:   9.9999999999999995E-007
- time spent   4.53900003    
- 
- loop          18
- myid           0
- Size:          20
- local_update accept ratio:  0.648950517    
- error_fast:   9.9999999999999995E-007
- time spent   5.14499998    
- 
- loop          20
- myid           0
- Size:          20
- local_update accept ratio:  0.666322052    
- error_fast:   9.9999999999999995E-007
- time spent   5.73899984    
- 
- loop          22
- myid           0
- Size:          20
- local_update accept ratio:  0.664912283    
- error_fast:   9.9999999999999995E-007
- time spent   6.33199978    
- 
- loop          24
- myid           0
- Size:          20
- local_update accept ratio:  0.653837740    
- error_fast:   9.9999999999999995E-007
- time spent   6.92299986    
- 
- loop          26
- myid           0
- Size:          20
- local_update accept ratio:  0.668295741    
- error_fast:   9.9999999999999995E-007
- time spent   7.51900005    
- 
- loop          28
- myid           0
- Size:          20
- local_update accept ratio:  0.673746884    
- error_fast:   9.9999999999999995E-007
- time spent   8.12100029    
- 
- loop          30
- myid           0
- Size:          20
- local_update accept ratio:  0.674812019    
- error_fast:   9.9999999999999995E-007
- time spent   8.72099972    
- 
- loop          32
- myid           0
- Size:          20
- local_update accept ratio:  0.675532579    
- error_fast:   9.9999999999999995E-007
- time spent   9.33600044    
- 
- loop          34
- myid           0
- Size:          20
- local_update accept ratio:  0.674013138    
- error_fast:   9.9999999999999995E-007
- time spent   9.94299984    
- 
- loop          36
- myid           0
- Size:          20
- local_update accept ratio:  0.679385960    
- error_fast:   9.9999999999999995E-007
- time spent   10.5500002    
- 
- loop          38
- myid           0
- Size:          20
- local_update accept ratio:  0.676174819    
- error_fast:   9.9999999999999995E-007
- time spent   11.1580000    
- 
- loop          40
- myid           0
- Size:          20
- local_update accept ratio:  0.675924182    
- error_fast:   9.9999999999999995E-007
- time spent   11.7609997    
- 
- loop          42
- myid           0
- Size:          20
- local_update accept ratio:  0.679338992    
- error_fast:   9.9999999999999995E-007
- time spent   12.3660002    
- 
- loop          44
- myid           0
- Size:          20
- local_update accept ratio:  0.677584589    
- error_fast:   9.9999999999999995E-007
- time spent   12.9700003    
- 
- loop          46
- myid           0
- Size:          20
- local_update accept ratio:  0.665131569    
- error_fast:   9.9999999999999995E-007
- time spent   13.5679998    
- 
- loop          48
- myid           0
- Size:          20
- local_update accept ratio:  0.678853393    
- error_fast:   9.9999999999999995E-007
- time spent   14.1730003    
- 
- loop          50
- myid           0
- Size:          20
- local_update accept ratio:  0.688157916    
- error_fast:   9.9999999999999995E-007
- time spent   14.7810001    
- 
- loop          52
- myid           0
- Size:          20
- local_update accept ratio:  0.683192372    
- error_fast:   9.9999999999999995E-007
- time spent   15.3900003    
- 
- loop          54
- myid           0
- Size:          20
- local_update accept ratio:  0.679088354    
- error_fast:   9.9999999999999995E-007
- time spent   15.9960003    
- 
- loop          56
- myid           0
- Size:          20
- local_update accept ratio:  0.674984336    
- error_fast:   9.9999999999999995E-007
- time spent   16.5949993    
- 
- loop          58
- myid           0
- Size:          20
- local_update accept ratio:  0.669721186    
- error_fast:   9.9999999999999995E-007
- time spent   17.1910000    
- 
- loop          60
- myid           0
- Size:          20
- local_update accept ratio:  0.678367794    
- error_fast:   9.9999999999999995E-007
- time spent   17.7910004    
- 
- loop          62
- myid           0
- Size:          20
- local_update accept ratio:  0.680137873    
- error_fast:   9.9999999999999995E-007
- time spent   18.3939991    
- 
- loop          64
- myid           0
- Size:          20
- local_update accept ratio:  0.675579548    
- error_fast:   9.9999999999999995E-007
- time spent   18.9930000    
- 
- loop          66
- myid           0
- Size:          20
- local_update accept ratio:  0.669235587    
- error_fast:   9.9999999999999995E-007
- time spent   19.5900002    
- 
- loop          68
- myid           0
- Size:          20
- local_update accept ratio:  0.675219297    
- error_fast:   9.9999999999999995E-007
- time spent   20.1889992    
- 
- loop          70
- myid           0
- Size:          20
- local_update accept ratio:  0.668233097    
- error_fast:   9.9999999999999995E-007
- time spent   20.7830009    
- 
- loop          72
- myid           0
- Size:          20
- local_update accept ratio:  0.680435479    
- error_fast:   9.9999999999999995E-007
- time spent   21.3850002    
- 
- loop          74
- myid           0
- Size:          20
- local_update accept ratio:  0.672446728    
- error_fast:   9.9999999999999995E-007
- time spent   21.9839993    
- 
- loop          76
- myid           0
- Size:          20
- local_update accept ratio:  0.676425457    
- error_fast:   9.9999999999999995E-007
- time spent   22.5860004    
- 
- loop          78
- myid           0
- Size:          20
- local_update accept ratio:  0.678571403    
- error_fast:   9.9999999999999995E-007
- time spent   23.1870003    
- 
- loop          80
- myid           0
- Size:          20
- local_update accept ratio:  0.676597774    
- error_fast:   9.9999999999999995E-007
- time spent   23.7910004    
- 
- loop          82
- myid           0
- Size:          20
- local_update accept ratio:  0.680106521    
- error_fast:   9.9999999999999995E-007
- time spent   24.3950005    
- 
- loop          84
- myid           0
- Size:          20
- local_update accept ratio:  0.671303272    
- error_fast:   9.9999999999999995E-007
- time spent   24.9920006    
- 
- loop          86
- myid           0
- Size:          20
- local_update accept ratio:  0.681249976    
- error_fast:   9.9999999999999995E-007
- time spent   25.5979996    
- 
- loop          88
- myid           0
- Size:          20
- local_update accept ratio:  0.668389738    
- error_fast:   9.9999999999999995E-007
- time spent   26.1949997    
- 
- loop          90
- myid           0
- Size:          20
- local_update accept ratio:  0.670708001    
- error_fast:   9.9999999999999995E-007
- time spent   26.7929993    
- 
- loop          92
- myid           0
- Size:          20
- local_update accept ratio:  0.671788871    
- error_fast:   9.9999999999999995E-007
- time spent   27.3950005    
- 
- loop          94
- myid           0
- Size:          20
- local_update accept ratio:  0.678070188    
- error_fast:   9.9999999999999995E-007
- time spent   27.9950008    
- 
- loop          96
- myid           0
- Size:          20
- local_update accept ratio:  0.676002502    
- error_fast:   9.9999999999999995E-007
- time spent   28.5949993    
- 
- loop          98
- myid           0
- Size:          20
- local_update accept ratio:  0.678007543    
- error_fast:   9.9999999999999995E-007
- time spent   29.1959991    
- 
- loop         100
- myid           0
- Size:          20
- local_update accept ratio:  0.689646006    
- error_fast:   9.9999999999999995E-007
- time spent   29.8029995    
- 
- loop         102
- myid           0
- Size:          20
- local_update accept ratio:  0.673088968    
- error_fast:   9.9999999999999995E-007
- time spent   30.4130001    
- 
- loop         104
- myid           0
- Size:          20
- local_update accept ratio:  0.676519394    
- error_fast:   9.9999999999999995E-007
- time spent   31.0160007    
- 
- loop         106
- myid           0
- Size:          20
- local_update accept ratio:  0.666791975    
- error_fast:   9.9999999999999995E-007
- time spent   31.6200008    
- 
- loop         108
- myid           0
- Size:          20
- local_update accept ratio:  0.681203008    
- error_fast:   9.9999999999999995E-007
- time spent   32.2299995    
- 
- loop         110
- myid           0
- Size:          20
- local_update accept ratio:  0.672086477    
- error_fast:   9.9999999999999995E-007
- time spent   32.8300018    
- 
- loop         112
- myid           0
- Size:          20
- local_update accept ratio:  0.671992481    
- error_fast:   9.9999999999999995E-007
- time spent   33.4329987    
- 
- loop         114
- myid           0
- Size:          20
- local_update accept ratio:  0.682033181    
- error_fast:   9.9999999999999995E-007
- time spent   34.0460014    
- 
- loop         116
- myid           0
- Size:          20
- local_update accept ratio:  0.676864028    
- error_fast:   9.9999999999999995E-007
- time spent   34.6590004    
- 
- loop         118
- myid           0
- Size:          20
- local_update accept ratio:  0.682863414    
- error_fast:   9.9999999999999995E-007
- time spent   35.2700005    
- 
- loop         120
- myid           0
- Size:          20
- local_update accept ratio:  0.675375938    
- error_fast:   9.9999999999999995E-007
- time spent   35.8730011    
- 
- loop         122
- myid           0
- Size:          20
- local_update accept ratio:  0.685009420    
- error_fast:   9.9999999999999995E-007
- time spent   36.4840012    
- 
- loop         124
- myid           0
- Size:          20
- local_update accept ratio:  0.678320825    
- error_fast:   9.9999999999999995E-007
- time spent   37.0979996    
- 
- loop         126
- myid           0
- Size:          20
- local_update accept ratio:  0.677709877    
- error_fast:   9.9999999999999995E-007
- time spent   37.7039986    
- 
- loop         128
- myid           0
- Size:          20
- local_update accept ratio:  0.682362139    
- error_fast:   9.9999999999999995E-007
- time spent   38.3050003    
- 
- loop         130
- myid           0
- Size:          20
- local_update accept ratio:  0.674906015    
- error_fast:   9.9999999999999995E-007
- time spent   38.9059982    
- 
- loop         132
- myid           0
- Size:          20
- local_update accept ratio:  0.680169165    
- error_fast:   9.9999999999999995E-007
- time spent   39.5120010    
- 
- loop         134
- myid           0
- Size:          20
- local_update accept ratio:  0.688518167    
- error_fast:   9.9999999999999995E-007
- time spent   40.1189995    
- 
- loop         136
- myid           0
- Size:          20
- local_update accept ratio:  0.673527598    
- error_fast:   9.9999999999999995E-007
- time spent   40.7169991    
- 
- loop         138
- myid           0
- Size:          20
- local_update accept ratio:  0.675250649    
- error_fast:   9.9999999999999995E-007
- time spent   41.3180008    
- 
- loop         140
- myid           0
- Size:          20
- local_update accept ratio:  0.674216807    
- error_fast:   9.9999999999999995E-007
- time spent   41.9160004    
- 
- loop         142
- myid           0
- Size:          20
- local_update accept ratio:  0.667998135    
- error_fast:   9.9999999999999995E-007
- time spent   42.5120010    
- 
- loop         144
- myid           0
- Size:          20
- local_update accept ratio:  0.668389738    
- error_fast:   9.9999999999999995E-007
- time spent   43.1110001    
- 
- loop         146
- myid           0
- Size:          20
- local_update accept ratio:  0.684476793    
- error_fast:   9.9999999999999995E-007
- time spent   43.7179985    
- 
- loop         148
- myid           0
- Size:          20
- local_update accept ratio:  0.677866518    
- error_fast:   9.9999999999999995E-007
- time spent   44.3219986    
- 
- loop         150
- myid           0
- Size:          20
- local_update accept ratio:  0.685573280    
- error_fast:   9.9999999999999995E-007
- time spent   44.9280014    
- 
- loop         152
- myid           0
- Size:          20
- local_update accept ratio:  0.684147894    
- error_fast:   9.9999999999999995E-007
- time spent   45.5369987    
- 
- loop         154
- myid           0
- Size:          20
- local_update accept ratio:  0.681124687    
- error_fast:   9.9999999999999995E-007
- time spent   46.1450005    
- 
- loop         156
- myid           0
- Size:          20
- local_update accept ratio:  0.672164798    
- error_fast:   9.9999999999999995E-007
- time spent   46.7449989    
- 
- loop         158
- myid           0
- Size:          20
- local_update accept ratio:  0.676832736    
- error_fast:   9.9999999999999995E-007
- time spent   47.3510017    
- 
- loop         160
- myid           0
- Size:          20
- local_update accept ratio:  0.673746884    
- error_fast:   9.9999999999999995E-007
- time spent   47.9519997    
- 
- loop         162
- myid           0
- Size:          20
- local_update accept ratio:  0.677396595    
- error_fast:   9.9999999999999995E-007
- time spent   48.5550003    
- 
- loop         164
- myid           0
- Size:          20
- local_update accept ratio:  0.674169779    
- error_fast:   9.9999999999999995E-007
- time spent   49.1590004    
- 
- loop         166
- myid           0
- Size:          20
- local_update accept ratio:  0.686591506    
- error_fast:   9.9999999999999995E-007
- time spent   49.7799988    
- 
- loop         168
- myid           0
- Size:          20
- local_update accept ratio:  0.677929223    
- error_fast:   9.9999999999999995E-007
- time spent   50.3839989    
- 
- loop         170
- myid           0
- Size:          20
- local_update accept ratio:  0.674859047    
- error_fast:   9.9999999999999995E-007
- time spent   50.9910011    
- 
- loop         172
- myid           0
- Size:          20
- local_update accept ratio:  0.680090845    
- error_fast:   9.9999999999999995E-007
- time spent   51.5960007    
- 
- loop         174
- myid           0
- Size:          20
- local_update accept ratio:  0.678571403    
- error_fast:   9.9999999999999995E-007
- time spent   52.1990013    
- 
- loop         176
- myid           0
- Size:          20
- local_update accept ratio:  0.674874663    
- error_fast:   9.9999999999999995E-007
- time spent   52.7980003    
- 
- loop         178
- myid           0
- Size:          20
- local_update accept ratio:  0.668076456    
- error_fast:   9.9999999999999995E-007
- time spent   53.4010010    
- 
- loop         180
- myid           0
- Size:          20
- local_update accept ratio:  0.685322702    
- error_fast:   9.9999999999999995E-007
- time spent   54.0110016    
- 
- loop         182
- myid           0
- Size:          20
- local_update accept ratio:  0.674514413    
- error_fast:   9.9999999999999995E-007
- time spent   54.6090012    
- 
- loop         184
- myid           0
- Size:          20
- local_update accept ratio:  0.672713041    
- error_fast:   9.9999999999999995E-007
- time spent   55.2080002    
- 
- loop         186
- myid           0
- Size:          20
- local_update accept ratio:  0.669407904    
- error_fast:   9.9999999999999995E-007
- time spent   55.8040009    
- 
- loop         188
- myid           0
- Size:          20
- local_update accept ratio:  0.668797016    
- error_fast:   9.9999999999999995E-007
- time spent   56.4010010    
- 
- loop         190
- myid           0
- Size:          20
- local_update accept ratio:  0.675751865    
- error_fast:   9.9999999999999995E-007
- time spent   57.0029984    
- 
- loop         192
- myid           0
- Size:          20
- local_update accept ratio:  0.673151612    
- error_fast:   9.9999999999999995E-007
- time spent   57.5989990    
- 
- loop         194
- myid           0
- Size:          20
- local_update accept ratio:  0.682847738    
- error_fast:   9.9999999999999995E-007
- time spent   58.2050018    
- 
- loop         196
- myid           0
- Size:          20
- local_update accept ratio:  0.682189822    
- error_fast:   9.9999999999999995E-007
- time spent   58.8089981    
- 
- loop         198
- myid           0
- Size:          20
- local_update accept ratio:  0.671976805    
- error_fast:   9.9999999999999995E-007
- time spent   59.4129982    
- 
- loop         200
- myid           0
- Size:          20
- local_update accept ratio:  0.676613390    
- error_fast:   9.9999999999999995E-007
- time spent   60.0139999    
- 
- loop         202
- myid           0
- Size:          20
- local_update accept ratio:  0.662186742    
- error_fast:   9.9999999999999995E-007
- time spent   60.6080017    
- 
- loop         204
- myid           0
- Size:          20
- local_update accept ratio:  0.679385960    
- error_fast:   9.9999999999999995E-007
- time spent   61.2140007    
- 
- loop         206
- myid           0
- Size:          20
- local_update accept ratio:  0.683599651    
- error_fast:   9.9999999999999995E-007
- time spent   61.8180008    
- 
- loop         208
- myid           0
- Size:          20
- local_update accept ratio:  0.688471198    
- error_fast:   9.9999999999999995E-007
- time spent   62.4410019    
- 
- loop         210
- myid           0
- Size:          20
- local_update accept ratio:  0.685432315    
- error_fast:   9.9999999999999995E-007
- time spent   63.0530014    
- 
- loop         212
- myid           0
- Size:          20
- local_update accept ratio:  0.678446114    
- error_fast:   9.9999999999999995E-007
- time spent   63.6669998    
- 
- loop         214
- myid           0
- Size:          20
- local_update accept ratio:  0.677819550    
- error_fast:   9.9999999999999995E-007
- time spent   64.2750015    
- 
- loop         216
- myid           0
- Size:          20
- local_update accept ratio:  0.675015688    
- error_fast:   9.9999999999999995E-007
- time spent   64.8799973    
- 
- loop         218
- myid           0
- Size:          20
- local_update accept ratio:  0.676801383    
- error_fast:   9.9999999999999995E-007
- time spent   65.4850006    
- 
- loop         220
- myid           0
- Size:          20
- local_update accept ratio:  0.673417926    
- error_fast:   9.9999999999999995E-007
- time spent   66.0899963    
+ time spent   11.8339996    
  

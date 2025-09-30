@@ -1,5 +1,6 @@
 Module pf_setting
   !use input
+  use nrtype
   use lattice
   use matrixlib
 
@@ -7,7 +8,7 @@ contains
 
   subroutine set_pf_main()
     implicit none
-    integer :: i_pf,i_pla,i_site
+    integer :: i_pf,i_pla,i_site,i_site2
     type(pf_type),pointer :: ppf
     if(.not.allocated(pf_list)) allocate(pf_list(n_phonon_field),ppf_list(n_phonon_field),pf_data_list(n_phonon_field))
     call readin_pf_basic()
@@ -16,15 +17,23 @@ contains
     ! debug
     if(.false.) then
       ! print the pf_site_list information
-      do i_pf = 1, n_phonon_field
+      do i_pf = 1, 1
         ppf => pf_list(i_pf)
         print*,'phonon field id:',ppf%id,'dim:',ppf%dim,'n_plaquette:',ppf%n_plaquette
         do i_pla = 1, ppf%n_plaquette
           write(*,'(A,I4,A)',advance='no') 'plaquette ',i_pla,' sites:'
           do i_site = 1, ppf%dim
             write(*,'(I6)',advance='no') ppf%p_data%pla_site_list(i_site,i_pla)
-          end do
+          end do 
           print*,''
+        end do
+        write(*,'(A,1f18.6)',advance='no')'bf:',boson_field(ppf%p_data%bf_list(1),2)*ppf%V_coe
+        do i_site = 1,ppf%dim
+          print*,' '
+          do i_site2 = 1,ppf%dim
+            write(*,'(A,2f10.6,A)',advance='no')'  (',ppf%p_data%expKV(i_site,i_site2,1,2),')  '
+          end do
+          
         end do
       end do
       stop
@@ -242,7 +251,7 @@ contains
       if(any(abs(nint(cell_xpos) - cell_xpos) > 1e-6)) cycle ! if the site is not in the pf, skip it
       pla_count = pla_count + 1
       ! the first site in the plaquette
-      p_data_temp%pla_site_list(1,pla_count) = p_cells(i_cell)%sites(ppf%pla_int_subsites(lat%dim+1,1))%id
+      p_data_temp%pla_site_list(1,pla_count) = p_cells(i_cell)%sites(ppf%pla_int_subsites(lat%dim+1,1))
     end do
     if(ppf%dim > 1) then
       ! loop over each plaquette and determine the plaquette index and pos vec first
@@ -258,7 +267,7 @@ contains
           ! calculate the index of the site
           call get_uc_index_from_dpos(cell_dpos,cell_index)
           ! store the site index in the pla_site_list
-          p_data_temp%pla_site_list(i_site,i_plaquette) = p_cells(cell_index)%sites(ppf%pla_int_subsites(lat%dim+1,i_site))%id
+          p_data_temp%pla_site_list(i_site,i_plaquette) = p_cells(cell_index)%sites(ppf%pla_int_subsites(lat%dim+1,i_site))
         end do
       end do
     end if

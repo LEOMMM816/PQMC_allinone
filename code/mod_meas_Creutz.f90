@@ -4,6 +4,7 @@ module dqmc_measurements
   implicit none
   public :: MeasurementSystem
 
+  integer, parameter :: dp = real64
   integer, parameter :: NAME_LEN = 64
   integer, parameter :: KIND_SCALAR = 1, KIND_FIELD = 2
 
@@ -57,247 +58,169 @@ contains
 !                             TAKE MEASUREMENTS                           !
 !======================================================================!
 
-
-  complex(8) function spin_x_cur_hatree(pc1,pc2) result(re)
-    implicit none
-    type(cell_type), pointer :: pc1,pc2
-    integer :: s1_u,s1_d,s2_u,s2_d
-    s1_u = pc1%sites(1)
-    s1_d = pc1%sites(2)
-    s2_u = pc2%sites(1)
-    s2_d = pc2%sites(2)
-    re = (0,-1d0) * (g_h(s2_d,s1_u) + g_h(s2_u,s1_d) - g_h(s1_d,s2_u) - g_h(s1_u,s2_d))
-  end function spin_x_cur_hatree
-
-  complex(8) function spin_y_cur_hatree(pc1,pc2) result(re)
-    implicit none
-    type(cell_type), pointer :: pc1,pc2
-    integer :: s1_u,s1_d,s2_u,s2_d
-    s1_u = pc1%sites(1)
-    s1_d = pc1%sites(2)
-    s2_u = pc2%sites(1)
-    s2_d = pc2%sites(2)
-    re =  (-g_h(s2_d,s1_u) + g_h(s2_u,s1_d) + g_h(s1_d,s2_u) - g_h(s1_u,s2_d))
-  end function spin_y_cur_hatree
-
-  subroutine spin_current_matrix(pc1,pc2,pc3,pc4,mat,n_g) 
-    ! this function computes the two-body matrix element of the spin current operator
-    ! [ci1* cj2 , ci2* cj1, cj1* ci2, cj2* ci1] [i,j -> k,l]
-    ! pc1,pc2 are the left operators, pc3,pc4 are the right operators, 1,2 are spin indices
-    ! n_g is the number of one-body operators in each current operator, for spin_x(y) current n_g = 4
-    ! pc1%sites(1) = i1, pc1%sites(2) = i2, pc2%sites(1) = j1, pc2%sites(2) = j2, etc.
-    ! to retrieve spin_x(y) current, one need to contract the matrix with vecters [-i,-i,i,i] ([-1,1,1,-1]) 
-    implicit none
-    integer, intent(in) :: n_g ! # of one-body operators in each current operator
-    type(cell_type), pointer,intent(in) :: pc1,pc2,pc3,pc4
-    complex(8), intent(inout) :: mat(n_g,n_g)
-    integer :: lsitelist(n_g,2), rsitelist(n_g,2),i,j
-    mat = 0.0d0
-    lsitelist(1,:) = [pc1%sites(1),pc2%sites(2)]
-    lsitelist(2,:) = [pc1%sites(2),pc2%sites(1)]
-    lsitelist(3,:) = [pc2%sites(1),pc1%sites(2)]
-    lsitelist(4,:) = [pc2%sites(2),pc1%sites(1)]
-    rsitelist(1,:) = [pc3%sites(1),pc4%sites(2)]
-    rsitelist(2,:) = [pc3%sites(2),pc4%sites(1)]
-    rsitelist(3,:) = [pc4%sites(1),pc3%sites(2)]
-    rsitelist(4,:) = [pc4%sites(2),pc3%sites(1)]
-    
-    do i = 1,n_g
-      do j = 1,n_g
-        ! hatree part + fock part
-        ! <ci1* cj2 , ci2* cj1> = <ci1* cj2> <ci2* cj1> + <ci1* cj1> <cj2* ci2>
-        mat(i,j) = (g_h(lsitelist(i,2),lsitelist(i,1)) * g_h(rsitelist(j,2),rsitelist(j,1)) & 
-        & + g_h(rsitelist(j,2),lsitelist(i,1)) * g(lsitelist(i,2),rsitelist(j,1)))
-      end do
-    end do
-
-  end subroutine spin_current_matrix
-  
-  
   SUBROUTINE ms_take_measurement(this, time)
 
     implicit none
 
     class(MeasurementSystem), intent(inout) :: this
     integer, intent(in) :: time
-    integer :: head, bin , handle, N_cell,La,Lb,ind
-    integer ::   i,j,c1,c2,s1_u, s1_d,bf1_x,bf1_y, s2_u, s2_d,bf2_x,bf2_y
+    integer :: head, bin , handle, N_cell,La
+    integer ::   i,j,c1,c2,s1, s2, s1_next,s2_next,ind
     complex(kind=8) :: factor ! phase factor of the position (should be complex in general)
     complex(dp) :: obs_temp,  t_s1_c, t_s2_c
-    type(cell_type), pointer :: pc1,pc1_x,pc1_y, pc2, pc2_x,pc2_y
-    complex(8) :: spinJxy_mat(4,4),sJ_vec_l(4),sJ_vec_r(4)
+    type(cell_type), pointer :: pc1,pc2
     La = Lat%dlength(1)
-    Lb = Lat%dlength(2)
-    N_cell = Lat%N_cell
+      !! MEASUREMENT BEGINS
     head = this%cur_meas
     bin = this%cur_bin
-      !! MEASUREMENT BEGINS
+    N_cell = Lat%N_cell
     !print*,"Taking measurement at time slice ", time, " bin ", bin, " meas ", head
     do c1 = 1, N_cell
-    !! preparation
+      ! preparation
       pc1 => p_cells(c1)
-      call get_uc_index_from_dpos(pc1%dpos + [1,0],ind)
-      pc1_x => p_cells(ind)
-      call get_uc_index_from_dpos(pc1%dpos + [0,1],ind)
-      pc1_y => p_cells(ind)
-      s1_u = pc1%sites(1)
-      s1_d = pc1%sites(2)
-      bf1_x = pc1%bf_list(1)
-      bf1_y = pc1%bf_list(2)
-
-    !! obs: phonon kinetic energy
+      s1 = pc1%sites(1)%id
+      ! obs: phonon kinetic energy
       handle = this%get_handle('BF_KE')
       obs_temp = 0d0
       obs_temp = obs_temp + 0.5d0 * D * sum(boson_field(pc1%bf_list,time)**2) &
       & - biased_phonon * sum(boson_field(pc1%bf_list,time))
-      obs_temp = obs_temp/N_cell
       call this%record_scalar(handle, obs_temp)
 
-    !! obs: phonon kinetic energy
+      !! obs: phonon kinetic energy
       handle = this%get_handle('BF_PE')
       obs_temp = 0d0
       obs_temp = obs_temp  - 0.5d0 * M * sum((boson_field(pc1%bf_list,time) &
       & - boson_field(pc1%bf_list,time+1))**2)/(delt)**2
-      obs_temp = obs_temp + 1d0/(2d0*delt) * 2 
-      obs_temp = obs_temp/N_cell
+      obs_temp = obs_temp + 1d0/(2d0*delt)
       call this%record_scalar(handle, obs_temp)
 
-    !! obs : ph_X
+      !! obs: electron kinetic energy along x direction
+      handle = this%get_handle('El_KEx')
+      obs_temp = 0d0
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + real(K_mat(s1_next,s1)) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + real(K_mat(s1_next,s1)) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(1)%id
+      call this%record_scalar(handle, obs_temp)
+
+      !! obs : electron kinetic energy along y direction
+      handle = this%get_handle('El_KEy')
+      obs_temp = 0d0
+      s1_next = modi(s1 + 3,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 1,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(1)%id
+      call this%record_scalar(handle, obs_temp)
+
+      !! obs: electron potential energy
+      handle = this%get_handle('El_PE')
+      obs_temp = 0d0
+      !obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(s1,time) * (g_h(s1,s1)))
+      !obs_temp = obs_temp -  real(ep_parameter**2 * g_h(s1,s1) * g_h(s1,s1)) - ep_parameter**2 * g_h(s1,s1)
+      obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(1)%id)*conjg(g_h(pc1%sites(1)%id,pc1%sites(1)%id))
+      obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(2)%id)*conjg(g_h(pc1%sites(2)%id,pc1%sites(2)%id))
+      call this%record_scalar(handle, obs_temp)
+
+      !! obs: electron-phonon energy
+      handle = this%get_handle('ElPH_E')
+      obs_temp = 0d0
+      obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(1)%id,time) * (g_h(pc1%sites(1)%id,pc1%sites(1)%id)))
+      obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(2)%id,time) * (g_h(pc1%sites(2)%id,pc1%sites(2)%id)))
+      CALL this%record_scalar(handle, obs_temp)
+
+      !! obs: electron total energy
+      obs_temp = 0d0
+      handle = this%get_handle('El_E')
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 2,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1_next = modi(s1 + 3,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(2)%id
+      s1_next = modi(s1 + 1,Lat%Ns)
+      obs_temp = obs_temp + K_mat(s1_next,s1) * real(g_h(s1_next,s1) + g_h(s1,s1_next))
+      s1 = pc1%sites(1)%id
+      if(omega > 100000d0) then
+        ! hubbard model
+        obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(1)%id)*conjg(g_h(pc1%sites(1)%id,pc1%sites(1)%id))
+      obs_temp = obs_temp - real(ep_parameter)**2*g_h(pc1%sites(1)%id,pc1%sites(2)%id)*conjg(g_h(pc1%sites(2)%id,pc1%sites(2)%id))
+      else
+        !electron-phonon model
+        obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(1)%id,time) * (g_h(pc1%sites(1)%id,pc1%sites(1)%id)))
+      obs_temp = obs_temp + 2 * real(ep_parameter * boson_field(pc1%sites(2)%id,time) * (g_h(pc1%sites(2)%id,pc1%sites(2)%id)))
+      end if
+      CALL this%record_scalar(handle, obs_temp)
+
+      !! obs : ph_X
       handle = this%get_handle('BF_X')
       obs_temp = 0d0
-      obs_temp = obs_temp + sum(boson_field(pc1%bf_list,time))/N_cell
-      call this%record_scalar(this%get_handle('BF_X'), obs_temp)
-    !! corfs are measured between two unit cells, pc2 is introduced
+      obs_temp = obs_temp + (boson_field(s1,time))/Ns
+      obs_temp = obs_temp + (boson_field(s1+1,time))/Ns
+      call this%record_scalar(this%get_handle('BF_X'), obs_temp) 
+
+      !! obs: electron density
+      handle = this%get_handle('El_den')
+      obs_temp = 0d0
+      obs_temp = obs_temp + 2 * real(g_h(s1,s1)) + 2 * real(g_h(s1+1,s1+1))
+      call this%record_scalar(handle, obs_temp)
+
+      !! obs: double occupancy
+      handle = this%get_handle('El_docc')
+      obs_temp = 0d0
+      obs_temp = obs_temp + (g_h(s1,s1) * conjg(g_h(s1,s1))) + (g_h(s1+1,s1+1) * conjg(g_h(s1+1,s1+1)))
+      call this%record_scalar(handle, obs_temp)
+
       do c2 = 1, N_cell
       !! preparation for correlation functions
         pc2 => p_cells(c2)
-        call get_uc_index_from_dpos(pc2%dpos + [1,0],ind)
-        pc2_x => p_cells(ind)
-        call get_uc_index_from_dpos(pc2%dpos + [0,1],ind)
-        pc2_y => p_cells(ind)
-        s2_u = pc2%sites(1)
-        s2_d = pc2%sites(2)
-        bf2_x = pc2%bf_list(1)
-        bf2_y = pc2%bf_list(2)
+        s1 = pc1%sites(1)%id
+        s2 = pc2%sites(1)%id
         call get_relative_index(ind,pc1%dpos,pc2%dpos)
-        ! ind is the relative index of pc2 to pc1, used to index the correlation functions as an array data
 
-      !! corf: bf1-bf1
-        handle = this%get_handle('BFx_BFx')
+      !! corf1: A-A 1-particle
+        handle = this%get_handle('corf_G1')
         obs_temp = 0d0
-        obs_temp = obs_temp + (boson_field(bf1_x,time)) * (boson_field(bf2_x,time))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-      !! corf: bf1-bf2
-        handle = this%get_handle('BFx_BFy')
-        obs_temp = 0d0
-        obs_temp = obs_temp + (boson_field(bf1_x,time)) * (boson_field(bf2_y,time))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-      !! corf: bf2-bf2
-        handle = this%get_handle('BFy_BFy')
-        obs_temp = 0d0
-        obs_temp = obs_temp + (boson_field(bf1_y,time)) * (boson_field(bf2_y,time))/N_cell
+        obs_temp = obs_temp + g(s2,s1)
         call this%record_field_entry(handle, ind, obs_temp)
 
-
-        
-      !! corf1: x-bond's spin-x current correlation
-        call spin_current_matrix(pc1,pc1_x,pc2,pc2_x,spinJxy_mat,4) ! x-bond's spinJ mat
-        handle = this%get_handle('Jxx_Jxx')
+      !! corf2: A-A 2-particle
+        handle = this%get_handle('corf_G2')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        obs_temp = obs_temp + g_h(s2,s1) * conjg(g_h(s2,s1))
+        call this%record_field_entry(handle, ind, obs_temp)
+      !! corf3: nu_nu
+        handle = this%get_handle('corf_nunu')
+        obs_temp = 0d0
+        obs_temp = obs_temp + g_h(s2,s1) * g(s1,s2) + g_h(s1,s1) * (g_h(s2,s2))
         call this%record_field_entry(handle, ind, obs_temp)
 
-      !! corf2: x-bond's spin-y current correlation
-        handle = this%get_handle('Jxy_Jxy')
+      !! corf4: nu_nd
+        handle = this%get_handle('corf_nund')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        obs_temp = obs_temp + g_h(s1,s1) * conjg(g_h(s2,s2))
         call this%record_field_entry(handle, ind, obs_temp)
 
-      !! corf3: y-bond's spin-x current correlation
-        call spin_current_matrix(pc1,pc1_y,pc2,pc2_y,spinJxy_mat,4) ! y-bond's spinJ mat
-        handle = this%get_handle('Jyx_Jyx')
+      !! corf5: den-den
+        handle = this%get_handle('corf_nn')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        obs_temp = obs_temp + (g_h(s1,s1) + conjg(g_h(s1,s1))) * (g_h(s2,s2) + conjg(g_h(s2,s2)))
+        obs_temp = obs_temp + g_h(s2,s1) * g(s1,s2) + conjg(g_h(s2,s1) * g(s1,s2))
         call this%record_field_entry(handle, ind, obs_temp)
 
-      !! corf4: y-bond's spin-y current correlation
-        handle = this%get_handle('Jyy_Jyy') 
-        obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_l))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-
-      !! corf： x-bond's spin-x current and y-bond's spin-x current correlation
-        call spin_current_matrix(pc1,pc1_x,pc2,pc2_y,spinJxy_mat,4) ! x-bond's spinJ mat
-        handle = this%get_handle('Jxx_Jyx')
-        obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-      !! corf： x-bond's spin-y current and y-bond's spin-y current correlation
-        handle = this%get_handle('Jxy_Jyy')
-        obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-      !! corf: x-bond's spin-x current and y-bond's spin-y current correlation
-        call spin_current_matrix(pc1,pc1_x,pc2,pc2_y,spinJxy_mat,4) ! x-bond and y-bond
-        handle = this%get_handle('Jxx_Jyy')
-        obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-      !! corf: x-bond's spin-y current and y-bond's spin-x current correlation
-        handle = this%get_handle('Jxy_Jyx')
-        obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-      !! corf: den-den
-        handle = this%get_handle('den_den')
-        obs_temp = 0d0
-        obs_temp = obs_temp + (g_h(s1_u,s1_u) + g_h(s1_d,s1_d)) * (g_h(s2_u,s2_u) + g_h(s2_d,s2_d))/N_cell
-        obs_temp = obs_temp + (g_h(s2_u,s1_u) * g(s1_u,s2_u) + g_h(s2_d,s1_u)* g(s1_u,s2_d) &
-        & + g_h(s2_u,s1_d) * g(s1_d,s2_u) + g_h(s2_d,s1_d)* g(s1_d,s2_d))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-
-      !! corf: SC-SC
-        handle = this%get_handle('SC_SC')
-        obs_temp = 0d0
-        obs_temp = obs_temp + 
-        call this%record_field_entry(handle, ind, obs_temp)
-      !! corf6: Sz-Sz
-        handle = this%get_handle('Sz_Sz')
-        obs_temp = 0d0
-        obs_temp = obs_temp + (g_h(s1_u,s1_u) - g_h(s1_d,s1_d)) * (g_h(s2_u,s2_u) - g_h(s2_d,s2_d))/N_cell
-        obs_temp = obs_temp + (g_h(s2_u,s1_u) * g(s1_u,s2_u) - g_h(s2_d,s1_u)* g(s1_u,s2_d) &
-        & - g_h(s2_u,s1_d) * g(s1_d,s2_u) + g_h(s2_d,s1_d)* g(s1_d,s2_d))/N_cell
-        call this%record_field_entry(handle, ind, obs_temp)
-
-      !! corf7: Sx-Sx
-        handle = this%get_handle('Sx_Sx')
-        obs_temp = 0d0
-        obs_temp = obs_temp + (boson_field(s1,time)) * (boson_field(s2,time))
-        call this%record_field_entry(handle, ind, obs_temp)
-
-      !! corf6: Sy-Sy
-        handle = this%get_handle('Sy_Sy')
+      !! corf6: X-X
+        handle = this%get_handle('corf_XX')
         obs_temp = 0d0
         s1 =pc1%bf_list(1)
         s2 =pc2%bf_list(1)
         obs_temp = obs_temp + (boson_field(s1,time)) * (boson_field(s2,time))
         call this%record_field_entry(handle, ind, obs_temp)
+
       end do !for c2
     end do !for c1
 
@@ -628,26 +551,26 @@ contains
     write(lun, *) 'MPI_one_block=',MPI_one_block
 #endif
     write(lun, *) 'output_format="', trim(adjustl(output_format))//'"'
-    write(lun, *) '/'
+    write(lun, *) '/' 
     write(lun, *) ''
-
+    
     do i=1,this%nobs
-      write(lun,*) '&obs'
-      write(lun,*) 'name="',trim(this%names(i))//'"'
-      write(lun,*) 'kind=', this%kinds(i)
-      write(lun,*) 'width=', this%widths(i)
-      write(lun,*) 'offset_lo=', this%off_lo(i)
-      write(lun,*) 'offset_hi=', this%off_hi(i)
-      write(lun,*) '/'
-      write(lun,*) ''
+    write(lun,*) '&obs'
+    write(lun,*) 'name="',trim(this%names(i))//'"'
+    write(lun,*) 'kind=', this%kinds(i)
+    write(lun,*) 'width=', this%widths(i)
+    write(lun,*) 'offset_lo=', this%off_lo(i)
+    write(lun,*) 'offset_hi=', this%off_hi(i)
+    write(lun,*) '/'
+    write(lun,*) ''
     end do
-    close(lun)
+    close(lun)    
 
   end subroutine ms_output_reading_guide
 !======================================================================!
 !                        USER MEASUREMENT PLACEHOLDER                   !
 !======================================================================!
-!
+!  
 !======================================================================!
 
 end module dqmc_measurements

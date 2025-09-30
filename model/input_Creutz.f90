@@ -25,12 +25,10 @@ MODULE input
   logical :: global_update_flip = .true.
   logical :: global_update_exchange = .false.
   logical :: record_middata = .false.
-  logical :: debug = .true.
+  logical :: debug = .false.
   logical :: meas_corf = .true.
   logical :: fixedseeds = .false.
   logical :: second_trotter = .false.
-  logical :: TR_weight = .false.
-  LOGICAL :: TR_slater = .true.
 
 ! constant
   real(8),parameter :: e = 2.7182818284590452353602874713526624d0
@@ -40,8 +38,8 @@ MODULE input
   integer :: MPI_one_block = 1 !> number of cores in one mpi_block, = 1 if not mpi
   integer :: MPI_nblock = 1!> = numprocs/MPI_one_block
 ! MC parameter
-  integer :: warmup = 20, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
-  integer :: nbin_per_core = 20, nmeas_per_bin = 10! # of bins and size of one bin
+  integer :: warmup = 2000, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
+  integer :: nbin_per_core = 20, nmeas_per_bin = 1000! # of bins and size of one bin
 ! measurement parameter
   integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
   logical :: file_exist
@@ -52,12 +50,13 @@ MODULE input
 ! General ARGUMENTS
   character(len=100) :: nml_file = 'input.nml', output_addr = 'data/',output_format = 'f18.8',reading_guide = 'reading_guide.nml'
   character(len=200) :: task_name
-  integer :: ncopy = 1! number of flavours
+  integer :: nflv = 1, ncopy = 1 ! number of flavours
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
-  real(8) :: delt = 0.1, beta = 100d0,hop = 1d0
-  integer :: print_loop = 2
+  real(8) :: delt = 0.1, beta = 80d0,hop = 1d0
+  integer :: print_loop = 20
   integer :: lattice_dimension
+  real(8) :: prob !> accept probobility
   real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
   integer, allocatable :: field_type(:) ! field number
   real(8):: TBC_phase_number(2) = (/0d0,0d0/)
@@ -76,7 +75,7 @@ MODULE input
   real(kind=8) R_nflv ! relative boltzmann weight for different particles
   complex(8), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:)
   complex(kind=8), allocatable :: K_slater(:, :)! kinetic energy ns*ns
-  real(8), allocatable :: TR_mat(:,:)
+
 ! phonon parameter
   integer :: n_phonon_field = 4 !> number of phonon fields
   integer :: bf_sets = 2 ! number of boson fields
@@ -91,7 +90,7 @@ MODULE input
   real(8), allocatable,target :: boson_field(:,:) !(bf_sets*N_cell,time)
 
 !global update
-  complex(8) :: ln_cw = 0d0
+  real(8) :: ln_cw = 0d0
   real(8) ::  global_update_distance = 1.0d0 !>
   integer :: n_global_update = 1!>number of bonds that change in one GUD
   integer :: global_update_loop = 2
@@ -143,13 +142,13 @@ MODULE input
     !>[d_vecs,sub_index] of sites in each pla, including the first site,(lat%dim+1,ppf%dim)
     type(pf_data_type),pointer :: p_data !> phonon field data
     logical,pointer :: debug
-  end type  pf_type
+  end type pf_type
 
   type:: cell_type
     integer :: id! unique cell id
     integer, allocatable :: dpos(:) ! position of the unit cell in lattice vectors
     real(8), allocatable :: rpos(:) ! position in spatial vectors
-    integer,allocatable :: sites(:) ! sites indices in the unit cell
+    type(site_type), pointer :: sites(:) ! sites in the unit cell
     integer, allocatable :: bf_list(:) ! boson fields in this cell
   end type cell_type
 
@@ -175,7 +174,6 @@ contains
 
   SUBROUTINE init()
     implicit none
-    integer :: i
     ! parameters definition
     one_bin_tau = nmeas_per_bin/(meas_interval_tau/meas_interval)
 
@@ -189,19 +187,10 @@ contains
       omega = sqrt(D/M)
       char_length = (1d0/(M*omega))
     end if
-    jump_distance = 0.75 * (0.1d0/delt) * char_length
-    print*, 'char_length,jump_distance:',char_length,jump_distance
+    jump_distance = (5d0) * (1d0/delt) * char_length
     filling_factor = filling
     nelec = nint(Ns*filling_factor)
     U = ep_parameter**2/D
-    ! requires time-reversal symmetry
-      ! actual filling is 2 * nelec
-    if(.not.allocated(TR_mat)) allocate(TR_mat(Ns,Ns))
-        TR_mat = 0d0
-    do i = 1,Ns-1,2
-      TR_mat(i, i + 1) = 1d0
-      TR_mat(i + 1, i) = -1d0
-    end do
   end subroutine
 
   subroutine init_MPI(mpi_block)
@@ -209,11 +198,10 @@ contains
     integer :: i_pf
     character(len=20) :: temp_string
     D = 1d0
-    M = 1d0
+    M = 0d0
     ep_parameter = sqrt(mpi_block + 2d0) ! hubbard U = ep^2
-    filling = 0.5d0 ! # of states /Ns
-    ! when TR_double = .true., filling is set as half of the actual filling
-    biased_phonon = 0d0 
+    filling = 10d0/40d0
+    biased_phonon = 0d0
     call init()
 
     do i_pf = 1, n_phonon_field
@@ -263,10 +251,11 @@ contains
     ! 写入文件头
     write(unit, '(a)') repeat('*', 48)
     write(unit, '(a)') repeat(' ', 1) // repeat('*', 47)
-    write(unit, '(a)') repeat(' ', 11) // 'Epsoc_phonon_along_Z'
+    write(unit, '(a)') repeat(' ', 11) // trim(adjustl(nml_file)) // repeat(' ', 11) // '*'
     write(unit, '(a)') repeat('*', 48)
     write(unit, '(a)') repeat('*', 48)
-    write(unit, '(a)') repeat(' ', 1) // 'Hamiltonian: H = H_k + \lambda * X1 * i sigma_y J^x + X2 * i sigma_x J^y'
+    write(unit, '(a)') repeat(' ', 1) // 'Hamiltonian: H = H_k + \lambda * (n_up+n_down)'
+    write(unit, '(a)') repeat(' ', 1) // 'Biased phonon used, H_ep = \lambda * X * (n_up + n_down - <n>)'
     write(unit, '(a)') ''
 
     ! put the monte carlo paramters
@@ -313,7 +302,11 @@ contains
     write(unit, '(a)') 'List of observables, averages and errors'
     write(unit, '(a)') repeat(' ', 1) // 'Description: '
     write(unit, '(a)') repeat(' ', 3) // 'e_PE = -U/2 * (n_up + n_down)^2 = -U/2*(n_up+n_down) - U*n_up*n_down'
-    write(unit, '(a)') '#--observables--#'
+    write(unit, '(a)') repeat(' ', 3) // 'e_ph_E = < g * X * (n_up + n_down)>'
+    write(unit, '(a)') repeat(' ', 3) // 'For Hubbard model, e_TE = (e_KE + e_PE) '
+    write(unit, '(a)') repeat(' ', 3) // 'For Holstein model, e_TE = (e_KE + e_ph_E) '
+    write(unit, '(a)') repeat(' ', 3) // 'All observables are divided by Ns except N_tot'
+    write(unit, '(a)') ''
     close(unit)
     
     ! create a .nml file to store the task_name of the info_sheet

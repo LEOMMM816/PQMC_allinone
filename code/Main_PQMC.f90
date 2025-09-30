@@ -55,7 +55,7 @@ program Pqmc_main
   print*,"setting bf ends."
   ! phonon-field initialize
   print *, 'set phonon field...'
-  call set_pf_main() 
+  call set_pf_main()
   call readin_slater_pf()
   print *, 'set phonon field ends.'
 #ifdef MPI
@@ -66,7 +66,7 @@ program Pqmc_main
   call set_nelec_occupied()
   ! initialize for measurement
   call Meas_sys%init_meas()
-#ifdef MPI 
+#ifdef MPI
   print *, 'myid:',myid, '/', &
   &'lattice_diemension:',Lat%dim, '/',&
   &'filling:',filling,'nelec:', nelec,'/', &
@@ -77,7 +77,7 @@ program Pqmc_main
 #endif
 !simulation begins here
   call init_MC()
-  
+
   do loop = 1, iteration ! Monte Carlo steps ()
 
     call middle_check()
@@ -169,9 +169,9 @@ program Pqmc_main
   !call Meas_sys%aver_data_output()
 ! write (mpi-block/core) averaged data into file
 
-   !if(myid == 0) call MPI_output_final()
+  !if(myid == 0) call MPI_output_final()
 !write detailed data into file
- ! if (record_ph_field) call output_phonon_field()
+  ! if (record_ph_field) call output_phonon_field()
 ! output info_sheet
 #ifdef MPI
   if (mod(myid,MPI_one_block) == 0) call mpi_output_inforsheet()
@@ -200,9 +200,9 @@ contains
     print*,'init g_T0 finishes'
     end if
 
-  iteration = (nbin_per_core*nmeas_per_bin)*meas_interval + warmup
-  forward = .true.
-    
+    iteration = (nbin_per_core*nmeas_per_bin)*meas_interval + warmup
+    forward = .true.
+
   end subroutine
 
   subroutine middle_check()
@@ -239,7 +239,9 @@ contains
         write (110, *) 'global_update total :', (global_accept + global_reject)
       end if
       !WRITE(110,'(1f18.6)')
+      if(local_update) then
       write (110, *) 'local_update accept ratio:', real(positive_accept)/(positive_accept + negative_accept)
+      end if
       !WRITE(110,'(1f18.6)') real(positive_accept)/(positive_accept+negative_accept)
       write (110, *) 'error_fast:', err_fast_max
       !WRITE(110,'(1f18.6)') err_fast_max
@@ -273,9 +275,9 @@ contains
 
   SUBROUTINE set_k_slater()
     implicit none
-    integer :: i_pla,i_pf
+    integer :: i_pla,i_pf,i
     real(8) ::  factor
-    
+
     if (.not. allocated(K_slater)) ALLOCATE (K_slater(Ns, Ns))
     K_slater = 0
     ! build K_slater matrix from typed slater_pf
@@ -284,36 +286,41 @@ contains
       &  =  slater_pf%K_coe * slater_pf%Kmatrix
     end do
 
-    
-      allocate(K_mat(Ns,Ns),expK(Ns,Ns),expK_half(Ns,Ns),expK_inv(Ns,Ns),expK_inv_half(Ns,Ns))
-      K_mat = 0d0
-      do i_pf = 1, n_phonon_field
-        if (ppf_list(i_pf)%K_exist) then
-          do i_pla = 1, ppf_list(i_pf)%n_plaquette
+    allocate(K_mat(Ns,Ns),expK(Ns,Ns),expK_half(Ns,Ns),expK_inv(Ns,Ns),expK_inv_half(Ns,Ns))
+    K_mat = 0d0
+    do i_pf = 1, n_phonon_field
+      if (ppf_list(i_pf)%K_exist) then
+        do i_pla = 1, ppf_list(i_pf)%n_plaquette
           K_mat(ppf_list(i_pf)%p_data%pla_site_list(:,i_pla), ppf_list(i_pf)%p_data%pla_site_list(:,i_pla))&
       &  =  K_mat(ppf_list(i_pf)%p_data%pla_site_list(:,i_pla), ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) + &
       & ppf_list(i_pf)%K_coe * ppf_list(i_pf)%Kmatrix
+        end do
+      end if
+    end do
+
+    expK = -delt * K_mat
+    call expm(expk, Ns)
+    expK_half = -delt/2d0 * K_mat
+    call expm(expK_half, Ns)
+    expK_inv = delt * K_mat
+    call expm(expK_inv, Ns)
+    expK_inv_half = delt/2d0 * K_mat
+    call expm(expK_inv_half, Ns)
+
+
+    if(.false.) then
+      do i = 1,Ns
+        write(*,'(A,1i4,32f4.0)') 'K_mat:',i,real(K_slater(i,:))
       end do
-        end if
-      end do
-      
-      expK = -delt * K_mat
-      call expm(expk, Ns)
-      expK_half = -delt/2d0 * K_mat
-      call expm(expK_half, Ns)
-      expK_inv = delt * K_mat
-      call expm(expK_inv, Ns)
-      expK_inv_half = delt/2d0 * K_mat
-      call expm(expK_inv_half, Ns)
-    
+    end if
     
   END SUBROUTINE
 
   subroutine set_nelec_occupied()
 
     IMPLICIT NONE
-    INTEGER :: flv
-    REAL(8) eval(Ns), eval_comple(Ns)
+    INTEGER :: flv,i,i_elec
+    REAL(8) eval(Ns)
 
     !IF(abs(dot_product(expk_half(1,:,1),inv_expk_half(:,1,1))-1d0)>1d-6)THEN
     !   PRINT*,'expk_half has not been correctly set. It is required for 2nd-order Trotter.'
@@ -324,14 +331,17 @@ contains
     IF (.not. allocated(slater_D)) ALLOCATE (slater_D(nelec))
     IF (.not. allocated(R_string)) ALLOCATE (R_string(nelec, nelec))
     !open(39,file='eval.dat')
-
-    CALL eigen(Ns, K_slater(:, :), eval)
-
+    CALL eigen(Ns, K_slater(:, :), eval)      
+    if(TR_SLATER) THEN
+    slater(:, 1:nelec/2) = K_slater(:, 1:nelec/2)
+    slater(:, nelec/2+1:nelec) = conjg(MATMUL(TR_mat,K_slater(:, 1:nelec/2)))
+    ELSE
     slater(:, 1:nelec) = K_slater(:, 1:nelec)
+    END IF
     slater_Q(:, 1:nelec) = slater(:, 1:nelec)
     CALL qdr(Ns, nelec, slater_Q(:, 1:nelec), R_string(1:nelec, 1:nelec), slater_D(1:nelec))
-
     !close(39)
+    
   end subroutine
 
   subroutine init_boson_field()

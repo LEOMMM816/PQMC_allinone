@@ -113,7 +113,7 @@ contains
             typed_sites(site_id)%p_uc => typed_cells(i) ! pointer to the cell
 
         end do 
-      typed_cells(i)%sites => typed_sites((i - 1) * lat%n_subsite_uc + 1:i * lat%n_subsite_uc)
+      typed_cells(i)%sites = [ ( j, j=1, lat%n_subsite_uc ) ] + (i-1)*lat%n_subsite_uc
 
     end do
     ! Assign the pointer to the typed_sites

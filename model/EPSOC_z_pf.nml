@@ -9,7 +9,7 @@ n_subsite_uc = 2
 /
 
 &lat_spatial
-  lat_size = 4,4
+  lat_size = 8,8
   lat_vec = 1,0,
               0,1
 /
@@ -177,3 +177,21 @@ n_subsite_uc = 2
     random_range = 1 ! range of random number for initial boson field, in unit of character length
     offset = 2 ! range of random number for initial boson field, in unit of character length
 /
+
+&observable name="BF_KE",   obskind="scalar"/
+&observable name="BF_PE",   obskind="scalar"/
+&observable name="El_KEx",  obskind="scalar"/
+&observable name="El_KEy",  obskind="scalar"/
+&observable name="El_PE",   obskind="scalar"/
+&observable name="ElPH_E",  obskind="scalar"/
+&observable name="El_E",    obskind="scalar"/
+&observable name="BF_X",    obskind="scalar"/
+&observable name="El_den",  obskind="scalar"/
+&observable name="El_docc", obskind="scalar"/
+&observable name="corf_G1",   obskind="field"/
+&observable name="corf_G2",   obskind="field"/  
+&observable name="corf_nunu", obskind="field"/
+&observable name="corf_nund", obskind="field"/
+&observable name="corf_nn",   obskind="field"/
+&observable name="corf_XX",   obskind="field"/
+
