@@ -9,7 +9,7 @@ n_subsite_uc = 2
 /
 
 &lat_spatial
-  lat_size = 8,8
+  lat_size = 4,4
   lat_vec = 1,0,
               0,1
 /
@@ -180,18 +180,22 @@ n_subsite_uc = 2
 
 &observable name="BF_KE",   obskind="scalar"/
 &observable name="BF_PE",   obskind="scalar"/
-&observable name="El_KEx",  obskind="scalar"/
-&observable name="El_KEy",  obskind="scalar"/
-&observable name="El_PE",   obskind="scalar"/
-&observable name="ElPH_E",  obskind="scalar"/
-&observable name="El_E",    obskind="scalar"/
 &observable name="BF_X",    obskind="scalar"/
-&observable name="El_den",  obskind="scalar"/
-&observable name="El_docc", obskind="scalar"/
-&observable name="corf_G1",   obskind="field"/
-&observable name="corf_G2",   obskind="field"/  
-&observable name="corf_nunu", obskind="field"/
-&observable name="corf_nund", obskind="field"/
-&observable name="corf_nn",   obskind="field"/
-&observable name="corf_XX",   obskind="field"/
+&observable name="BFx_BFx", obskind="field"/
+&observable name="BFx_BFy", obskind="field"/
+&observable name="BFy_BFy", obskind="field"/
+&observable name="Jxx_Jxx", obskind="field"/
+&observable name="Jxy_Jxy", obskind="field"/
+&observable name="Jyx_Jyx", obskind="field"/
+&observable name="Jyy_Jyy", obskind="field"/
+&observable name="Jxx_Jyx", obskind="field"/
+&observable name="Jxy_Jyy", obskind="field"/
+&observable name="Jxx_Jyy", obskind="field"/
+&observable name="Jxy_Jyx", obskind="field"/
+&observable name="den_den", obskind="field"/
+&observable name="SC_SC",   obskind="field"/
+&observable name="Sz_Sz",   obskind="field"/
+&observable name="Sx_Sx",   obskind="field"/
+&observable name="Sy_Sy",   obskind="field"/
+
 

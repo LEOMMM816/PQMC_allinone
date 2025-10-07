@@ -57,31 +57,9 @@ contains
 !                             TAKE MEASUREMENTS                           !
 !======================================================================!
 
-
-  complex(8) function spin_x_cur_hatree(pc1,pc2) result(re)
-    implicit none
-    type(cell_type), pointer :: pc1,pc2
-    integer :: s1_u,s1_d,s2_u,s2_d
-    s1_u = pc1%sites(1)
-    s1_d = pc1%sites(2)
-    s2_u = pc2%sites(1)
-    s2_d = pc2%sites(2)
-    re = (0,-1d0) * (g_h(s2_d,s1_u) + g_h(s2_u,s1_d) - g_h(s1_d,s2_u) - g_h(s1_u,s2_d))
-  end function spin_x_cur_hatree
-
-  complex(8) function spin_y_cur_hatree(pc1,pc2) result(re)
-    implicit none
-    type(cell_type), pointer :: pc1,pc2
-    integer :: s1_u,s1_d,s2_u,s2_d
-    s1_u = pc1%sites(1)
-    s1_d = pc1%sites(2)
-    s2_u = pc2%sites(1)
-    s2_d = pc2%sites(2)
-    re =  (-g_h(s2_d,s1_u) + g_h(s2_u,s1_d) + g_h(s1_d,s2_u) - g_h(s1_u,s2_d))
-  end function spin_y_cur_hatree
-
   subroutine spin_current_matrix(pc1,pc2,pc3,pc4,mat,n_g) 
     ! this function computes the two-body matrix element of the spin current operator
+    ! spin current correation between i-j bond and k-l bond
     ! [ci1* cj2 , ci2* cj1, cj1* ci2, cj2* ci1] [i,j -> k,l]
     ! pc1,pc2 are the left operators, pc3,pc4 are the right operators, 1,2 are spin indices
     ! n_g is the number of one-body operators in each current operator, for spin_x(y) current n_g = 4
@@ -91,28 +69,54 @@ contains
     integer, intent(in) :: n_g ! # of one-body operators in each current operator
     type(cell_type), pointer,intent(in) :: pc1,pc2,pc3,pc4
     complex(8), intent(inout) :: mat(n_g,n_g)
-    integer :: lsitelist(n_g,2), rsitelist(n_g,2),i,j
+    integer :: ls(n_g,2), rs(n_g,2),i,j
     mat = 0.0d0
-    lsitelist(1,:) = [pc1%sites(1),pc2%sites(2)]
-    lsitelist(2,:) = [pc1%sites(2),pc2%sites(1)]
-    lsitelist(3,:) = [pc2%sites(1),pc1%sites(2)]
-    lsitelist(4,:) = [pc2%sites(2),pc1%sites(1)]
-    rsitelist(1,:) = [pc3%sites(1),pc4%sites(2)]
-    rsitelist(2,:) = [pc3%sites(2),pc4%sites(1)]
-    rsitelist(3,:) = [pc4%sites(1),pc3%sites(2)]
-    rsitelist(4,:) = [pc4%sites(2),pc3%sites(1)]
+    ls(1,:) = [pc1%sites(1),pc2%sites(2)]
+    ls(2,:) = [pc1%sites(2),pc2%sites(1)]
+    ls(3,:) = [pc2%sites(1),pc1%sites(2)]
+    ls(4,:) = [pc2%sites(2),pc1%sites(1)]
+    rs(1,:) = [pc3%sites(1),pc4%sites(2)]
+    rs(2,:) = [pc3%sites(2),pc4%sites(1)]
+    rs(3,:) = [pc4%sites(1),pc3%sites(2)]
+    rs(4,:) = [pc4%sites(2),pc3%sites(1)]
     
     do i = 1,n_g
       do j = 1,n_g
         ! hatree part + fock part
         ! <ci1* cj2 , ci2* cj1> = <ci1* cj2> <ci2* cj1> + <ci1* cj1> <cj2* ci2>
-        mat(i,j) = (g_h(lsitelist(i,2),lsitelist(i,1)) * g_h(rsitelist(j,2),rsitelist(j,1)) & 
-        & + g_h(rsitelist(j,2),lsitelist(i,1)) * g(lsitelist(i,2),rsitelist(j,1)))
+        mat(i,j) = (g_h(ls(i,2),ls(i,1)) * g_h(rs(j,2),rs(j,1)) & 
+        & + g_h(rs(j,2),ls(i,1)) * g(ls(i,2),rs(j,1)))
       end do
     end do
 
   end subroutine spin_current_matrix
   
+  subroutine spin_momentum_matrix(pc1,pc2,mat,n_g)
+    implicit none
+    integer, intent(in) :: n_g != 4 in this case,# of one-body operators in each momentum operator
+    type(cell_type), pointer,intent(in) :: pc1,pc2
+    complex(8), intent(inout) :: mat(n_g,n_g)
+    integer :: ls(n_g,2), rs(n_g,2),i,j
+    mat = 0.0d0
+    ls(1,:) = [pc1%sites(1),pc1%sites(1)] ! 1_up, 1_up
+    ls(2,:) = [pc1%sites(1),pc1%sites(2)] ! 1_up, 1_dn
+    ls(3,:) = [pc1%sites(2),pc1%sites(1)] ! 1_dn, 1_up
+    ls(4,:) = [pc1%sites(2),pc1%sites(2)] ! 1_dn, 1_dn
+    rs(1,:) = [pc2%sites(1),pc2%sites(1)] ! 2_up, 2_up
+    rs(2,:) = [pc2%sites(1),pc2%sites(2)] ! 2_up, 2_dn
+    rs(3,:) = [pc2%sites(2),pc2%sites(1)] ! 2_dn, 2_up
+    rs(4,:) = [pc2%sites(2),pc2%sites(2)] ! 2_dn, 2_dn
+
+    do i = 1,n_g
+      do j = 1,n_g
+        ! hatree part + fock part
+        ! <ci1* cj2 , ci2* cj1> = <ci1* cj2> <ci2* cj1> + <ci1* cj1> <cj2* ci2>
+        mat(i,j) = (g_h(ls(i,2),ls(i,1)) * g_h(rs(j,2),rs(j,1)) &
+        & + g_h(rs(j,2),ls(i,1)) * g(ls(i,2),rs(j,1)))
+      end do
+    end do
+
+  end subroutine spin_momentum_matrix
   
   SUBROUTINE ms_take_measurement(this, time)
 
@@ -123,9 +127,9 @@ contains
     integer :: head, bin , handle, N_cell,La,Lb,ind
     integer ::   i,j,c1,c2,s1_u, s1_d,bf1_x,bf1_y, s2_u, s2_d,bf2_x,bf2_y
     complex(kind=8) :: factor ! phase factor of the position (should be complex in general)
-    complex(dp) :: obs_temp,  t_s1_c, t_s2_c
+    complex(dp) :: obs_temp
     type(cell_type), pointer :: pc1,pc1_x,pc1_y, pc2, pc2_x,pc2_y
-    complex(8) :: spinJxy_mat(4,4),sJ_vec_l(4),sJ_vec_r(4)
+    complex(8) :: spinJxy_mat(4,4),spinM_mat(4,4),vec_l(4),vec_r(4)
     La = Lat%dlength(1)
     Lb = Lat%dlength(2)
     N_cell = Lat%N_cell
@@ -144,15 +148,17 @@ contains
       s1_d = pc1%sites(2)
       bf1_x = pc1%bf_list(1)
       bf1_y = pc1%bf_list(2)
-
+      print*, "measuring at cell ", c1, " at pos ", pc1%dpos
     !! obs: phonon kinetic energy
       handle = this%get_handle('BF_KE')
+      print*,"handle for BF_KE is ", handle
       obs_temp = 0d0
       obs_temp = obs_temp + 0.5d0 * D * sum(boson_field(pc1%bf_list,time)**2) &
       & - biased_phonon * sum(boson_field(pc1%bf_list,time))
       obs_temp = obs_temp/N_cell
+      print*, "before record phonon KE ", obs_temp
       call this%record_scalar(handle, obs_temp)
-
+      print*, "phonon KE ", obs_temp
     !! obs: phonon kinetic energy
       handle = this%get_handle('BF_PE')
       obs_temp = 0d0
@@ -161,12 +167,13 @@ contains
       obs_temp = obs_temp + 1d0/(2d0*delt) * 2 
       obs_temp = obs_temp/N_cell
       call this%record_scalar(handle, obs_temp)
-
+      print*, "phonon PE ", obs_temp
     !! obs : ph_X
       handle = this%get_handle('BF_X')
       obs_temp = 0d0
       obs_temp = obs_temp + sum(boson_field(pc1%bf_list,time))/N_cell
       call this%record_scalar(this%get_handle('BF_X'), obs_temp)
+      print*, "phonon field X ", obs_temp
     !! corfs are measured between two unit cells, pc2 is introduced
       do c2 = 1, N_cell
       !! preparation for correlation functions
@@ -181,7 +188,7 @@ contains
         bf2_y = pc2%bf_list(2)
         call get_relative_index(ind,pc1%dpos,pc2%dpos)
         ! ind is the relative index of pc2 to pc1, used to index the correlation functions as an array data
-
+        print*, "  correlating with cell ", c2, " at pos ", pc2%dpos, " relative index ", ind
       !! corf: bf1-bf1
         handle = this%get_handle('BFx_BFx')
         obs_temp = 0d0
@@ -197,106 +204,110 @@ contains
         obs_temp = 0d0
         obs_temp = obs_temp + (boson_field(bf1_y,time)) * (boson_field(bf2_y,time))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
-
-
-        
+        print*,"before spin current correlation"
       !! corf1: x-bond's spin-x current correlation
         call spin_current_matrix(pc1,pc1_x,pc2,pc2_x,spinJxy_mat,4) ! x-bond's spinJ mat
         handle = this%get_handle('Jxx_Jxx')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf2: x-bond's spin-y current correlation
         handle = this%get_handle('Jxy_Jxy')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf3: y-bond's spin-x current correlation
         call spin_current_matrix(pc1,pc1_y,pc2,pc2_y,spinJxy_mat,4) ! y-bond's spinJ mat
         handle = this%get_handle('Jyx_Jyx')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf4: y-bond's spin-y current correlation
         handle = this%get_handle('Jyy_Jyy') 
         obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = sJ_vec_l
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_l))/N_cell
+        vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_l))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf： x-bond's spin-x current and y-bond's spin-x current correlation
         call spin_current_matrix(pc1,pc1_x,pc2,pc2_y,spinJxy_mat,4) ! x-bond's spinJ mat
         handle = this%get_handle('Jxx_Jyx')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf： x-bond's spin-y current and y-bond's spin-y current correlation
         handle = this%get_handle('Jxy_Jyy')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf: x-bond's spin-x current and y-bond's spin-y current correlation
         call spin_current_matrix(pc1,pc1_x,pc2,pc2_y,spinJxy_mat,4) ! x-bond and y-bond
         handle = this%get_handle('Jxx_Jyy')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        sJ_vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf: x-bond's spin-y current and y-bond's spin-x current correlation
         handle = this%get_handle('Jxy_Jyx')
         obs_temp = 0d0
-        sJ_vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
-        sJ_vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
-        obs_temp = obs_temp + sum(sJ_vec_l * matmul(spinJxy_mat, sJ_vec_r))/N_cell
+        vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
+        print*,"before spin momentum correlation"
+      call spin_momentum_matrix(pc1,pc2,spinM_mat,4) ! spin momentum mat
       !! corf: den-den
         handle = this%get_handle('den_den')
         obs_temp = 0d0
-        obs_temp = obs_temp + (g_h(s1_u,s1_u) + g_h(s1_d,s1_d)) * (g_h(s2_u,s2_u) + g_h(s2_d,s2_d))/N_cell
-        obs_temp = obs_temp + (g_h(s2_u,s1_u) * g(s1_u,s2_u) + g_h(s2_d,s1_u)* g(s1_u,s2_d) &
-        & + g_h(s2_u,s1_d) * g(s1_d,s2_u) + g_h(s2_d,s1_d)* g(s1_d,s2_d))/N_cell
+        vec_l = [1,0,0,1]/2d0
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinM_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf: SC-SC
         handle = this%get_handle('SC_SC')
         obs_temp = 0d0
-        obs_temp = obs_temp + 
+        obs_temp = obs_temp + (g_h(s2_u,s1_u) * g_h(s2_d,s1_d)- g_h(s2_d,s1_u)*g_h(s2_u,s1_d))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
+      
+      
       !! corf6: Sz-Sz
         handle = this%get_handle('Sz_Sz')
         obs_temp = 0d0
-        obs_temp = obs_temp + (g_h(s1_u,s1_u) - g_h(s1_d,s1_d)) * (g_h(s2_u,s2_u) - g_h(s2_d,s2_d))/N_cell
-        obs_temp = obs_temp + (g_h(s2_u,s1_u) * g(s1_u,s2_u) - g_h(s2_d,s1_u)* g(s1_u,s2_d) &
-        & - g_h(s2_u,s1_d) * g(s1_d,s2_u) + g_h(s2_d,s1_d)* g(s1_d,s2_d))/N_cell
+        vec_l = [1,0,0,-1]/2d0
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinM_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf7: Sx-Sx
         handle = this%get_handle('Sx_Sx')
         obs_temp = 0d0
-        obs_temp = obs_temp + (boson_field(s1,time)) * (boson_field(s2,time))
+        vec_l = [0,1,1,0]/2d0
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinM_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
       !! corf6: Sy-Sy
         handle = this%get_handle('Sy_Sy')
         obs_temp = 0d0
-        s1 =pc1%bf_list(1)
-        s2 =pc2%bf_list(1)
-        obs_temp = obs_temp + (boson_field(s1,time)) * (boson_field(s2,time))
+        vec_l = (0,1) * [0,-1,1,0]/2d0
+        vec_r = vec_l
+        obs_temp = obs_temp + sum(vec_l * matmul(spinM_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
       end do !for c2
     end do !for c1
@@ -508,9 +519,12 @@ contains
     integer :: lo, hi, width, obskind, b, m
     if(handle == -1) return
     call this%get_range_by_handle(handle, lo, hi, width, obskind)
+    print*, "recording scalar at handle ", handle, " lo,hi,width,obskind ", lo,hi,width,obskind
     if (obskind /= KIND_SCALAR) error stop "record_scalar: not a scalar handle"
-    b = merge(bin, this%cur_bin, present(bin))
-    m = merge(meas, this%cur_meas, present(meas))
+    b = this%cur_bin
+    m = this%cur_meas
+    print*, "recording scalar at bin ", b, " meas ", m
+    print*," value ", value
     if (b<1 .or. b>this%nbins) error stop "record_scalar: bin out of range"
     if (m<1 .or. m>this%nmeas) error stop "record_scalar: meas out of range"
     this%data(lo, m, b) = this%data(lo, m, b) + value
@@ -546,8 +560,8 @@ contains
     call this%get_range_by_handle(handle, lo, hi, width, obskind)
     if (obskind /= KIND_FIELD) error stop "record_field_entry: not a field handle"
     if (idx<1 .or. idx>width) error stop "record_field_entry: idx out of range"
-    b = merge(bin, this%cur_bin, present(bin))
-    m = merge(meas, this%cur_meas, present(meas))
+    b = this%cur_bin
+    m = this%cur_meas
     if (b<1 .or. b>this%nbins) error stop "record_field_entry: bin out of range"
     if (m<1 .or. m>this%nmeas) error stop "record_field_entry: meas out of range"
     this%data(lo+idx-1, m, b) = this%data(lo+idx-1, m, b) + value

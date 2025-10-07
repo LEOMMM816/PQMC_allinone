@@ -15,14 +15,14 @@ MODULE input
   logical :: import_ph_field = .false.
   logical :: greatest_decent = .false.
   logical :: local_update = .true.
-  logical :: Kspace_GU = .false.
+  logical :: Kspace_GU = .true.
   logical :: x_y_inv = .false.
   logical :: ML_weight = .false.
   logical :: ML_update = .false.
   logical :: TBC = .false.
-  logical :: global_update = .false.
+  logical :: global_update = .true.
   logical :: global_update_shift = .false.
-  logical :: global_update_flip = .true.
+  logical :: global_update_flip = .false.
   logical :: global_update_exchange = .false.
   logical :: record_middata = .false.
   logical :: debug = .true.
@@ -40,7 +40,7 @@ MODULE input
   integer :: MPI_one_block = 1 !> number of cores in one mpi_block, = 1 if not mpi
   integer :: MPI_nblock = 1!> = numprocs/MPI_one_block
 ! MC parameter
-  integer :: warmup = 20, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
+  integer :: warmup = 0, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
   integer :: nbin_per_core = 20, nmeas_per_bin = 10! # of bins and size of one bin
 ! measurement parameter
   integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
@@ -55,7 +55,7 @@ MODULE input
   integer :: ncopy = 1! number of flavours
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
-  real(8) :: delt = 0.1, beta = 100d0,hop = 1d0
+  real(8) :: delt = 0.1, beta = 2d0,hop = 1d0
   integer :: print_loop = 2
   integer :: lattice_dimension
   real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
@@ -79,7 +79,7 @@ MODULE input
   real(8), allocatable :: TR_mat(:,:)
 ! phonon parameter
   integer :: n_phonon_field = 4 !> number of phonon fields
-  integer :: bf_sets = 2 ! number of boson fields
+  integer :: bf_sets ! number of boson fields
   integer :: n_boson_field ! number of decomposed phonon field
   real(8) :: D = 1d0,M = 1d0 !>stiffness constant and Mass
   real(8) :: char_length = 1.0 !> characteristic length of phonon field
@@ -190,6 +190,7 @@ contains
       char_length = (1d0/(M*omega))
     end if
     jump_distance = 0.75 * (0.1d0/delt) * char_length
+    global_update_distance =  jump_distance
     print*, 'char_length,jump_distance:',char_length,jump_distance
     filling_factor = filling
     nelec = nint(Ns*filling_factor)

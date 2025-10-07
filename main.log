@@ -1,10 +1,10 @@
  numprocs:           1 mpi_nblock:           1 MPI_one_block:           1
- myid:           0 seed:  1374433863   375656227   665610501  1635960364   -33521617
+ myid:           0 seed:   143525654  1281901971   217912697  -923286600  1062916944
  setting lattice...
  Lattice dimension:           2
  Lattice dimension from file:           2
  Lattice dimension:           2
- Lattice lengths:           8           8
+ Lattice lengths:           4           4
  Lattice spatial vectors:
    1.0000000000000000        0.0000000000000000     
    0.0000000000000000        1.0000000000000000     
@@ -12,11 +12,11 @@
  site unit cell vectors:
    0.0000000000000000        0.0000000000000000     
    0.0000000000000000        0.0000000000000000     
- Total number of sites in the lattice:         128
+ Total number of sites in the lattice:          32
  Lattice periodicity: T
- Lattice unit cell count:          64
- Lattice size:           8           8
- Lattice spatial lengths:   8.0000000000000000        8.0000000000000000     
+ Lattice unit cell count:          16
+ Lattice size:           4           4
+ Lattice spatial lengths:   4.0000000000000000        4.0000000000000000     
  Lattice spatial vectors:
    1.0000000000000000        0.0000000000000000     
    0.0000000000000000        1.0000000000000000     
@@ -26,13 +26,66 @@
  setting boson field...
  setting bf ends.
  set phonon field...
- i_pf:           1 id:           1 K_exist T V_exist T dim:           4 n_plaquette:          32
- i_pf:           2 id:           2 K_exist T V_exist T dim:           4 n_plaquette:          32
- i_pf:           3 id:           3 K_exist T V_exist T dim:           4 n_plaquette:          32
- i_pf:           4 id:           4 K_exist T V_exist T dim:           4 n_plaquette:          32
+ i_pf:           1 id:           1 K_exist T V_exist T dim:           4 n_plaquette:           8
+ i_pf:           2 id:           2 K_exist T V_exist T dim:           4 n_plaquette:           8
+ i_pf:           3 id:           3 K_exist T V_exist T dim:           4 n_plaquette:           8
+ i_pf:           4 id:           4 K_exist T V_exist T dim:           4 n_plaquette:           8
  set phonon field ends.
  char_length,jump_distance:   1.0000000000000000       0.74999998882412933     
           20          20
- MeasurementSystem: found           16  observables.
- myid:           0 /lattice_diemension:           2 /filling:  0.50000000000000000      nelec:          64 /beta,ntime,lambda,nblock   100.00000000000000             1000   1.7320508075688772              202
+ MeasurementSystem: found           19  observables.
+ myid:           0 /lattice_diemension:           2 /filling:  0.50000000000000000      nelec:          16 /beta,ntime,lambda,nblock   2.0000000000000000               20   1.7320508075688772                6
  init g_T0 finishes
+ measuring at cell            1  at pos            0           0
+ handle for BF_KE is            1
+ before record phonon KE          (9.86459828740440942E-002,0.0000000000000000)
+ recording scalar at handle            1  lo,hi,width,obskind            1           1           1           1
+ recording scalar at bin            1  meas            1
+  value          (9.86459828740440942E-002,0.0000000000000000)
+ phonon KE          (9.86459828740440942E-002,0.0000000000000000)
+ recording scalar at handle            2  lo,hi,width,obskind            2           2           1           1
+ recording scalar at bin            1  meas            1
+  value               (-4.4444795514619431,0.0000000000000000)
+ phonon PE               (-4.4444795514619431,0.0000000000000000)
+ recording scalar at handle            3  lo,hi,width,obskind            3           3           1           1
+ recording scalar at bin            1  meas            1
+  value              (-0.15703974012091881,0.0000000000000000)
+ phonon field X              (-0.15703974012091881,0.0000000000000000)
+   correlating with cell            1  at pos            0           0  relative index            1
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            2  at pos            1           0  relative index            2
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            3  at pos            2           0  relative index            3
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            4  at pos            3           0  relative index            4
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            5  at pos            0           1  relative index            5
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            6  at pos            1           1  relative index            6
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            7  at pos            2           1  relative index            7
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            8  at pos            3           1  relative index            8
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell            9  at pos            0           2  relative index            9
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell           10  at pos            1           2  relative index           10
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell           11  at pos            2           2  relative index           11
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell           12  at pos            3           2  relative index           12
+ before spin current correlation
+ before spin momentum correlation
+   correlating with cell           13  at pos            0           3  relative index           13
+ before spin current correlation

@@ -87,15 +87,10 @@ program Pqmc_main
     ! global update
     if (.not. forward .and. mod(loop + 1, global_update_loop) == 0 .and. global_update) then
       updated = .false.
-
-      global_update_flip = .not. global_update_flip
-      global_update_shift = .not. global_update_shift
-      global_update_exchange = .false.
+      !call update_global()
+      !Kspace_GU = .not. Kspace_GU
+      !global_update_shift = .not. global_update_shift
       call update_global()
-
-      global_update_exchange = .true.
-      call update_global()
-
       if(updated) call init_g_T0()
 
     end if
