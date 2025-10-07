@@ -79,7 +79,6 @@ contains
     rs(2,:) = [pc3%sites(2),pc4%sites(1)]
     rs(3,:) = [pc4%sites(1),pc3%sites(2)]
     rs(4,:) = [pc4%sites(2),pc3%sites(1)]
-    
     do i = 1,n_g
       do j = 1,n_g
         ! hatree part + fock part
@@ -148,17 +147,13 @@ contains
       s1_d = pc1%sites(2)
       bf1_x = pc1%bf_list(1)
       bf1_y = pc1%bf_list(2)
-      print*, "measuring at cell ", c1, " at pos ", pc1%dpos
     !! obs: phonon kinetic energy
       handle = this%get_handle('BF_KE')
-      print*,"handle for BF_KE is ", handle
       obs_temp = 0d0
       obs_temp = obs_temp + 0.5d0 * D * sum(boson_field(pc1%bf_list,time)**2) &
       & - biased_phonon * sum(boson_field(pc1%bf_list,time))
       obs_temp = obs_temp/N_cell
-      print*, "before record phonon KE ", obs_temp
       call this%record_scalar(handle, obs_temp)
-      print*, "phonon KE ", obs_temp
     !! obs: phonon kinetic energy
       handle = this%get_handle('BF_PE')
       obs_temp = 0d0
@@ -167,13 +162,11 @@ contains
       obs_temp = obs_temp + 1d0/(2d0*delt) * 2 
       obs_temp = obs_temp/N_cell
       call this%record_scalar(handle, obs_temp)
-      print*, "phonon PE ", obs_temp
     !! obs : ph_X
       handle = this%get_handle('BF_X')
       obs_temp = 0d0
       obs_temp = obs_temp + sum(boson_field(pc1%bf_list,time))/N_cell
       call this%record_scalar(this%get_handle('BF_X'), obs_temp)
-      print*, "phonon field X ", obs_temp
     !! corfs are measured between two unit cells, pc2 is introduced
       do c2 = 1, N_cell
       !! preparation for correlation functions
@@ -188,7 +181,6 @@ contains
         bf2_y = pc2%bf_list(2)
         call get_relative_index(ind,pc1%dpos,pc2%dpos)
         ! ind is the relative index of pc2 to pc1, used to index the correlation functions as an array data
-        print*, "  correlating with cell ", c2, " at pos ", pc2%dpos, " relative index ", ind
       !! corf: bf1-bf1
         handle = this%get_handle('BFx_BFx')
         obs_temp = 0d0
@@ -204,7 +196,6 @@ contains
         obs_temp = 0d0
         obs_temp = obs_temp + (boson_field(bf1_y,time)) * (boson_field(bf2_y,time))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
-        print*,"before spin current correlation"
       !! corf1: x-bond's spin-x current correlation
         call spin_current_matrix(pc1,pc1_x,pc2,pc2_x,spinJxy_mat,4) ! x-bond's spinJ mat
         handle = this%get_handle('Jxx_Jxx')
@@ -269,7 +260,6 @@ contains
         vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
-        print*,"before spin momentum correlation"
       call spin_momentum_matrix(pc1,pc2,spinM_mat,4) ! spin momentum mat
       !! corf: den-den
         handle = this%get_handle('den_den')
@@ -519,12 +509,9 @@ contains
     integer :: lo, hi, width, obskind, b, m
     if(handle == -1) return
     call this%get_range_by_handle(handle, lo, hi, width, obskind)
-    print*, "recording scalar at handle ", handle, " lo,hi,width,obskind ", lo,hi,width,obskind
     if (obskind /= KIND_SCALAR) error stop "record_scalar: not a scalar handle"
     b = this%cur_bin
     m = this%cur_meas
-    print*, "recording scalar at bin ", b, " meas ", m
-    print*," value ", value
     if (b<1 .or. b>this%nbins) error stop "record_scalar: bin out of range"
     if (m<1 .or. m>this%nmeas) error stop "record_scalar: meas out of range"
     this%data(lo, m, b) = this%data(lo, m, b) + value

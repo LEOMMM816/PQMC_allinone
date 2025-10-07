@@ -119,7 +119,7 @@ MODULE input
   type :: lat_type
     logical :: periodic
     integer :: dim,n_subsite_uc,N_cell,Ns
-    integer, allocatable :: dlength(:)
+    integer, allocatable :: dlength(:) !> # of unitcell along each direction
     real(8), allocatable :: rlength(:) ! length of the lattice in each dimension
     real(8),allocatable :: tsl_rvec(:,:),subsite_rvec(:,:)
     ! tsl_rvec is the lattice vectors in spatial vectors

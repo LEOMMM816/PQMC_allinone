@@ -196,11 +196,17 @@ contains
     
     integer, intent(in) :: dpos(:)
     integer, intent(out) :: ind
+    integer :: dpos_copy(size(dpos))
     integer :: i
+    dpos_copy = dpos
     
+    do i = 1,size(dpos)
+      if(dpos_copy(i) < 0) dpos_copy(i) = dpos_copy(i) + lat%dlength(i) ! Handle negative positions
+      dpos_copy(i) = mod(dpos_copy(i), lat%dlength(i)) ! Ensure dpos is within bounds (0-based)
+    end do
     ind = 1 ! Start from 1 for 1-based index
     do i = size(dpos), 1, -1
-      ind = ind + dpos(i) * product(lat%dlength(1:i-1), mask=(i>1))
+      ind = ind + dpos_copy(i) * product(lat%dlength(1:i-1), mask=(i>1))
     end do
     
   end subroutine get_uc_index_from_dpos
