@@ -1,4 +1,5 @@
 PQMC_allinone_git
+
 0. Originally intended for one specific QMC project, now it is extended to be able to manage all kinds of lattice and interactions as the repo name implies. 
 One only need to edit the model_file as input. There are two example files in the model folder.
 Not for quasi-crystal. Measurables still needs some case-by-case coding. 
