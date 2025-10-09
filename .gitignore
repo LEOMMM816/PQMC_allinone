@@ -1,3 +1,4 @@
+%s\n *.out *.log
 *.mod
 # Ignore Fortran module files
 code/**/*.mod
