@@ -2,3 +2,4 @@
 *.mod
 # Ignore Fortran module files
 code/**/*.mod
+**/*.dSYM/
