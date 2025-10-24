@@ -33,6 +33,8 @@ program Pqmc_main
   end if
   write (ci_myid, '(i4.4)') myid
   nml_file = 'namelists/input'//trim(adjustl(ci_myid))//'.nml'
+  write(mpi_info,'(1i4)') myid
+  mpi_info = 'No. '//trim(adjustl(mpi_info))//' processes'
   if ( fixedseeds ) then
     call init_rng_by_seed(122)
     print *, 'seed:', ranseeds
@@ -77,7 +79,7 @@ program Pqmc_main
 #endif
 !simulation begins here
   call init_MC()
-
+  print *, 'Monte Carlo starts with ln_cw:', ln_cw
   do loop = 1, iteration ! Monte Carlo steps ()
 
     call middle_check()
@@ -147,13 +149,7 @@ program Pqmc_main
         end if
       end if
 
-      if (loop > warmup .and. mod(loop - warmup, meas_interval_tau) == 0) then
-        if(time_count == ntime/2-ntau/2 .and. forward) then
-          ! if forward, time = ntime/2-ntau/2, G = G(time+1) = G(ntime/2+1-ntau/2)
-          !  call measure_along_tau()
-        end if
-      end if ! for measurement
-
+    
     end do ! for time in 1 :ntime
 
   end do ! for MCS
@@ -367,8 +363,8 @@ contains
         print*,'ios:',ios
         stop
       end if
-      random_range = random_range * char_length
-      offset = offset * char_length
+      random_range = 0.5d0 * random_range * char_length
+      offset = 0.5d0 * offset * char_length
       do l = 1, ntime
         !boson_field(:,:,l,flv,i_pf) = K
         do i_cell = 1, Lat%N_cell
@@ -382,8 +378,8 @@ contains
 
       !boson_field = 0d0
       !k_max = 40
-      boson_field(:,1) = end_field
-      boson_field(:,ntime) = end_field
+      !boson_field(:,1) = end_field
+      !boson_field(:,ntime) = end_field
 
     else ! import phonon field
 

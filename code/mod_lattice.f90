@@ -1,5 +1,6 @@
 Module lattice
  use input
+ use matrixlib
 contains
  
   subroutine set_lattice_main()
@@ -14,7 +15,7 @@ contains
   subroutine readin_lattice_para()
 
     implicit none
-    integer :: i_pf
+    integer :: i_pf,i_dim
     integer :: dim,n_subsite_uc
     integer, allocatable :: lat_size(:)
     real(8), allocatable :: lat_vec(:), site_vec(:)
@@ -71,13 +72,13 @@ contains
     print *, "Lattice dimension:", lat%dim
     print *, "Lattice lengths:", lat%dlength
     print *, "Lattice spatial vectors:"
-    do i_pf = 1, dim
-      print *, lat%tsl_rvec(:,i_pf)  
+    do i_dim = 1, dim
+      print *, lat%tsl_rvec(:,i_dim)  
     end do 
     print *, "Number of sites in unit cell:", lat%n_subsite_uc
     print *, "site unit cell vectors:"
-    do i_pf = 1, lat%n_subsite_uc
-      print *, lat%subsite_rvec(:,i_pf)
+    do i_dim = 1, lat%n_subsite_uc
+      print *, lat%subsite_rvec(:,i_dim)
     end do
   end subroutine readin_lattice_para
 
@@ -116,6 +117,11 @@ contains
       typed_cells(i)%sites = [ ( j, j=1, lat%n_subsite_uc ) ] + (i-1)*lat%n_subsite_uc
 
     end do
+
+    ! calculate the reciprocal lattice vectors
+    allocate(lat%recip_vec(lat%dim,lat%dim),lat%FBZ(lat%dim,lat%N_cell),lat%k_phase(lat%N_cell,lat%N_cell))
+    call calculate_1stBZ(lat%tsl_rvec, lat%recip_vec, lat%dim,lat%FBZ, lat%k_phase)
+
     ! Assign the pointer to the typed_sites
     allocate(p_sites(size(typed_sites)))
     allocate(p_cells(size(typed_cells)))
@@ -134,6 +140,48 @@ contains
     print *, "Lattice setup completed."
   end subroutine setup_lattice
 
+  subroutine calculate_1stBZ(rvec,kvec,n,FBZ,k_phase)
+    implicit none
+    integer,intent(in) :: n
+    real(8) :: rvec(n,n),kvec(n,n),FBZ(n,lat%N_cell)
+    complex(8) :: k_phase(lat%N_cell,lat%N_cell)
+    integer :: i_dim,i_k,i_cell,k_dpos(n)
+    real(8) :: k_offset(n),del_kvec(n,n)
+    ! rvec(:,i) is the i-th lattice vector in spatial vectors
+    ! kvec(:,i) is the i-th lattice vector in k-space vectors
+    ! MATMUL(kvec(:,i)^T,  rvec(:,j)) = 2*pi*delta_ij
+    ! kvec = 2pi * inv(rvec^T)
+    ! n is the dimension of the lattice
+    kvec = transpose(rvec)
+    call inverse(n,kvec)
+    kvec = kvec * 2.0d0 * acos(-1.0d0)
+    ! ensure all the kvecs point in the same general direction 
+    if(dot_product(kvec(:,1),rvec(:,1))/(norm2(kvec(:,1))*norm2(rvec(:,1))) < -0.00001d0) kvec(:,1) = -kvec(:,1)
+    do i_dim = 1,n
+      if(dot_product(kvec(:,i_dim),kvec(:,1))/(norm2(kvec(:,i_dim))*norm2(kvec(:,1))) < -0.00001d0) then
+        kvec(:,i_dim) = -kvec(:,i_dim)
+      end if
+    end do
+    ! calculate the first Brillouin zone
+    k_offset = 0d0 ! k_offset is introduced to deal with odd size lattice
+    del_kvec = 0d0
+    do i_dim = 1, n
+      k_offset = k_offset + mod(lat%dlength(i_dim),2) * kvec(:,i_dim)/lat%dlength(i_dim)/2.0d0
+      k_offset = k_offset - 0.5d0 * kvec(:,i_dim) ! shift the FBZ to be centered at Gamma point
+      del_kvec(:,i_dim) = kvec(:,i_dim)/lat%dlength(i_dim)
+    end do
+    do i_k = 1, lat%N_cell
+        call get_dpos_from_uc_index(i_k,n,lat%dlength,k_dpos)
+        FBZ(:,i_k) = matmul(del_kvec,k_dpos) + k_offset
+    end do
+    ! calculate the k_phase matrix
+    k_phase = 0d0
+    do i_k = 1, lat%N_cell
+      do i_cell = 1, lat%N_cell
+        k_phase(i_k,i_cell) = exp(complex(0d0,1d0)*dot_product(FBZ(:,i_k),typed_cells(i_cell)%rpos))
+      end do
+    end do
+  end subroutine
 
   function get_site_index_from_rpos(rpos) result(re)
     implicit none
@@ -221,19 +269,19 @@ contains
     ! ind = 1 + (dpos_rel(1)) + L1*((dpos_rel(2)) + L2*((dpos_rel(3)) + ...))) (0-based)
     ! ind = 1 + (dpos_rel(1)-1) + L1*((dpos_rel(2)-1) + L2*((dpos_rel(3)-1) + ...))) (1-based)
     ! this subroutine is self-contained, it does not depend on the lattice type or outside variables
-    
+
     integer, intent(in) :: dpos1(lat%dim), dpos2(lat%dim)
     integer, intent(out) :: ind
     integer :: i
     integer :: dpos_rel(size(dpos1))
     
-    ! Calculate relative position considering periodic boundary conditions
-    do i = 1, size(dpos1)
-      dpos_rel(i) = mod(dpos2(i) - dpos1(i) + lat%dlength(i), lat%dlength(i))
-    end do
+      ! Calculate relative position considering periodic boundary conditions
+      do i = 1, size(dpos1)
+        dpos_rel(i) = mod(dpos2(i) - dpos1(i) + lat%dlength(i), lat%dlength(i))
+      end do
     
     ! Now calculate the index from the relative position
     call get_uc_index_from_dpos(dpos_rel, ind)
-    
+
   end subroutine get_relative_index
 end module lattice

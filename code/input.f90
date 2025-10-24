@@ -25,7 +25,7 @@ MODULE input
   logical :: global_update_flip = .false.
   logical :: global_update_exchange = .false.
   logical :: record_middata = .false.
-  logical :: debug = .true.
+  logical :: debug = .false.
   logical :: meas_corf = .true.
   logical :: fixedseeds = .false.
   logical :: second_trotter = .false.
@@ -40,8 +40,8 @@ MODULE input
   integer :: MPI_one_block = 1 !> number of cores in one mpi_block, = 1 if not mpi
   integer :: MPI_nblock = 1!> = numprocs/MPI_one_block
 ! MC parameter
-  integer :: warmup = 0, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
-  integer :: nbin_per_core = 20, nmeas_per_bin = 10! # of bins and size of one bin
+  integer :: warmup = 3000, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
+  integer :: nbin_per_core = 15, nmeas_per_bin = 500! # of bins and size of one bin
 ! measurement parameter
   integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
   logical :: file_exist
@@ -52,11 +52,12 @@ MODULE input
 ! General ARGUMENTS
   character(len=100) :: nml_file = 'input.nml', output_addr = 'data/',output_format = 'f18.8',reading_guide = 'reading_guide.nml'
   character(len=200) :: task_name
+  character(len=100) ::  mpi_info
   integer :: ncopy = 1! number of flavours
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
-  real(8) :: delt = 0.1, beta = 2d0,hop = 1d0
-  integer :: print_loop = 2
+  real(8) :: delt = 0.1, beta = 90d0,hop = 1d0
+  integer :: print_loop = 500
   integer :: lattice_dimension
   real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
   integer, allocatable :: field_type(:) ! field number
@@ -120,11 +121,12 @@ MODULE input
     logical :: periodic
     integer :: dim,n_subsite_uc,N_cell,Ns
     integer, allocatable :: dlength(:) !> # of unitcell along each direction
-    real(8), allocatable :: rlength(:) ! length of the lattice in each dimension
-    real(8),allocatable :: tsl_rvec(:,:),subsite_rvec(:,:)
-    ! tsl_rvec is the lattice vectors in spatial vectors
-    ! subsite_rvec is the subsites' vectors in spatial vectors
-
+    real(8), allocatable :: rlength(:) !> length of the lattice in each dimension
+    real(8), allocatable :: tsl_rvec(:,:) !> tsl_rvec(:,i) is the i-th vector
+    real(8), allocatable :: subsite_rvec(:,:) !> subsite_rvec(:,i) is the i-th subsite's vector
+    real(8), allocatable :: recip_vec(:,:) !> unit vector in k-space;
+    real(8), allocatable :: FBZ(:,:) !>  FBZ(:,i) i-th kvec in 1st brillouin zone
+    complex(8),allocatable :: k_phase(:,:) !> k_phase(i,j) = exp(ik(R_i-R_j)) for all cells
   end type lat_type
 
   type :: pf_type
@@ -210,8 +212,8 @@ contains
     integer :: i_pf
     character(len=20) :: temp_string
     D = 1d0
-    M = 1d0
-    ep_parameter = sqrt(mpi_block + 2d0) ! hubbard U = ep^2
+    M = 0d0
+    ep_parameter = mpi_block*0.2d0 + 0.6d0 ! hubbard U = ep^2
     filling = 0.5d0 ! # of states /Ns
     ! when TR_double = .true., filling is set as half of the actual filling
     biased_phonon = 0d0 

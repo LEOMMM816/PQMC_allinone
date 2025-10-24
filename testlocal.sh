@@ -13,7 +13,7 @@ TEMPLATE=model/EPSOC_z_pf.nml        # your source file
 PREFIX=input            # target prefix
 W=4                          # zero-pad width -> 0000..0127
 OUTDIR=namelists             # new folder to hold the copies
-
+export OPENBLAS_NUM_THREADS=1
 # make the folder (safe if it already exists)
 mkdir -p "$OUTDIR"
 
@@ -35,9 +35,9 @@ mpirun -np "$ntasks" ./main.out -> main.log
 rm -rf ./namelists
 
 # post process
-#cd ./code
-#gfortran outputnew.f90 -cpp -DMPI -fcheck=all -g -o pp.out
-#cp pp.out ../
-#cd ..
-#./pp.out > pp.log
+cd ./code
+gfortran outputnew.f90 -cpp -DMPI -fcheck=all -g -o pp.out
+cp pp.out ../
+cd ..
+./pp.out > pp.log
 

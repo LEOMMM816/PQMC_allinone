@@ -89,7 +89,7 @@ contains
           !print*, 'i_pla,time,bf_jump,delta_energy,R_elec,R:',i_pla,time,bf_jump,delta_energy,R_elec,R
           ! calculate the acceptance probability
 
-          call cal_prob(log(R), prob)
+          call cal_prob(log(R), prob,"local update")
         else
           prob = 0d0
         end if
@@ -195,11 +195,11 @@ contains
     real(8) :: oldfield(Ns, ntime)
     complex(8) :: oldconfigurationweight
     real(8) :: ph_ln_cw,prob
-    type(pf_data_type) :: backup_pdata(n_phonon_field)
+    type(pf_data_type) :: old_pdata(n_phonon_field)
     integer :: i_pf
     oldfield = boson_field
     oldconfigurationweight = ln_cw
-    backup_pdata = pf_data_list
+    old_pdata = pf_data_list
     ln_cw = 0d0
 
     call generate_newfield_global() ! generate new pf and sum over the weight caused by energy difference
@@ -211,7 +211,7 @@ contains
     !print*,'ph_ln_cw:',ph_ln_cw
     !print*,'ln_cw + ph_ln_cw - oldconfigurationweight:',ln_cw + ph_ln_cw - oldconfigurationweight
 
-    call cal_prob(ln_cw + ph_ln_cw - oldconfigurationweight,prob)
+    call cal_prob(ln_cw + ph_ln_cw - oldconfigurationweight,prob,"global update")
 
     if (ran() < prob) then ! accept this global update
       global_accept = global_accept + 1
@@ -222,7 +222,7 @@ contains
     else
       boson_field = oldfield
       ln_cw = oldconfigurationweight
-      pf_data_list = backup_pdata
+      pf_data_list = old_pdata
       !Kmat = old_Kmat
       global_reject = global_reject + 1
     end if
@@ -247,8 +247,8 @@ contains
           bf_jump = ran_sysm()* global_update_distance
           bf_temp_ntime = boson_field(updated_ind(i), :) + bf_jump
         end if
-        bf_temp_ntime(1) = end_field
-        bf_temp_ntime(ntime) = end_field
+        !bf_temp_ntime(1) = end_field
+        !bf_temp_ntime(ntime) = end_field
       !! energy difference
         delta_energy = 0d0
         if (.not. global_update_flip) then
@@ -277,8 +277,8 @@ contains
       do i = 1, n_boson_field
         boson_field(i, :) = boson_field(i, :) + bf_temp_space(i)
       end do
-      boson_field(:, 1) = end_field
-      boson_field(:, ntime) = end_field
+      !boson_field(:, 1) = end_field
+      !boson_field(:, ntime) = end_field
       ! calculate the energy difference
       delta_energy = 0d0
       do i = 1, n_boson_field
@@ -312,7 +312,7 @@ contains
     real(8) :: phi, amplitude,distance
     integer :: i_bf,i_cell
     bf_jump = 0d0
-    distance =  global_update_distance/Lat%N_cell ! can be adjusted
+    distance = 20* global_update_distance/lat%N_cell ! can be adjusted
     amplitude =  distance * rands()
     phi = 2d0*pi*rands()
     do i_cell = 1, Lat%N_cell
@@ -390,10 +390,11 @@ contains
 !                            Metropolis prob                         !
 !======================================================================!
 
-  subroutine cal_prob(w, prob)
+  subroutine cal_prob(w, prob,sign_err)
     implicit none
     complex(8), intent(in) :: w
     real(8), intent(out) :: prob
+    character(len=*) :: sign_err
     real(8) :: R_temp
     complex(8) :: weight
     ! weight is the energy differece between two configurations
@@ -401,8 +402,9 @@ contains
     ! R should be exp(weight)
     weight = w
     weight = complex(real(weight),mod(aimag(weight),2 * pi)) ! make sure weight is in the principal branch
-    if(abs(aimag(weight)) > 1d-3 .and. abs(abs(aimag(weight)) - 2*pi) > 1d-3) then
+    if(abs(aimag(weight)) > 1d-2 .and. abs(abs(aimag(weight)) - 2*pi) > 1d-2) then
       print *, "SIGN PROBLEM,weight:", weight
+      print*, "happens in  ", trim(adjustl(mpi_info))//sign_err
       stop
     end if
     R_temp = exp(min(10d0, real(weight)))

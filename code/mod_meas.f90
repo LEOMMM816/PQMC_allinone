@@ -31,11 +31,12 @@ module dqmc_measurements
     procedure :: init_from_namelist   => ms_init_from_namelist   ! read observables, finalize, allocate data
     procedure :: finalize_layout      => ms_finalize_layout      ! compute offsets
     procedure :: init_storage         => ms_init_storage
-
+    
     ! ---- run control ----
     procedure :: begin_measure        => ms_begin_measure
     ! ---- take measurement ----
     procedure :: take_measurement     => ms_take_measurement
+    procedure :: k_space_obs       => ms_k_space_obs
     ! ---- record (handle only for speed) ----
     procedure :: get_handle           => ms_get_handle
     procedure :: get_range_by_handle  => ms_get_range_by_handle
@@ -83,8 +84,8 @@ contains
       do j = 1,n_g
         ! hatree part + fock part
         ! <ci1* cj2 , ci2* cj1> = <ci1* cj2> <ci2* cj1> + <ci1* cj1> <cj2* ci2>
-        mat(i,j) = (g_h(ls(i,2),ls(i,1)) * g_h(rs(j,2),rs(j,1)) & 
-        & + g_h(rs(j,2),ls(i,1)) * g(ls(i,2),rs(j,1)))
+       mat(i,j) = mat(i,j) + (g_h(ls(i,2),ls(i,1)) * g_h(rs(j,2),rs(j,1)))   ! hatree part
+      !  mat(i,j) = mat(i,j) + g_h(rs(j,2),ls(i,1)) * g(ls(i,2),rs(j,1)) ! fork part
       end do
     end do
 
@@ -180,6 +181,10 @@ contains
         bf2_x = pc2%bf_list(1)
         bf2_y = pc2%bf_list(2)
         call get_relative_index(ind,pc1%dpos,pc2%dpos)
+        !print*,"Measuring corfs between cell ", c1, " and cell ", c2, " with relative index ", ind
+      !print*,"  pc1 dpos ", pc1%dpos, " pc2 dpos ", pc2%dpos
+      !print*,"  pc1_x's ind  ", pc1_x%id, " pc1_y's ind ", pc1_y%id
+      !print*,"  pc2_x's ind  ", pc2_x%id, " pc2_y's ind ", pc2_y%id
         ! ind is the relative index of pc2 to pc1, used to index the correlation functions as an array data
       !! corf: bf1-bf1
         handle = this%get_handle('BFx_BFx')
@@ -237,6 +242,7 @@ contains
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
+        
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf： x-bond's spin-y current and y-bond's spin-y current correlation
         handle = this%get_handle('Jxy_Jyy')
@@ -303,8 +309,25 @@ contains
     end do !for c1
 
       !! END MEASUREMENT
-
+    
   END SUBROUTINE ms_take_measurement
+
+
+  subroutine ms_k_space_obs(this)
+    implicit none
+    class(MeasurementSystem), intent(inout) :: this
+    integer :: i
+    complex(dp) :: k_data(lat%N_cell)
+    k_data = 0.0d0
+    do i = 1, this%nobs
+      if (this%kinds(i) == KIND_FIELD) then
+        ! create k-space data
+        k_data = matmul(lat%k_phase, this%data(this%off_lo(i):this%off_hi(i), this%cur_meas, this%cur_bin))/lat%N_cell
+         ! record k-space data
+        call this%record_field(this%get_handle(trim(this%names(i))//'_k'), k_data)
+      end if
+    end do
+  end subroutine ms_k_space_obs
 
 !======================================================================!
 !                             NAMELIST INIT                             !
@@ -331,7 +354,7 @@ contains
     if (this%nbins<=0 .or. this%nmeas<=0) error stop "init_from_namelist: nbins/nmeas must be >0"
     this%field_width = product(Lat%dlength)
     ! 初始容量（动态增长，避免频繁重分配）
-    cap = 16
+    cap = 50
     allocate(this%names(cap), this%kinds(cap), this%widths(cap), this%off_lo(cap), this%off_hi(cap))
     this%nobs = 0
 
@@ -351,6 +374,7 @@ contains
       case ('field','f','array','a')
         if (this%field_width<=0) error stop "observable obskind=field but field_width not provided"
         call push_obs(this, name, KIND_FIELD)
+        call push_obs(this, trim(name)//'_k', KIND_FIELD)
       case default
         error stop "unknown observable obskind: "//trim(obskind)//" (name="//trim(name)//")"
       end select
@@ -433,6 +457,12 @@ contains
     end do
     this%total_width = cursor - 1
     this%finalized = .true.
+    print*,"MeasurementSystem: total data width = ", this%total_width
+    print*,"MeasurementSystem: data layout:"
+    do i=1,this%nobs
+      print*,"  ", trim(this%names(i)), " (kind=", this%kinds(i), ", width=", this%widths(i), &
+      & ", offset=[", this%off_lo(i), ":", this%off_hi(i), "])"
+    end do  
   end subroutine ms_finalize_layout
 
   subroutine ms_init_storage(this)
@@ -460,7 +490,8 @@ contains
     if ((forward .and. time == ntime/2 + meas_number) .or. ((.not. forward) .and. time == ntime/2 - meas_number)) then
       ! average over all sites and all measurements in one loop
       this%data(:,this%cur_meas, this%cur_bin) = this%data(:,this%cur_meas, this%cur_bin)/(2*meas_number + 1)
-      this%data(:,this%cur_meas, this%cur_bin) = this%data(:,this%cur_meas, this%cur_bin)/real(Lat%N_cell,dp)
+      call this%k_space_obs()
+      !this%data(:,this%cur_meas, this%cur_bin) = this%data(:,this%cur_meas, this%cur_bin)/real(Lat%N_cell,dp)
       this%cur_meas = this%cur_meas + 1
       if (this%cur_meas > this%nmeas) then
         ! next bin
@@ -557,6 +588,7 @@ contains
 !======================================================================!
 !                               ANALYSIS                                !
 !======================================================================!
+  
   subroutine ms_data_analyse(this)
     class(MeasurementSystem), intent(inout) :: this
     ! 这里可以添加更多分析功能
