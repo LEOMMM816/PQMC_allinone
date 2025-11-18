@@ -1,0 +1,72 @@
+
+&Control_varibles
+   proj = .true. ! pqmc or ftqmc
+   record_ph_field = .false.
+   Metropolis = .true.
+   check_acorr = .false.
+   import_ph_field = .false.
+   greatest_decent = .false.
+   local_update = .true.
+   Kspace_GU = .true.
+   x_y_inv = .false.
+   ML_weight = .false.
+   ML_update = .false.
+   TBC = .false.
+   global_update = .true.
+   global_update_shift = .false.
+   global_update_flip = .false.
+   global_update_exchange = .false.
+   record_middata = .false.
+   debug = .false.
+   meas_corf = .true.
+   fixedseeds = .false.
+   second_trotter = .false.
+   TR_weight = .false.
+   TR_slater = .true.
+/
+
+&MPI_parameter
+  ncore = 4
+  nblock = 8
+  nbin = 10
+  nmeas = 1000
+/
+
+
+&MC_parameter
+  warmup = 20000
+  meas_interval = 1
+  meas_interval_tau = 20
+  meas_number = 0
+  nbin_per_core = 20
+  nmeas_per_bin = 2000                 ! # of bins and size of one bin
+/
+
+
+&General_ARGUMENTS
+  ncopy = 1                    ! number of flavours
+  lat_size = 8,8
+  delt = 0.1
+  beta = 80d0
+  filling = 1d0
+  print_loop = 1000
+/
+
+&phonon_parameter
+  dimension_of_field = 1
+  D = 1d0
+  M = 1d0                  ! >stiffness constant and Mass
+  omega = 1d0
+  ep_parameter = 1
+  end_field = 0d0
+  n_local_update = 1                    ! > times of proposal  of new ph field at each location
+  jump_distance = 1.0d0                ! > in unit of characteristic length
+/
+
+&global_update
+  global_update_distance = 1.0d0                ! > in unit of characteristic length
+  n_global_update = 1                    ! >number of bonds that change in one GUD
+  global_update_loop = 2
+/
+
+

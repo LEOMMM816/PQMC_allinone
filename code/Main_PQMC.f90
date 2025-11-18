@@ -19,35 +19,14 @@ program Pqmc_main
 
 !> mpi
 #ifdef MPI
-  call MPI_INIT(ierr)
-  CALL MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
-  CALL MPI_COMM_rank(MPI_COMM_WORLD, myid, ierr)
-  MPI_nblock = CPPBLOCK
-  MPI_one_block = CPPPERBLOCK
-  MPI_block = myid/MPI_one_block + 1
-  if(numprocs .NE. mpi_nblock*MPI_one_block) then
-    print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
-    stop 'numprocs!=mpi_nblock*MPI_one_block'
-  ELSE IF(myid == 0) then
-    print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
-  end if
-  write (ci_myid, '(i4.4)') myid
-  nml_file = 'namelists/input'//trim(adjustl(ci_myid))//'.nml'
-  write(mpi_info,'(1i4)') myid
-  mpi_info = 'No. '//trim(adjustl(mpi_info))//' processes'
-  if ( fixedseeds ) then
-    call init_rng_by_seed(122)
-    print *, 'seed:', ranseeds
-  else
-    call init_rng(myid + 1)
-    print *, 'myid:',myid,'seed:', ranseeds
-  end if
+  call my_mpi_init()
 #endif
 
 ! run time
   call system_clock(count1, count_rate)
 
   ! lattice initialize
+  call general_paramter_init()
   print *, 'setting lattice...'
   call set_lattice_main()
   print *, 'setting lattice ends.'
@@ -61,7 +40,7 @@ program Pqmc_main
   call readin_slater_pf()
   print *, 'set phonon field ends.'
 #ifdef MPI
-  call init_MPI(MPI_block)
+  call init_MPI(mpi_block_id)
 #endif
   ! slater initialization
   call set_k_slater()
@@ -70,9 +49,7 @@ program Pqmc_main
   call Meas_sys%init_meas()
 #ifdef MPI
   print *, 'myid:',myid, '/', &
-  &'lattice_diemension:',Lat%dim, '/',&
-  &'filling:',filling,'nelec:', nelec,'/', &
-  &'beta,ntime,lambda,nblock', beta, ntime, ep_parameter, nblock
+  &'beta,lambda,omega,M', beta,  ep_parameter,omega,M, '/'
 #else
   print *, 'nelec:', nelec
   print *, 'beta,ntime,nblock', beta, ntime, nblock
@@ -149,7 +126,6 @@ program Pqmc_main
         end if
       end if
 
-    
     end do ! for time in 1 :ntime
 
   end do ! for MCS
@@ -209,29 +185,13 @@ contains
       WRITE (110, *) 'loop',loop
       WRITE (110, *) 'myid',myid
       write (110, *) 'Size:', Lat%dlength
-      if(ML_update) then
-        write (110, *) 'ML_accept :', real(ML_accept)/(ML_accept + ML_reject)
-        write (110, *) 'ML_accept_ratio :', ML_accept_ratio / ML_accept
-        write (110, *) 'ML_t_accept :', real(ML_t_accept)/(ML_t_accept + ML_t_reject)
-        write (110, *) 'ML_t_accept_ratio :', ML_t_accept_ratio / ML_t_accept
-        write (110, *) 'ML_s_accept :', real(ML_s_accept)/(ML_s_accept + ML_s_reject)
-        write (110, *) 'ML_s_accept_ratio :', ML_s_accept_ratio / ML_s_accept
-        ! change update_distance if needed
-        if ( ml_s_accept_ratio/(ML_s_accept + ML_s_reject) < 0.1) then
-          ml_distance_ratio = ml_distance_ratio * 0.5d0
-        end if
-        ! write (110, *) 'ML_total :', (ML_accept + ML_reject)
-        write (110, *) 'wolff_accept :', wolff_accept
-        write (110, *) 'wolff_total :', (wolff_accept + wolff_reject)
-        !write (110, *) 'wolff_time_accept :', wolff_time_accept
-      end if
       if(global_update) then
         write (110, *) 'global_update accept :', global_accept
         write (110, *) 'global_update total :', (global_accept + global_reject)
       end if
       !WRITE(110,'(1f18.6)')
       if(local_update) then
-      write (110, *) 'local_update accept ratio:', real(positive_accept)/(positive_accept + negative_accept)
+        write (110, *) 'local_update accept ratio:', real(positive_accept)/(positive_accept + negative_accept)
       end if
       !WRITE(110,'(1f18.6)') real(positive_accept)/(positive_accept+negative_accept)
       write (110, *) 'error_fast:', err_fast_max
@@ -247,15 +207,6 @@ contains
       delta_energy_E = 0d0
       delta_energy_K = 0d0
       delta_energy_P = 0d0
-      ml_s_accept = 0
-      ml_s_reject = 0
-      ml_t_accept = 0
-      ml_t_reject = 0
-      ml_accept = 0
-      ml_reject = 0
-      ml_s_accept_ratio = 0d0
-      ml_t_accept_ratio = 0d0
-      ml_accept_ratio = 0d0
 
       !wolff_accept = 0
       !wolff_reject = 0
@@ -298,13 +249,12 @@ contains
     expK_inv_half = delt/2d0 * K_mat
     call expm(expK_inv_half, Ns)
 
-
     if(.false.) then
       do i = 1,Ns
         write(*,'(A,1i4,32f4.0)') 'K_mat:',i,real(K_slater(i,:))
       end do
     end if
-    
+
   END SUBROUTINE
 
   subroutine set_nelec_occupied()
@@ -322,17 +272,17 @@ contains
     IF (.not. allocated(slater_D)) ALLOCATE (slater_D(nelec))
     IF (.not. allocated(R_string)) ALLOCATE (R_string(nelec, nelec))
     !open(39,file='eval.dat')
-    CALL eigen(Ns, K_slater(:, :), eval)      
+    CALL eigen(Ns, K_slater(:, :), eval)
     if(TR_SLATER) THEN
-    slater(:, 1:nelec/2) = K_slater(:, 1:nelec/2)
-    slater(:, nelec/2+1:nelec) = conjg(MATMUL(TR_mat,K_slater(:, 1:nelec/2)))
+      slater(:, 1:nelec/2) = K_slater(:, 1:nelec/2)
+      slater(:, nelec/2+1:nelec) = conjg(MATMUL(TR_mat,K_slater(:, 1:nelec/2)))
     ELSE
-    slater(:, 1:nelec) = K_slater(:, 1:nelec)
+      slater(:, 1:nelec) = K_slater(:, 1:nelec)
     END IF
     slater_Q(:, 1:nelec) = slater(:, 1:nelec)
     CALL qdr(Ns, nelec, slater_Q(:, 1:nelec), R_string(1:nelec, 1:nelec), slater_D(1:nelec))
     !close(39)
-    
+
   end subroutine
 
   subroutine init_boson_field()
@@ -387,6 +337,7 @@ contains
       write (ci3, '(1i4)') 1
       str = 'ph_field_core'//trim(adjustl(ci3))//'.dat'
 #endif
+
       write (ci3, '(1i4)') bf_sets * Lat%N_cell
       open (99, file=str, status='old', position='rewind')
 
@@ -398,4 +349,49 @@ contains
 
   end subroutine
 
+
+  subroutine my_mpi_init()
+    implicit none
+    integer :: ierr,ios
+    character(len=6) :: block_str
+#ifdef MPI
+    call MPI_INIT(ierr)
+    CALL MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
+    CALL MPI_COMM_rank(MPI_COMM_WORLD, myid, ierr)
+    MPI_nblock = 0
+    MPI_nblock = CPPBLOCK
+    MPI_one_block = CPPPERBLOCK
+    mpi_block_id = myid/MPI_one_block + 1
+    if(numprocs .NE. mpi_nblock*MPI_one_block) then
+      print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
+      stop 'numprocs!=mpi_nblock*MPI_one_block'
+    ELSE IF(myid == 0) then
+      print*,'numprocs:',numprocs,'mpi_nblock:',mpi_nblock,'MPI_one_block:',MPI_one_block
+    end if
+    ! 从环境变量 NMLFILE 读入
+    call get_environment_variable("NMLFILE", value=nml_file, status=ios)
+    if (ios /= 0) then
+      if (myid == 0) then
+        print *, "ERROR: 环境变量 NMLFILE 未设置"
+      end if
+      call MPI_Abort(MPI_COMM_WORLD, 1, ierr)
+    else
+      write(block_str, '(1i4)') mpi_block_id
+      nml_file = trim(adjustl(nml_file))//'_b'//trim(adjustl(block_str))//'.nml'
+      if (myid == 0) then
+        print *, "NMLFILE =", trim(nml_file)
+      end if
+    end if
+    write(mpi_info,'(1i4)') myid
+    mpi_info = 'No. '//trim(adjustl(mpi_info))//' processes'
+    if ( fixedseeds ) then
+      call init_rng_by_seed(122)
+      print *, 'seed:', ranseeds
+    else
+      call init_rng(myid + 1)
+      print *, 'myid:',myid,'seed:', ranseeds
+    end if
+#endif
+    return
+  end subroutine my_mpi_init
 end program Pqmc_main

@@ -16,7 +16,6 @@ MODULE input
   logical :: greatest_decent = .false.
   logical :: local_update = .true.
   logical :: Kspace_GU = .false.
-  logical :: x_y_inv = .false.
   logical :: ML_weight = .false.
   logical :: ML_update = .false.
   logical :: TBC = .false.

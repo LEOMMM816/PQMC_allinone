@@ -175,7 +175,7 @@ contains
         write(30,'(A15,1I6,1'//trim(output_format)//',1'//trim(output_format)//')') adjustl(obs_list(i_obs)%name),line,&
         & obs_list(i_obs)%out_mean(line,i_block),obs_list(i_obs)%out_err(line,i_block)
         if(obs_list(i_obs)%width > 1) then
-          write(*,'(1'//trim(output_format)//')') obs_list(i_obs)%out_err(line,i_block)
+          !write(*,'(1'//trim(output_format)//')') obs_list(i_obs)%out_err(line,i_block)
         end if
       end do
       write(30,*)' '

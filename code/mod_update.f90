@@ -312,7 +312,7 @@ contains
     real(8) :: phi, amplitude,distance
     integer :: i_bf,i_cell
     bf_jump = 0d0
-    distance = 20* global_update_distance/lat%N_cell ! can be adjusted
+    distance = 2* global_update_distance/lat%N_cell ! can be adjusted
     amplitude =  distance * rands()
     phi = 2d0*pi*rands()
     do i_cell = 1, Lat%N_cell

@@ -20,9 +20,8 @@ contains
     integer, allocatable :: lat_size(:)
     real(8), allocatable :: lat_vec(:), site_vec(:)
     integer :: ios
-
     namelist /lat_dim/ dim,n_subsite_uc
-    namelist /lat_spatial/ lat_size, lat_vec
+    namelist /lat_spatial/  lat_size,lat_vec
     namelist /lat_subsite_vector/ site_vec
     !! Read lattice dimension and number of sites in unit cell
     dim = 0
@@ -34,7 +33,7 @@ contains
       print*,"ios = ", ios
       stop
     end if
-    print *, "Lattice dimension:", dim
+    !print *, "Lattice dimension:", dim
     !! Read lattice vectors
     allocate(lat_size(dim),lat_vec(dim * dim),site_vec(n_subsite_uc * dim))
     rewind(10)
@@ -54,7 +53,7 @@ contains
     close(10)
     ! Initialize lattice type 
     lat%dim = dim
-    print *, "Lattice dimension from file:", lat%dim
+    !print *, "Lattice dimension from file:", lat%dim
     lat%n_subsite_uc = n_subsite_uc
     allocate(lat%dlength(dim), lat%rlength(dim))         
     allocate(lat%tsl_rvec(dim,dim))
@@ -69,14 +68,14 @@ contains
     ! lat%rlength is the lat%dlength * norm of the lattice vectors in each dimension
     lat%rlength = real(lat%dlength, kind=8) * sqrt(sum(lat%tsl_rvec**2, dim=1)) ! assuming lat_vec is in the same order as dlength
     ! Debug output
-    print *, "Lattice dimension:", lat%dim
-    print *, "Lattice lengths:", lat%dlength
-    print *, "Lattice spatial vectors:"
+    !print *, "Lattice dimension:", lat%dim
+    !print *, "Lattice lengths:", lat%dlength
+    !print *, "Lattice spatial vectors:"
     do i_dim = 1, dim
       print *, lat%tsl_rvec(:,i_dim)  
     end do 
-    print *, "Number of sites in unit cell:", lat%n_subsite_uc
-    print *, "site unit cell vectors:"
+    !print *, "Number of sites in unit cell:", lat%n_subsite_uc
+    !print *, "site unit cell vectors:"
     do i_dim = 1, lat%n_subsite_uc
       print *, lat%subsite_rvec(:,i_dim)
     end do
@@ -128,16 +127,16 @@ contains
     p_sites => typed_sites
     p_cells => typed_cells
     ! print lattice information for debug
-    print *, "Total number of sites in the lattice:", lat%Ns
-    print *, "Lattice periodicity:", lat%periodic
-    print *, "Lattice unit cell count:", lat%N_cell
-    print *, "Lattice size:", lat%dlength
-    print *, "Lattice spatial lengths:", lat%rlength
-    print *, "Lattice spatial vectors:"
+    !print *, "Total number of sites in the lattice:", lat%Ns
+    !print *, "Lattice periodicity:", lat%periodic
+    !print *, "Lattice unit cell count:", lat%N_cell
+    !print *, "Lattice size:", lat%dlength
+    !print *, "Lattice spatial lengths:", lat%rlength
+    !print *, "Lattice spatial vectors:"
     do i = 1, lat%dim
-      print *, lat%tsl_rvec(:,i)
+     ! print *, lat%tsl_rvec(:,i)
     end do
-    print *, "Lattice setup completed."
+    !print *, "Lattice setup completed."
   end subroutine setup_lattice
 
   subroutine calculate_1stBZ(rvec,kvec,n,FBZ,k_phase)

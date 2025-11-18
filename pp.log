@@ -1,0 +1,40 @@
+ ************************************************
+ ***********************************************
+ Epsoc_phonon_along_Z
+ ************************************************
+ ************************************************
+ Hamiltonian: H = H_k + \lambda * X1 * i sigma_y J^x + X2 * i sigma_x J^y
+ 
+ ####################################
+ #####  Monte Carlo parameter  #####
+ ####################################
+ nbin  =               4
+ measurements in one_bin              4
+ warmup  =              20
+ meas_interval  =               1
+ meas_timerange  =               0
+ total_iterations  =              36
+ number of mpi_blocks  =               4
+ number of cores per block  =               1
+ global update is used
+ 
+ ####################################
+ #######  Physical parameter  #######
+ ####################################
+ lattice_dimension =            2
+ Lt    =             960
+ dtau  =    0.100000000000000
+ Beta  = dtau*Lt =   96.000000000000000
+ lambda, el-phonon coupling =    1.000000000000000
+ omega   =    1.000000000000000
+ M   =    1.000000000000000
+ K   =    1.000000000000000
+ U_eff = lam^2/omega^2   =    1.000000000000000
+ disorder =    0.000000000000000
+ filling  =    0.500000000000000
+ N_up = N_down  =              64
+ 
+ List of observables, averages and errors
+ Description:
+ e_PE = -U/2 * (n_up + n_down)^2 = -U/2*(n_up+n_down) - U*n_up*n_down
+ #--observables--#

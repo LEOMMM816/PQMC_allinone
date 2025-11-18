@@ -10,6 +10,7 @@ contains
     implicit none
     integer :: i_pf,i_pla,i_site,i_site2
     type(pf_type),pointer :: ppf
+
     if(.not.allocated(pf_list)) allocate(pf_list(n_phonon_field),ppf_list(n_phonon_field),pf_data_list(n_phonon_field))
     call readin_pf_basic()
     call set_pf_detail()
@@ -69,8 +70,8 @@ contains
       !rewind(10)
       n_plaquette = int(Lat%Ns * n_cover(i_pf)/pf_dim(i_pf))
       ! 把读到的临时变量赋值到 pf
-      print*,'i_pf:',i_pf,'id:',id(i_pf),'K_exist',K_exist(i_pf),'V_exist',V_exist(i_pf), &
-        'dim:',pf_dim(i_pf),'n_plaquette:',n_plaquette
+      !print*,'i_pf:',i_pf,'id:',id(i_pf),'K_exist',K_exist(i_pf),'V_exist',V_exist(i_pf), &
+      !  'dim:',pf_dim(i_pf),'n_plaquette:',n_plaquette
       ppf%id = id(i_pf)
       ppf%K_exist = K_exist(i_pf)
       ppf%V_exist = V_exist(i_pf)

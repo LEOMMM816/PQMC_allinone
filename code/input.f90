@@ -16,17 +16,11 @@ MODULE input
   logical :: greatest_decent = .false.
   logical :: local_update = .true.
   logical :: Kspace_GU = .true.
-  logical :: x_y_inv = .false.
-  logical :: ML_weight = .false.
-  logical :: ML_update = .false.
   logical :: TBC = .false.
   logical :: global_update = .true.
   logical :: global_update_shift = .false.
   logical :: global_update_flip = .false.
   logical :: global_update_exchange = .false.
-  logical :: record_middata = .false.
-  logical :: debug = .false.
-  logical :: meas_corf = .true.
   logical :: fixedseeds = .false.
   logical :: second_trotter = .false.
   logical :: TR_weight = .false.
@@ -36,60 +30,45 @@ MODULE input
   real(8),parameter :: e = 2.7182818284590452353602874713526624d0
 
 ! mpi parameter
-  integer :: ierr, myid = 0, numprocs = 1, MPI_block = 1
+  
+  integer :: ierr, myid = 0, numprocs = 1, mpi_block_id = 1
   integer :: MPI_one_block = 1 !> number of cores in one mpi_block, = 1 if not mpi
   integer :: MPI_nblock = 1!> = numprocs/MPI_one_block
 ! MC parameter
-  integer :: warmup = 3000, meas_interval = 1, meas_interval_tau = 20, meas_number = 0
-  integer :: nbin_per_core = 15, nmeas_per_bin = 500! # of bins and size of one bin
+  integer :: warmup = 4000, meas_interval = 1, meas_number = 0
+  integer :: nbin_per_core = 20, nmeas_per_bin = 400! # of bins and size of one bin
 ! measurement parameter
-  integer :: n_suit_corf = 8 , n_suit_ctau = 1 ! number of suited correlation functions
   logical :: file_exist
-  character*30, allocatable :: obs_name(:),corf_name(:),ctau_name(:)
-  integer,allocatable :: corf_length(:)
-  integer :: ntau = 80, one_bin_tau
+  integer :: ntau = 80
 
 ! General ARGUMENTS
-  character(len=100) :: nml_file = 'input.nml', output_addr = 'data/',output_format = 'f18.8',reading_guide = 'reading_guide.nml'
+  character(len=100) :: nml_file, output_addr = 'data/',output_format = 'f18.8',reading_guide = 'reading_guide.nml'
   character(len=200) :: task_name
   character(len=100) ::  mpi_info
   integer :: ncopy = 1! number of flavours
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
   real(8) :: delt = 0.1, beta = 90d0,hop = 1d0
-  integer :: print_loop = 500
-  integer :: lattice_dimension
+  integer :: print_loop = 1000
   real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
-  integer, allocatable :: field_type(:) ! field number
-  real(8):: TBC_phase_number(2) = (/0d0,0d0/)
+  real(8),allocatable :: TBC_phase_number
   real(8) :: filling = 1d0
-  real(8) :: biased_phonon
 
-! HS parameter
 
-  real(kind=8) :: ep_parameter = 1d0, U = 0d0 ! Hubbard U and steps delt * U < 0.5
-
-! proj
-  real(8) :: disorder = 0d0
-  real(kind=8) :: eta ! et a = exp(-delt*(miu - U/2))
-  real(8) :: filling_factor
-  integer :: nelec
-  real(kind=8) R_nflv ! relative boltzmann weight for different particles
-  complex(8), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:)
-  complex(kind=8), allocatable :: K_slater(:, :)! kinetic energy ns*ns
-  real(8), allocatable :: TR_mat(:,:)
 ! phonon parameter
-  integer :: n_phonon_field = 4 !> number of phonon fields
+  integer :: n_phonon_field !> number of phonon fields
   integer :: bf_sets ! number of boson fields
   integer :: n_boson_field ! number of decomposed phonon field
   real(8) :: D = 1d0,M = 1d0 !>stiffness constant and Mass
+  real(kind=8) :: ep_parameter = 1d0, U = 0d0 ! Hubbard U and steps delt * U < 0.5
   real(8) :: char_length = 1.0 !> characteristic length of phonon field
   real(8) :: omega = 1d0!> phonon frequency
   real(8) :: end_field = 0d0
+  real(8) :: biased_phonon = 0d0
   real(8) :: jump_distance
   real(8) :: max_displacement !> = hop / ep_parameter
   integer :: n_local_update = 1 !> times of proposal  of new ph field at each location
-  real(8), allocatable,target :: boson_field(:,:) !(bf_sets*N_cell,time)
+
 
 !global update
   complex(8) :: ln_cw = 0d0
@@ -97,20 +76,22 @@ MODULE input
   integer :: n_global_update = 1!>number of bonds that change in one GUD
   integer :: global_update_loop = 2
   logical :: updated = .false.
-!ML update
-  integer :: ML_accept = 0, ML_reject = 0, ML_t_accept = 0, ML_t_reject = 0, ml_s_accept = 0, ml_s_reject = 0
-  integer :: wolff_accept = 0, wolff_reject = 0 , wolff_time_accept = 0, wolff_time_reject = 0
-  real(8) :: ML_accept_ratio = 0d0, ML_t_accept_ratio = 0d0, ml_s_accept_ratio = 0d0
-  real(8) :: ml_distance_ratio = 0.75d0
-  integer :: n_update_ml = 5, n_local_update_ml = 20
-  integer :: n_k_ML = 40
-! green function related
+
+! projection formulae
+  real(8) :: disorder = 0d0
+  integer :: nelec
+  real(kind=8) R_nflv ! relative boltzmann weight for different particles
+  complex(8), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:)
+  complex(kind=8), allocatable :: K_slater(:, :)! kinetic energy ns*ns
+  real(8), allocatable :: TR_mat(:,:)
+! boson & fermion matrices
+  real(8), allocatable,target :: boson_field(:,:) !(bf_sets*N_cell,time)
   complex(kind=8), allocatable :: K_mat(:, :),expK(:,:),expK_half(:,:),expK_inv(:,:), expK_inv_half(:,:)
   complex(kind=8), allocatable :: g(:, :), g_h(:, :) ! green function(ns,ns) & inv
   !complex(kind = 8), allocatable :: g_debug(:,:,:)
   complex(8), ALLOCATABLE ::  Q_string(:, :, :), D_string(:, :) ! (Ns),nelec,nblock
   complex(8), ALLOCATABLE :: R_string(:, :) ! auxilliary matrix to store R_matrix in qdr decomposition
-  ! new things
+!!! typed objects
   type :: pf_data_type
     integer,allocatable :: pla_site_list(:,:)! (pf%dim,n_plaquette) the site index in each plaquette for each phonon field
     integer,allocatable :: bf_list(:) !> n_plaquette, index of the coupled boson field
@@ -177,26 +158,25 @@ contains
 
   SUBROUTINE init()
     implicit none
-    integer :: i
+    integer :: i,i_pf
     ! parameters definition
-    one_bin_tau = nmeas_per_bin/(meas_interval_tau/meas_interval)
-
     ntime = nint(beta/delt)
     Ns = Lat%Ns
     nblock = ntime/ngroup + 2
+    ! omega doesn't actually goes into weight calculation, only D and M matter
+    D = 1d0
+    M = D * omega**(-2)
     if(M < 0.001d0) then
-      omega = 100000000d0
+      M = 0d0
       char_length = sqrt(1d0/(D*ep_parameter))
     else
-      omega = sqrt(D/M)
       char_length = (1d0/(M*omega))
     end if
-    jump_distance = 0.75 * (0.1d0/delt) * char_length
-    global_update_distance =  jump_distance
-    print*, 'char_length,jump_distance:',char_length,jump_distance
-    filling_factor = filling
-    nelec = nint(Ns*filling_factor)
-    U = ep_parameter**2/D
+    jump_distance = jump_distance * (0.1d0/delt) * char_length
+    global_update_distance =  global_update_distance * char_length
+    print*, 'char_length,jump_distance,global_update_distance:',char_length,jump_distance,global_update_distance
+    nelec = nint(Ns*filling)
+    U = ep_parameter**2 / D
     ! requires time-reversal symmetry
       ! actual filling is 2 * nelec
     if(.not.allocated(TR_mat)) allocate(TR_mat(Ns,Ns))
@@ -211,14 +191,7 @@ contains
     integer, intent(in) :: mpi_block
     integer :: i_pf
     character(len=20) :: temp_string
-    D = 1d0
-    M = 0d0
-    ep_parameter = mpi_block*0.2d0 + 0.6d0 ! hubbard U = ep^2
-    filling = 0.5d0 ! # of states /Ns
     ! when TR_double = .true., filling is set as half of the actual filling
-    biased_phonon = 0d0 
-    call init()
-
     do i_pf = 1, n_phonon_field
       pf_list(i_pf)%K_coe = (-hop)
       pf_list(i_pf)%V_coe = ep_parameter
@@ -226,6 +199,29 @@ contains
     slater_pf%K_coe = (-hop)
     return
   end subroutine init_MPI
+
+  subroutine general_paramter_init()
+    implicit none
+    namelist /Control_varibles/ proj,record_ph_field,Metropolis,check_acorr,import_ph_field,greatest_decent, &
+    & local_update,Kspace_GU,TBC,global_update,global_update_shift,global_update_flip&
+    & ,global_update_exchange,fixedseeds,second_trotter,TR_weight,TR_slater
+    namelist /MC_PARAMETER/ warmup, meas_interval, meas_number, nbin_per_core, nmeas_per_bin
+    namelist /General_ARGUMENTS/ ncopy, delt, beta, print_loop,filling,ngroup
+    namelist /phonon_parameter/ n_phonon_field, D, M, omega, ep_parameter,end_field,n_local_update,jump_distance
+    namelist /global_update/ global_update_loop,global_update_distance,n_global_update
+    open(10, file=nml_file, status='old',position = 'rewind')
+    read(10, nml=General_ARGUMENTS)
+    rewind(10)
+    read(10, nml=Control_varibles)
+    rewind(10)
+    read(10, nml=MC_PARAMETER)
+    rewind(10)
+    read(10, nml=phonon_parameter)
+    rewind(10)
+    read(10, nml=global_update)
+    close(10)
+
+  end subroutine
 
 !------------------------------------------------------!
 !-------------------Output_info-------------------------!
@@ -240,7 +236,7 @@ contains
     integer :: unit, iterations
     task_name = trim(output_addr)//'out_files/'
 #ifdef MPI
-    write(ci,'(a,1i4)') 'b',MPI_block
+    write(ci,'(a,1i4)') 'b',mpi_block_id
     task_name = trim(task_name)//trim(ci)
 #endif
     task_name = trim(task_name)//'Len'
@@ -320,7 +316,7 @@ contains
     close(unit)
     
     ! create a .nml file to store the task_name of the info_sheet
-    write(ci,'(a,1i4)') 'b',MPI_block
+    write(ci,'(a,1i4)') 'b',mpi_block_id
     ci = trim(output_addr)//'out_files/'//trim(ci)//'.nml'
     call remove_spaces(ci,len(ci))
     open(newunit=unit, file=ci, status='replace', action='write')
