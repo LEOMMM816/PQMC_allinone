@@ -26,7 +26,7 @@
 /
 
 &MPI_parameter
-  ncore = 4
+  ncore = 8
   nblock = 8
 /
 

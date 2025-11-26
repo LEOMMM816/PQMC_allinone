@@ -44,6 +44,22 @@ cd ..
 ./pp.out > pp.log
 # copy the whole directory back to storage directory
 cd /data
-mkdir -p $output_dir
-cp -a $dir_local $output_dir
-rm -rf $dir_local
+mkdir -p "${output_dir}"
+
+
+if cp -a "${dir_local}/." "${output_dir}/"; then
+    echo "cp 成功"
+    rm -rf $dir_local
+else
+    echo "cp 失败，尝试用 rsync 作为备用方案..."
+
+    # 备用方案（例子：用 rsync 再复制一次）
+    if rsync -a "${dir_local}/" "${output_dir}/"; then
+        echo "rsync 成功"
+        rm -rf $dir_local
+    else
+        echo "rsync 也失败了，退出脚本"
+        exit 1
+    fi
+fi
+
