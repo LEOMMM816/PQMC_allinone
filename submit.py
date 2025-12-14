@@ -126,9 +126,23 @@ def replace_in_nml(text, varname, new_value):
 def main():
 
     # 这里写你真正要 sbatch 的脚本，比如 run_sbatch.sh
-    JOB_SCRIPT = "script/mpi_32c.sh"
+    JOB_SCRIPT = "script/mpi_32c_copilot.sh"
     JOB_SCRIPT_local = "script/testlocal.sh"
+    JOB_SCRIPT_srun = "script/test_srun.sh"
+    # 从传入参数获得 is_local or is_srun or is cluster
     is_local = False
+    is_srun = False
+    is_cluster = False
+    if len(sys.argv) >=3:
+        if sys.argv[2] == "local":
+            is_local = True
+        elif sys.argv[2] == "srun":
+            is_srun = True
+        elif sys.argv[2] == "cluster":
+            is_cluster = True
+    else:
+        is_cluster = True  # 默认提交到集群
+    
     if len(sys.argv) < 2:
         param_path = Path("jobs_param.tsv")
     else:
@@ -157,7 +171,7 @@ def main():
     idx_model = headers.index("model")
     sbatch_cols = headers[:idx_model]      # divide 之前
     nml_cols = headers[idx_model + 1:]     # divide 之后
-
+    # 检查必须列
     if "job-name" not in headers:
         print("表头中没有 'job-name' 列。", file=sys.stderr)
         sys.exit(1)
@@ -177,7 +191,8 @@ def main():
         line = line.strip()
         if not line:
             continue
-
+        if line.startswith('!'):
+            continue
         parts = line.split()
         if len(parts) != len(headers):
             print(
@@ -187,7 +202,7 @@ def main():
             sys.exit(1)
 
         row = dict(zip(headers, parts))
-
+        modelname = row["model"] # model name 作为环境变量要传入Fortran程序
         jobname = row["job-name"]
         try:
             nblock = int(row["nblock"])
@@ -198,14 +213,14 @@ def main():
         print(f"== 处理第 {line_idx - 1} 个任务: jobname={jobname}")
         # 模板文件路径
         base_name = row["model"]
-        template_path = Path(f"{template_dir}/{base_name}{suffix}")
+        template_path = Path(f"{template_dir}{base_name}{suffix}")
         if not template_path.exists():
             print(f"找不到模板文件: {template_path}", file=sys.stderr)
             sys.exit(1)
         # 1) 组装 sbatch 命令（只打印，不执行）
         sbatch_opts = [f"--{col}={row[col]}" for col in sbatch_cols]
         
-        # 2) 解析 divide 后各变量，并展开到每个 block
+        # 2) 解析 model 后各变量，并展开到每个 block
         per_var_values = {}  # var -> [v_block1, v_block2, ...]
         for var in nml_cols:
             raw_val = row[var]
@@ -215,10 +230,15 @@ def main():
 
         # 3) 为该任务复制 nblock 份 nml 并做替换
         block_files = []
+        # 创建 jobname 目录, 如果已存在则清空
+        job_dir = Path(f"{template_dir}{jobname}")
+        if job_dir.exists():
+            shutil.rmtree(job_dir)
+        job_dir.mkdir(parents=True, exist_ok=True)
         name_str = f"{base_name}_{jobname}_{today_str}"
         for ib in range(nblock):
             new_name = f"{name_str}_b{ib+1}"
-            new_path = Path(f"{template_dir}temp/{new_name}{suffix}")
+            new_path = Path(f"{template_dir}{jobname}/{new_name}{suffix}")
             shutil.copy2(template_path, new_path)
             block_files.append(new_path)
 
@@ -235,25 +255,42 @@ def main():
         if is_local:
             env = os.environ.copy()
             env["NBLOCK"] = str(nblock)  # 环境变量一定要是字符串
-            env["NMLFILE"] = f"{template_dir}temp/{name_str}"
+            env["NMLFILE"] = f"{template_dir}{jobname}/{name_str}"
+            env["MODEL"] = modelname
             cmd = [f"./{JOB_SCRIPT_local}"]
             print("本地测试命令：", " ".join(cmd))
             subprocess.run(cmd, env=env, check=True)
             print("# 本地测试任务处理完成。")
             exit(0)
-        else:
-            export_opt = f"--export=ALL,NBLOCK={row['nblock']},NMLFILE={template_dir}temp/{name_str}"
+        elif is_srun:
+            # 对于 srun，直接执行脚本
+            env = os.environ.copy()
+            env["NBLOCK"] = str(nblock)  # 环境变量一定要是字符串
+            env["NMLFILE"] = f"{template_dir}{jobname}/{name_str}"
+            env["MODEL"] = modelname
+            cmd = [f"./{JOB_SCRIPT_srun}"]
+            print("srun 命令：", " ".join(cmd))
+            subprocess.run(cmd, env=env, check=True)
+            print("# srun 任务处理完成。")
+            exit(0)
+        elif is_cluster:
+            # 对于集群，使用 sbatch 提交任务
+            # export NMLFILE as environment variable, pass to sbatch, then the fortran code access it by getenv() 
+            export_opt = f"--export=ALL,NBLOCK={row['nblock']},MODEL={modelname},NMLFILE={template_dir}{jobname}/{name_str}"
             cmd = ["sbatch"]  + sbatch_opts + [export_opt, JOB_SCRIPT]
             #cmd = ["sbatch"] + sbatch_opts + [JOB_SCRIPT]
             print("提交 sbatch 命令：", " ".join(cmd))
             # 真正执行 sbatch，如果出错会抛异常
             subprocess.run(cmd, check=True)
-        print("# 全部任务处理完成。")
+        
+        
 
         # 6) 清空 temp 目录
         #for nml_path in block_files:
         #    nml_path.unlink()
         #print("已清理临时文件。")
         print() 
+    print("# 全部任务处理完成。")
+    subprocess.run(["stat_job"], check=True)
 if __name__ == "__main__":
     main()

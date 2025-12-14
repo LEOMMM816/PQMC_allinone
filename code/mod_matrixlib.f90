@@ -1,4 +1,7 @@
 MODULE matrixlib
+  USE nrtype
+  IMPLICIT NONE
+
   
   INTERFACE trace
     MODULE PROCEDURE dtrace, ztrace
@@ -43,10 +46,16 @@ MODULE matrixlib
   INTERFACE swap
     MODULE PROCEDURE rswap, dswap, cswap
   END INTERFACE
+
+  INTERFACE gemm
+  !> C = alpha * A(m,d) * B(d,n) + beta * C(m,n) 
+    MODULE PROCEDURE dgemm_selfadd, zgemm_selfadd
+  END INTERFACE
 CONTAINS
 !--------------------------------------------------
 !   general functins
 !--------------------------------------------------
+
 
   integer function modi(n, p)
     integer, intent(in)::n, p
@@ -61,8 +70,8 @@ CONTAINS
     end if
   end function
 
-  real(8) function rlog(x) result(re)
-    real(8) :: x
+  real(dp) function rlog(x) result(re)
+    real(dp) :: x
 
     re = log(abs(x))
 
@@ -71,7 +80,7 @@ CONTAINS
   function idx(n) result(re)
     integer, intent(in) :: n
     integer :: i
-    real(8) :: re(n, n)
+    real(dp) :: re(n, n)
     re = 0
     forall (i=1:n) re(i, i) = 1d0
     return
@@ -80,7 +89,7 @@ CONTAINS
   function idx_c(n) result(re)
     integer, intent(in) :: n
     integer :: i
-    complex(8) :: re(n, n)
+    complex(dp) :: re(n, n)
     re = 0
     forall (i=1:n) re(i, i) = (1d0, 0d0)
     return
@@ -89,7 +98,7 @@ CONTAINS
   function sigma_x(n) result(re)
     integer, intent(in) :: n
 
-    real(8) :: re(n, n)
+    real(dp) :: re(n, n)
     re = 0
     if (n /= 2) stop 'n/=2 in sigma_x'
     re(1, 2) = 1d0
@@ -100,7 +109,7 @@ CONTAINS
   function sigma_y(n) result(re) ! actually i*sigma_y
     integer, intent(in) :: n
 
-    complex(8) :: re(n, n)
+    complex(dp) :: re(n, n)
     re = 0
     if (n /= 2) stop 'n/=2 in sigma_x'
     re(1, 2) = 1
@@ -111,7 +120,7 @@ CONTAINS
   function sigma_z(n) result(re)
     integer, intent(in) :: n
 
-    real(8) :: re(n, n)
+    real(dp) :: re(n, n)
     re = 0
     if (n /= 2) stop 'n/=2 in sigma_x'
     re(1, 1) = 1d0
@@ -121,7 +130,7 @@ CONTAINS
   subroutine rsort(array_, n, ascending)
     implicit none
     integer, intent(in) :: n
-    real(8) :: array_(n)
+    real(dp) :: array_(n)
     logical :: ascending
     integer :: i, ind
 
@@ -167,7 +176,7 @@ CONTAINS
   end subroutine
   subroutine rswap(a, b)
     implicit none
-    real(8) :: a, b, temp
+    real(dp) :: a, b, temp
     temp = a
     a = b
     b = temp
@@ -183,7 +192,7 @@ CONTAINS
 
   subroutine cswap(a, b)
     implicit none
-    complex(8) :: a, b, temp
+    complex(dp) :: a, b, temp
     temp = a
     a = b
     b = temp
@@ -193,9 +202,9 @@ CONTAINS
     implicit none
     integer, intent(in) :: n
     logical :: Hermitian
-    real(8) :: v(n)
-    real(8) :: mat(n, n), exp_mat(n, n)
-    complex(8) :: c_mat(n, n)
+    real(dp) :: v(n)
+    real(dp) :: mat(n, n), exp_mat(n, n)
+    complex(dp) :: c_mat(n, n)
     integer :: i, j
     if(n==0) stop 'n=0 in dexpm'
     if(n==1) then
@@ -235,8 +244,8 @@ CONTAINS
     implicit none
     integer, intent(in) :: n
     logical :: Hermitian
-    real(8) :: v(n)
-    complex(8) :: mat(n, n), exp_mat(n, n),c_mat(n,n)
+    real(dp) :: v(n)
+    complex(dp) :: mat(n, n), exp_mat(n, n),c_mat(n,n)
     integer :: i, j
     if(n==0) stop 'n=0 in dexpm'
     if(n==1) then
@@ -273,7 +282,7 @@ CONTAINS
   FUNCTION dtrace(n, a)
     IMPLICIT NONE
     INTEGER n, i
-    REAL(8) a(n, n), dtrace
+    REAL(dp) a(n, n), dtrace
     dtrace = 0d0
     DO i = 1, n
       dtrace = dtrace + a(i, i)
@@ -283,7 +292,7 @@ CONTAINS
   FUNCTION ztrace(n, a)
     IMPLICIT NONE
     INTEGER n, i
-    COMPLEX(8) a(n, n), ztrace
+    COMPLEX(dp) a(n, n), ztrace
     ztrace = (0d0, 0d0)
     DO i = 1, n
       ztrace = ztrace + a(i, i)
@@ -293,7 +302,7 @@ CONTAINS
   SUBROUTINE dqdr(m, n, a, r, d)
     IMPLICIT NONE
     INTEGER m, n, i
-    REAL(8) a(m, n), r(n, n), d(n)
+    REAL(dp) a(m, n), r(n, n), d(n)
 
     CALL dqr(m, n, a, r)
     DO i = 1, n
@@ -306,7 +315,7 @@ CONTAINS
   SUBROUTINE zqdr(m, n, a, r, d)
     IMPLICIT NONE
     INTEGER m, n, i
-    COMPLEX(8) a(m, n), r(n, n), d(n)
+    COMPLEX(dp) a(m, n), r(n, n), d(n)
 
     CALL zqr(m, n, a, r)
     DO i = 1, n
@@ -319,7 +328,7 @@ CONTAINS
   SUBROUTINE dldq(m, n, a, l, d)
     IMPLICIT NONE
     INTEGER m, n, i
-    REAL(8) a(m, n), l(m, m), d(m)
+    REAL(dp) a(m, n), l(m, m), d(m)
 
     CALL dlq(m, n, a, l)
     DO i = 1, m
@@ -332,7 +341,7 @@ CONTAINS
   SUBROUTINE zldq(m, n, a, l, d)
     IMPLICIT NONE
     INTEGER m, n, i
-    COMPLEX(8) a(m, n), l(m, m), d(m)
+    COMPLEX(dp) a(m, n), l(m, m), d(m)
 
     CALL zlq(m, n, a, l)
     DO i = 1, m
@@ -345,7 +354,7 @@ CONTAINS
   SUBROUTINE deigen(n, a, v)
     IMPLICIT NONE
     INTEGER n, info
-    REAL(8) a(n, n), v(n), work(64*n)
+    REAL(dp) a(n, n), v(n), work(64*n)
     IF (n <= 0) STOP 'N<=0 is invalid, inside DEIGEN'
     IF (n == 1) THEN
       v(1) = a(1, 1); a(1, 1) = 1d0; RETURN
@@ -357,8 +366,8 @@ CONTAINS
   SUBROUTINE zeigen(n, a, v)
     IMPLICIT NONE
     INTEGER n, info
-    REAL(8) rwork(3*n - 2), v(n)
-    COMPLEX(8) work(64*n), a(n, n)
+    REAL(dp) rwork(3*n - 2), v(n)
+    COMPLEX(dp) work(64*n), a(n, n)
     IF (n <= 0) STOP 'N<=0 is invalid, inside DEIGEN'
     IF (n == 1) THEN
       v(1) = real(a(1, 1)); a(1, 1) = 1d0; RETURN
@@ -370,7 +379,7 @@ CONTAINS
   SUBROUTINE dinverse(n, a)
     IMPLICIT NONE
     INTEGER n, info, ipiv(n)
-    REAL(8) a(n, n), work(64*n), b(2, 2)
+    REAL(dp) a(n, n), work(64*n), b(2, 2)
     IF (n <= 0) STOP 'N<=0 is invalid, inside DINVERSE'
     IF (n == 1) THEN
       a(1, 1) = 1d0/a(1, 1); RETURN
@@ -393,7 +402,7 @@ CONTAINS
   SUBROUTINE zinverse(n, a)
     IMPLICIT NONE
     INTEGER n, info, ipiv(n)
-    COMPLEX(8) a(n, n), work(64*n), b(2, 2)
+    COMPLEX(dp) a(n, n), work(64*n), b(2, 2)
     IF (n <= 0) STOP 'N<=0 is invalid, inside ZINVERSE'
     IF (n == 1) THEN
       a(1, 1) = 1d0/a(1, 1); RETURN
@@ -416,7 +425,7 @@ CONTAINS
   SUBROUTINE dqr(m, n, a, r)
     IMPLICIT NONE
     INTEGER m, n, info, j, lwork
-    REAL(8) a(m, n), r(n, n), tau(n), work(n*64)
+    REAL(dp) a(m, n), r(n, n), tau(n), work(n*64)
 
     IF (m < n) STOP 'm<n is invalid, inside DQR'
     IF (n <= 0) STOP 'n<=0 is invalid, inside DQR'
@@ -435,7 +444,7 @@ CONTAINS
   SUBROUTINE zqr(m, n, a, r)
     IMPLICIT NONE
     INTEGER m, n, info, j, lwork
-    COMPLEX(8) a(m, n), r(n, n), tau(n), work(n*64)
+    COMPLEX(dp) a(m, n), r(n, n), tau(n), work(n*64)
     IF (m < n) STOP 'm<n is invalid, inside ZQR'
     IF (n <= 0) STOP 'n<=0 is invalid, inside ZQR'
     lwork = n*64
@@ -452,7 +461,7 @@ CONTAINS
   SUBROUTINE dlq(m, n, a, l)
     IMPLICIT NONE
     INTEGER m, n, info, j, lwork
-    REAL(8) a(m, n), l(m, m), tau(m), work(m*64)
+    REAL(dp) a(m, n), l(m, m), tau(m), work(m*64)
 
     IF (m > n) STOP 'm>n is invalid, inside DLQ'
     IF (m <= 0) STOP 'n<=0 is invalid, inside DLQ'
@@ -471,7 +480,7 @@ CONTAINS
   SUBROUTINE zlq(m, n, a, l)
     IMPLICIT NONE
     INTEGER m, n, info, j, lwork
-    COMPLEX(8) a(m, n), l(m, m), tau(m), work(m*64)
+    COMPLEX(dp) a(m, n), l(m, m), tau(m), work(m*64)
     IF (m > n) STOP 'm>n is invalid, inside ZLQ'
     IF (m <= 0) STOP 'm<=0 is invalid, inside ZLQ'
     lwork = m*64
@@ -493,7 +502,7 @@ CONTAINS
   FUNCTION ddet(n, a)
     IMPLICIT NONE
     INTEGER n, i, info, ipvt(n)
-    REAL(8) a(n, n), b(n, n), ddet
+    REAL(dp) a(n, n), b(n, n), ddet
     IF (n <= 0) STOP 'N<0 is invalid, inside DDET'
     IF (n == 1) THEN
       ddet = a(1, 1); RETURN
@@ -524,7 +533,7 @@ CONTAINS
     use, intrinsic :: ieee_arithmetic
     IMPLICIT NONE
     INTEGER i, n, info, ipvt(n)
-    COMPLEX(8) a(n, n), b(n, n), zdet
+    COMPLEX(dp) a(n, n), b(n, n), zdet
     IF (n <= 0) STOP 'N<0 is invalid, inside ZDET'
     IF (n == 1) THEN
       zdet = a(1, 1); RETURN
@@ -549,6 +558,52 @@ CONTAINS
     !zdet=exp(zdet)
     IF (info < 0) zdet = -zdet
   END FUNCTION
+
+
+
+
+
+  !=========================================================================================
+  ! C = C + A * B, these subroutines call BLAS ZGEMM to substitute a direct matrix addition, substraction and mutiplication
+
+  SUBROUTINE zgemm_selfadd(C, A, B, m,k,n,alpha, beta)
+    !> C = alpha * A(m,k) * B(k,n) + beta * C(m,n) 
+    integer, intent(in) :: m, n, k
+    COMPLEX(KIND=DP), INTENT(IN)    :: A(m,k), B(k,n)
+    COMPLEX(KIND=DP), INTENT(INOUT) :: C(m,n)
+    INTEGER :: LDA, LDB, LDC
+    COMPLEX(KIND=DP), INTENT(IN) :: ALPHA, BETA
+
+    ! 2. 设置 Leading Dimensions (列优先存储通常就是行数)
+    LDA = M
+    LDB = K
+    LDC = M
+    ! 公式: C = alpha * A * B + beta * C
+    ! 调用 BLAS 的 ZGEMM
+    ! 注意：OpenBLAS 通常不需要显式接口，直接调用即可
+    CALL ZGEMM('N', 'N', M, N, K, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
+
+  END SUBROUTINE zgemm_selfadd
+
+  SUBROUTINE dgemm_selfadd(C, A, B, m,k,n, ALPHA, BETA)
+    !> C = alpha * A(m,k) * B(k,n) + beta * C(m,n) 
+    integer, intent(in) :: m, n, k
+    real(KIND=DP), INTENT(IN)    :: A(m,k), B(k,n)
+    real(KIND=DP), INTENT(INOUT) :: C(m,n)
+    INTEGER :: LDA, LDB, LDC
+    real(KIND=DP), INTENT(IN)  :: ALPHA, BETA
+    ! 2. 设置 Leading Dimensions (列优先存储通常就是行数)
+    LDA = M
+    LDB = K
+    LDC = M
+
+    ! 4. 调用 BLAS 的 ZGEMM
+    ! 注意：OpenBLAS 通常不需要显式接口，直接调用即可
+    CALL DGEMM('N', 'N', M, N, K, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
+
+  END SUBROUTINE dgemm_selfadd
+
+
 
 END MODULE
 

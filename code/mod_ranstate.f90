@@ -251,7 +251,7 @@ MODULE ran_state
         INTEGER iseed, n
         INTEGER, DIMENSION(:), ALLOCATABLE :: seed
         call ran_init(1)
-        CALL ran_seed(size=n)
+        CALL ran_seed(sequence=iseed,size=n)
         ALLOCATE (seed(n))
         seed = iseed
         CALL ran_seed(put=seed)

@@ -8,13 +8,13 @@
  ####################################
  #####  Monte Carlo parameter  #####
  ####################################
- nbin  =               4
- measurements in one_bin              4
- warmup  =              20
+ nbin  =               5
+ measurements in one_bin              2
+ warmup  =              10
  meas_interval  =               1
  meas_timerange  =               0
- total_iterations  =              36
- number of mpi_blocks  =               4
+ total_iterations  =              20
+ number of mpi_blocks  =               1
  number of cores per block  =               1
  global update is used
  
@@ -22,9 +22,9 @@
  #######  Physical parameter  #######
  ####################################
  lattice_dimension =            2
- Lt    =             960
+ Lt    =            1000
  dtau  =    0.100000000000000
- Beta  = dtau*Lt =   96.000000000000000
+ Beta  = dtau*Lt =  100.000000000000000
  lambda, el-phonon coupling =    1.000000000000000
  omega   =    1.000000000000000
  M   =    1.000000000000000

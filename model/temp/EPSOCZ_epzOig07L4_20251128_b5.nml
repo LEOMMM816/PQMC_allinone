@@ -1,0 +1,279 @@
+! 2D square lattice with EPSOC in sigmaz channel
+! n_cover = n means plaquettes cover the whole lattice n times, so n_plaquette = Ns * n_cover/pf%dim
+! tsl_vec are the positions of the first site in the interaction H-space, also refered as the position of the boson field 
+! int_vec are the positions of sites in each plaquette, relative to the first site. The first vector is 0,0
+
+
+
+&Control_varibles
+   proj = .true. ! pqmc or ftqmc
+   record_ph_field = .false.
+   Metropolis = .true.
+   check_acorr = .false.
+   import_ph_field = .false.
+   greatest_decent = .false.
+   local_update = .true.
+   Kspace_GU = .true.
+   TBC = .false.
+   global_update = .false.
+   global_update_shift = .false.
+   global_update_flip = .false.
+   global_update_exchange = .false.
+   fixedseeds = .false.
+   second_trotter = .false.
+   TR_weight = .false.
+   TR_slater = .true.
+/
+
+&MPI_parameter
+  ncore = 8
+  nblock = 8
+/
+
+
+&MC_parameter
+  warmup = 5000
+  meas_interval = 1
+  meas_number = 0
+  nbin_per_core = 40
+  nmeas_per_bin = 500
+/
+
+
+&General_ARGUMENTS
+  ncopy = 1                    ! number of flavours
+  delt = 0.1
+  beta = 96
+  filling = 0.5
+  print_loop = 500
+  ngroup = 5
+/
+
+&phonon_parameter
+  n_phonon_field = 4
+  D = 1d0
+  M = 1d0                  ! >stiffness constant and Mass
+  omega = 10000
+  ep_parameter = 1.3
+  end_field = 0d0
+  n_local_update = 1                    ! > times of proposal  of new ph field at each location
+  jump_distance = 10
+/
+
+&global_update
+  global_update_distance = 0
+  n_global_update = 1                    ! >number of bonds that change in one GUD
+  global_update_loop = 2
+/
+
+!----------------------------------model specific parameters----------------------------------!
+
+! lattice definition
+&lat_dim
+dim = 2
+n_subsite_uc = 2
+/
+
+&lat_spatial
+  lat_size = 4,4
+  lat_vec = 1,0,
+              0,1
+/
+
+&lat_subsite_vector
+  site_vec = 0,0,
+            0,0
+/
+
+! slater determinant definition for PQMC
+&slater
+    pf_dim = 6
+    n_cover = 3
+/
+
+&slater_detail
+    K_coe = (1.0d0,0d0) !> coupling constant for K matrix
+    pla_tsl_dvec_uc = 1,0,
+                      0,1
+    pla_offset_dvec_uc = 0,0
+    pla_int_subsites = 0,0,1,
+                       0,0,2,
+                       1,0,1,
+                       1,0,2,
+                       0,1,1,
+                       0,1,2
+    Kmatrix = (10,0),(0,0),(1,0),(0,0),(1,0),(0,0),
+              (0,0),(0,0),(0,0),(1,0),(0,0),(1,0),
+              (1,0),(0,0),(10,0),(0,0),(0,0),(0,0),
+              (0,0),(1,0),(0,0),(0,0),(0,0),(0,0),
+              (1,0),(0,0),(0,0),(0,0),(10,0),(0,0),
+              (0,0),(1,0),(0,0),(0,0),(0,0),(0,0)
+/
+
+
+! interaction field definition
+&pf_basic
+  id = 1,2,3,4
+  K_exist = .true.,.true.,.true.,.true.
+  V_exist = .true.,.true.,.true.,.true.
+  pf_dim = 4,4,4,4
+  n_cover = 1,1,1,1
+/ 
+
+! pf 1 : sigma_y along x direction
+&pf_pos 
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 0,0
+     pla_int_subsites = 0,0,1,
+                       0,0,2,
+                       1,0,1,
+                       1,0,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 1 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(1,0),
+                (0,0),(0,0),(-1,0),(0,0),
+                (0,0),(-1,0),(0,0),(0,0),
+                (1,0),(0,0),(0,0),(0,0) ! i sigma_y
+/
+
+! pf 2 : sigma_y along x direction, off by (1,0)
+&pf_pos
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 1,0
+     pla_int_subsites = 0,0,1,
+                       0,0,2,
+                       1,0,1,
+                       1,0,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 1 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(1,0),
+                (0,0),(0,0),(-1,0),(0,0),
+                (0,0),(-1,0),(0,0),(0,0),
+                (1,0),(0,0),(0,0),(0,0) ! i sigma_y
+/
+
+! pf 3 : sigma_x along y direction
+&pf_pos
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 0,0
+     pla_int_subsites = 0,0,1,
+                        0,0,2,
+                        0,1,1,
+                        0,1,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 2 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(0,1),
+                (0,0),(0,0),(0,1),(0,0),
+                (0,0),(0,-1),(0,0),(0,0),
+                (0,-1),(0,0),(0,0),(0,0) ! i sigma_x
+/
+
+! pf 4 : sigma_x along y direction, off by (0,1)
+&pf_pos
+      pla_tsl_dvec_uc = 2,0,
+                        1,1 
+      pla_offset_dvec_uc = 0,1
+     pla_int_subsites = 0,0,1,
+                        0,0,2,
+                        0,1,1,
+                        0,1,2
+/
+
+&pf_K
+      K_coe = (1d0,0d0) !> coupling constant for K matrix
+      Kmatrix = (0,0),(0,0),(1,0),(0,0),
+                (0,0),(0,0),(0,0),(1,0),
+                (1,0),(0,0),(0,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0)
+/
+
+&pf_V
+      V_coe = (1d0,0d0)  !> coupling constant for V matrix
+      bf_index = 2 !> index of the coupled boson field
+      Vmatrix = (0,0),(0,0),(0,0),(0,1),
+                (0,0),(0,0),(0,1),(0,0),
+                (0,0),(0,-1),(0,0),(0,0),
+                (0,-1),(0,0),(0,0),(0,0) ! i sigma_x
+/
+
+! boson field definition
+
+&bf_basics
+    bf_sets = 2 ! number of set of boson fields
+    ising = .false. ! ising type or not
+    continuous = .true. ! continuous type or not
+    import_ph_field = .false. ! import phonon field from file or not
+/
+
+&bf_initial
+    phase_intra_cell = (1,0),(-1,0) ! size of n_bf, phases of intra-cell boson fields
+    phase_k_inter_cell = 1,1! size of Lat%dim, k-space distribution of phase of bfs,in unit of pi
+    random_range = 1 ! range of random number for initial boson field, in unit of character length
+    offset = 1 ! range of random number for initial boson field, in unit of character length
+/
+
+&observable name="BF_KE",   obskind="scalar"/
+&observable name="BF_PE",   obskind="scalar"/
+&observable name="BF_X",    obskind="scalar"/
+&observable name="BFx_BFx", obskind="field"/
+&observable name="BFx_BFy", obskind="field"/
+&observable name="BFy_BFy", obskind="field"/
+&observable name="Jxx_Jxx", obskind="field"/
+&observable name="Jxxh_Jxxh", obskind="field"/
+&observable name="Jxy_Jxy", obskind="field"/
+&observable name="Jxyh_Jxyh", obskind="field"/
+&observable name="Jyx_Jyx", obskind="field"/
+&observable name="Jyxh_Jyxh", obskind="field"/
+&observable name="Jyy_Jyy", obskind="field"/
+&observable name="Jyyh_Jyyh", obskind="field"/
+&observable name="Jxx_Jyx", obskind="field"/
+&observable name="Jxxh_Jyxh", obskind="field"/
+&observable name="Jxy_Jyy", obskind="field"/
+&observable name="Jxyh_Jyyh", obskind="field"/
+&observable name="Jxx_Jyy", obskind="field"/
+&observable name="Jxxh_Jyyh", obskind="field"/
+&observable name="Jxy_Jyx", obskind="field"/
+&observable name="Jxyh_Jyxh", obskind="field"/
+&observable name="den_den", obskind="field"/
+&observable name="SC_SC",   obskind="field"/
+&observable name="Sz_Sz",   obskind="field"/
+&observable name="Sx_Sx",   obskind="field"/
+&observable name="Sy_Sy",   obskind="field"/
+
+

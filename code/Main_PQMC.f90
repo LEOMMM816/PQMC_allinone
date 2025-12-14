@@ -12,7 +12,7 @@ program Pqmc_main
 
   integer :: loop, time, time_count, iflv, i_phonon_field, i_site,i_bond,i_pf
   integer :: i_ml, i_ml2
-  integer(4) :: count1, count2, count_rate
+  integer(8) :: count1, count2, count_rate
   integer :: iteration  ! # of Monte Carlo loops
   logical :: forward = .true.
   character*10 :: ci_myid
@@ -37,6 +37,7 @@ program Pqmc_main
   ! phonon-field initialize
   print *, 'set phonon field...'
   call set_pf_main()
+  print *, 'set slater pf...'
   call readin_slater_pf()
   print *, 'set phonon field ends.'
 #ifdef MPI
@@ -81,8 +82,8 @@ program Pqmc_main
         time = ntime - time_count + 1
         ! G(time+1) -> B^(-1) G(time+1) B = G(time),  where B = exp(-delt*H(time))
         do i_pf =  n_phonon_field,1,-1
-          call right_evolve(time, g, ns,i_pf,two_way = .true.)
-          g_h = idx(ns) - g
+          call right_evolve(time, g_h, ns,ppf_list(i_pf),two_way = .true.)
+          
           if (local_update .and. ppf_list(i_pf)%V_exist) then
             ! update G(time) where the exp(-delt*V(time)) is to the right most
             call update_phonon_field(ppf_list(i_pf), time)
@@ -100,8 +101,8 @@ program Pqmc_main
             ! update G(time) where the exp(-delt*V(time)) is to the right most
             call update_phonon_field(ppf_list(i_pf), time)
           end if
-          call left_evolve(time, g, ns,i_pf,two_way = .true.)
-          g_h = idx(ns) - g
+          call left_evolve(time, g_h, ns,ppf_list(i_pf),two_way = .true.)
+      
         end do
       end if ! forward
 
@@ -111,8 +112,8 @@ program Pqmc_main
         if (forward) then
           !print *, 'forward time:', time
           call get_g_scratch_T0(time + 1, forward, loop) ! at time to get g(time+1)
-        else
-          call get_g_scratch_T0(time, forward, loop) ! at time to get g(time)
+        else 
+          call get_g_scratch_T0(time, forward, loop) ! at time to get g(tim e)
         end if
 
       end if ! end update g from scratch
@@ -226,35 +227,24 @@ contains
     do i_pla = 1, slater_pf%n_plaquette
       K_slater(slater_pf%p_data%pla_site_list(:,i_pla), slater_pf%p_data%pla_site_list(:,i_pla))&
       &  =  slater_pf%K_coe * slater_pf%Kmatrix
-    end do
-
-    allocate(K_mat(Ns,Ns),expK(Ns,Ns),expK_half(Ns,Ns),expK_inv(Ns,Ns),expK_inv_half(Ns,Ns))
-    K_mat = 0d0
-    do i_pf = 1, n_phonon_field
-      if (ppf_list(i_pf)%K_exist) then
-        do i_pla = 1, ppf_list(i_pf)%n_plaquette
-          K_mat(ppf_list(i_pf)%p_data%pla_site_list(:,i_pla), ppf_list(i_pf)%p_data%pla_site_list(:,i_pla))&
-      &  =  K_mat(ppf_list(i_pf)%p_data%pla_site_list(:,i_pla), ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) + &
-      & ppf_list(i_pf)%K_coe * ppf_list(i_pf)%Kmatrix
-        end do
+      ! check boundary crossing for each plaquette
+      if(slater_pf%p_data%boundary_crossing(i_pla)) then
+        K_slater(slater_pf%p_data%pla_site_list(:,i_pla), slater_pf%p_data%pla_site_list(:,i_pla))&
+      &  =  slater_pf%K_coe * slater_pf%Kmatrix * slater_pf%p_data%BC_phases(:,:,i_pla)
       end if
     end do
 
-    expK = -delt * K_mat
-    call expm(expk, Ns)
-    expK_half = -delt/2d0 * K_mat
-    call expm(expK_half, Ns)
-    expK_inv = delt * K_mat
-    call expm(expK_inv, Ns)
-    expK_inv_half = delt/2d0 * K_mat
-    call expm(expK_inv_half, Ns)
-
     if(.false.) then
       do i = 1,Ns
-        write(*,'(A,1i4,32f4.0)') 'K_mat:',i,real(K_slater(i,:))
+        write(*,'(A,1i4,32f10.5)') 'K_slater:',i,real(K_slater(i,:))
       end do
+      do i = 1, Ns
+        ! imaginary part
+        write(*,'(A,1i4,32f10.5)') 'K_slater_im:',i,aimag(K_slater(i,:))
+      end do
+      stop
     end if
-
+   
   END SUBROUTINE
 
   subroutine set_nelec_occupied()
@@ -321,7 +311,6 @@ contains
           phase_factor = exp(complex(0d0,sum(phase_k_inter_cell * p_cells(i_cell)%rpos * PI)))
           do i_bf = 1, bf_sets
             boson_field(p_cells(i_cell)%bf_list, l) = real((random_range*ran_sysm() + (phase_factor*offset))*phase_intra_cell(i_bf))
-
           end do
         end do
       end do
@@ -382,11 +371,26 @@ contains
         print *, "NMLFILE =", trim(nml_file)
       end if
     end if
+    ! 从环境变量 MODEL 读入
+    call get_environment_variable("MODEL", value=model_name, status=ios)
+    if (ios /= 0) then
+      if (myid == 0) then
+        print *, "ERROR: 环境变量 MODEL 未设置"
+      end if
+      call MPI_Abort(MPI_COMM_WORLD, 1, ierr)
+    else
+      model_name = trim(adjustl(model_name))
+      if (myid == 0) then
+        print *, "MODEL =", trim(model_name)
+      end if
+    end if
+    ! initialize random number generator with different seed for each process
     write(mpi_info,'(1i4)') myid
     mpi_info = 'No. '//trim(adjustl(mpi_info))//' processes'
     if ( fixedseeds ) then
       call init_rng_by_seed(122)
       print *, 'seed:', ranseeds
+      
     else
       call init_rng(myid + 1)
       print *, 'myid:',myid,'seed:', ranseeds

@@ -18,11 +18,14 @@ contains
     integer :: i_pf,i_dim
     integer :: dim,n_subsite_uc
     integer, allocatable :: lat_size(:)
-    real(8), allocatable :: lat_vec(:), site_vec(:)
+    real(dp), allocatable :: lat_vec(:), site_vec(:)
+    real(dp),allocatable :: BC_phase(:)
+    logical,allocatable :: periodic(:)
     integer :: ios
     namelist /lat_dim/ dim,n_subsite_uc
     namelist /lat_spatial/  lat_size,lat_vec
     namelist /lat_subsite_vector/ site_vec
+    namelist /lat_boundary_condition/ periodic, BC_phase
     !! Read lattice dimension and number of sites in unit cell
     dim = 0
     open (10, file=nml_file, status='old', position='rewind')
@@ -35,21 +38,29 @@ contains
     end if
     !print *, "Lattice dimension:", dim
     !! Read lattice vectors
-    allocate(lat_size(dim),lat_vec(dim * dim),site_vec(n_subsite_uc * dim))
-    rewind(10)
+    allocate(lat_size(dim),lat_vec(dim * dim),site_vec(n_subsite_uc * dim),BC_phase(dim),periodic(dim))
+    
     read (10, nml=lat_spatial, iostat=ios)
     if (ios /= 0) then
       print *, "Error reading lattice spatial size and vectors"
       print*,"ios = ", ios
       stop 
     end if
-    rewind(10)
+    
     read (10, nml=lat_subsite_vector, iostat=ios)
     if (ios /= 0) then
       print *, "Error reading lattice unit cell vectors"
       print*,"ios = ", ios
       stop
     end if
+
+    read (10, nml=lat_boundary_condition, iostat=ios)
+    if (ios /= 0) then
+      print *, "Error reading lattice boundary condition"
+      print*,"ios = ", ios
+      stop
+    end if
+    print*,"Boundary conditions read from file:", periodic, BC_phase
     close(10)
     ! Initialize lattice type 
     lat%dim = dim
@@ -58,13 +69,23 @@ contains
     allocate(lat%dlength(dim), lat%rlength(dim))         
     allocate(lat%tsl_rvec(dim,dim))
     allocate(lat%subsite_rvec(dim,n_subsite_uc))
+    allocate(lat%periodic(dim), lat%BC_phase(dim))
     lat%dlength = lat_size
     ! lat%tsl_rvec is the lattice vectors in spatial vectors
     lat%tsl_rvec = reshape(lat_vec, [dim, dim])
     lat%subsite_rvec = reshape(site_vec, [dim, n_subsite_uc])
     lat%N_cell = product(lat%dlength)
     lat%Ns = lat%N_cell * lat%n_subsite_uc
-    lat%periodic = .true. ! Assuming periodic boundary conditions for now
+    ! boundary conditions
+    lat%periodic = periodic
+    do i_dim = 1, dim
+      if (lat%periodic(i_dim)) then
+        lat%BC_phase(i_dim) = exp((0.0d0,1.0d0) * BC_phase(i_dim) * acos(-1.0d0)) ! convert to complex phase factor
+      else ! open boundary condition
+        lat%BC_phase(i_dim) = 0d0
+      end if
+    end do
+    
     ! lat%rlength is the lat%dlength * norm of the lattice vectors in each dimension
     lat%rlength = real(lat%dlength, kind=8) * sqrt(sum(lat%tsl_rvec**2, dim=1)) ! assuming lat_vec is in the same order as dlength
     ! Debug output
@@ -72,15 +93,16 @@ contains
     !print *, "Lattice lengths:", lat%dlength
     !print *, "Lattice spatial vectors:"
     do i_dim = 1, dim
-      print *, lat%tsl_rvec(:,i_dim)  
+      !print *, lat%tsl_rvec(:,i_dim)  
     end do 
     !print *, "Number of sites in unit cell:", lat%n_subsite_uc
     !print *, "site unit cell vectors:"
     do i_dim = 1, lat%n_subsite_uc
-      print *, lat%subsite_rvec(:,i_dim)
+      !print *, lat%subsite_rvec(:,i_dim)
     end do
   end subroutine readin_lattice_para
 
+  
   subroutine setup_lattice()
     implicit none
     integer :: i, j, site_id
@@ -142,10 +164,10 @@ contains
   subroutine calculate_1stBZ(rvec,kvec,n,FBZ,k_phase)
     implicit none
     integer,intent(in) :: n
-    real(8) :: rvec(n,n),kvec(n,n),FBZ(n,lat%N_cell)
-    complex(8) :: k_phase(lat%N_cell,lat%N_cell)
+    real(dp) :: rvec(n,n),kvec(n,n),FBZ(n,lat%N_cell)
+    complex(dp) :: k_phase(lat%N_cell,lat%N_cell)
     integer :: i_dim,i_k,i_cell,k_dpos(n)
-    real(8) :: k_offset(n),del_kvec(n,n)
+    real(dp) :: k_offset(n),del_kvec(n,n)
     ! rvec(:,i) is the i-th lattice vector in spatial vectors
     ! kvec(:,i) is the i-th lattice vector in k-space vectors
     ! MATMUL(kvec(:,i)^T,  rvec(:,j)) = 2*pi*delta_ij
@@ -184,9 +206,9 @@ contains
 
   function get_site_index_from_rpos(rpos) result(re)
     implicit none
-    real(8), intent(in) :: rpos(:)
+    real(dp), intent(in) :: rpos(:)
     integer :: i, site_index,re
-    real(8) :: diff
+    real(dp) :: diff
     ! This function returns the site index from the position in spatial vectors
     site_index = -1
     do i = 1, size(p_sites)
@@ -235,10 +257,9 @@ contains
     implicit none
     ! This function returns the unit cell index from the integer position
     ! dpos is the position vector to be input, where
-    ! each component tops [L1-1, L2-1, L3-1, ...](1-based)
+    ! each component tops [L1-1, L2-1, L3-1, ...](0-based dpos)
     ! ind is the index of the unit cell in the lattice to be returned
-    ! ind = 1 + (dpos(1)) + L1*((dpos(2)) + L2*((dpos(3)) + ...))) (0-based)
-    ! ind = 1 + (dpos(1)-1) + L1*((dpos(2)-1) + L2*((dpos(3)-1) + ...))) (1-based)
+    ! ind = 1 + (dpos(1)) + L1*((dpos(2)) + L2*((dpos(3)) + ...))) (0-based dpos to 1-based index)
     ! this subroutine is self-contained, it does not depend on the lattice type or outside variables
     
     integer, intent(in) :: dpos(:)
@@ -248,7 +269,7 @@ contains
     dpos_copy = dpos
     
     do i = 1,size(dpos)
-      if(dpos_copy(i) < 0) dpos_copy(i) = dpos_copy(i) + lat%dlength(i) ! Handle negative positions
+      if(dpos_copy(i) < -0.00001) dpos_copy(i) = dpos_copy(i) + lat%dlength(i) ! Handle negative positions
       dpos_copy(i) = mod(dpos_copy(i), lat%dlength(i)) ! Ensure dpos is within bounds (0-based)
     end do
     ind = 1 ! Start from 1 for 1-based index
@@ -263,7 +284,7 @@ contains
     ! This function returns the relative index from dpos1 to dpos2
     ! considering periodic boundary conditions
     ! dpos1 and dpos2 are the position vectors to be input, where
-    ! each component tops [L1-1, L2-1, L3-1, ...](0-based)
+    ! each component tops [L1-1, L2-1, L3-1, ...](0-based dpos)
     ! ind is the relative index to be returned
     ! ind = 1 + (dpos_rel(1)) + L1*((dpos_rel(2)) + L2*((dpos_rel(3)) + ...))) (0-based)
     ! ind = 1 + (dpos_rel(1)-1) + L1*((dpos_rel(2)-1) + L2*((dpos_rel(3)-1) + ...))) (1-based)

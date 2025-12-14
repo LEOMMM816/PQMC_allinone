@@ -1,11 +1,11 @@
 
 MODULE input
-
+  use nrtype
   IMPLICIT NONE
 
 ! debug varibles
   integer :: positive_accept = 0, negative_accept = 0, global_accept = 0, global_reject = 0
-  real(8) :: delta_energy_P = 0, delta_energy_K = 0, delta_energy_E = 0
+  real(dp) :: delta_energy_P = 0, delta_energy_K = 0, delta_energy_E = 0
   integer :: i_debug
 ! Control varibles
   logical :: proj = .true. ! pqmc or ftqmc
@@ -16,7 +16,6 @@ MODULE input
   logical :: greatest_decent = .false.
   logical :: local_update = .true.
   logical :: Kspace_GU = .true.
-  logical :: TBC = .false.
   logical :: global_update = .true.
   logical :: global_update_shift = .false.
   logical :: global_update_flip = .false.
@@ -25,9 +24,10 @@ MODULE input
   logical :: second_trotter = .false.
   logical :: TR_weight = .false.
   LOGICAL :: TR_slater = .true.
+  
 
 ! constant
-  real(8),parameter :: e = 2.7182818284590452353602874713526624d0
+  real(dp),parameter :: e = 2.7182818284590452353602874713526624d0
 
 ! mpi parameter
   
@@ -45,79 +45,85 @@ MODULE input
   character(len=100) :: nml_file, output_addr = 'data/',output_format = 'f18.8',reading_guide = 'reading_guide.nml'
   character(len=200) :: task_name
   character(len=100) ::  mpi_info
+  character(len=100) ::  model_name
   integer :: ncopy = 1! number of flavours
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
   integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
-  real(8) :: delt = 0.1, beta = 90d0,hop = 1d0
+  real(dp) :: delt = 0.1, beta = 90d0,hop = 1d0
   integer :: print_loop = 1000
-  real(8) :: err_fast = 0d0, err_fast_max = 0.000001d0
-  real(8),allocatable :: TBC_phase_number
-  real(8) :: filling = 1d0
+  real(dp) :: err_fast = 0d0, err_fast_max = 0.000001d0
+  real(dp),allocatable :: TBC_phase_number(:)
+  real(dp) :: filling = 1d0
 
 
 ! phonon parameter
   integer :: n_phonon_field !> number of phonon fields
   integer :: bf_sets ! number of boson fields
   integer :: n_boson_field ! number of decomposed phonon field
-  real(8) :: D = 1d0,M = 1d0 !>stiffness constant and Mass
+  real(dp) :: D = 1d0,M = 1d0 !>stiffness constant and Mass
   real(kind=8) :: ep_parameter = 1d0, U = 0d0 ! Hubbard U and steps delt * U < 0.5
-  real(8) :: char_length = 1.0 !> characteristic length of phonon field
-  real(8) :: omega = 1d0!> phonon frequency
-  real(8) :: end_field = 0d0
-  real(8) :: biased_phonon = 0d0
-  real(8) :: jump_distance
-  real(8) :: max_displacement !> = hop / ep_parameter
+  real(dp) :: char_length = 1.0 !> characteristic length of phonon field
+  real(dp) :: omega = 1d0!> phonon frequency
+  real(dp) :: end_field = 0d0
+  real(dp) :: biased_phonon = 0d0
+  real(dp) :: jump_distance
+  real(dp) :: max_displacement !> = hop / ep_parameter
   integer :: n_local_update = 1 !> times of proposal  of new ph field at each location
 
 
 !global update
-  complex(8) :: ln_cw = 0d0
-  real(8) ::  global_update_distance = 1.0d0 !>
+  complex(dp) :: ln_cw = 0d0
+  real(dp) ::  global_update_distance = 1.0d0 !>
   integer :: n_global_update = 1!>number of bonds that change in one GUD
   integer :: global_update_loop = 2
   logical :: updated = .false.
 
 ! projection formulae
-  real(8) :: disorder = 0d0
+  real(dp) :: disorder = 0d0
   integer :: nelec
   real(kind=8) R_nflv ! relative boltzmann weight for different particles
-  complex(8), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:)
+  complex(dp), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:)
   complex(kind=8), allocatable :: K_slater(:, :)! kinetic energy ns*ns
-  real(8), allocatable :: TR_mat(:,:)
+  real(dp), allocatable :: TR_mat(:,:)
 ! boson & fermion matrices
-  real(8), allocatable,target :: boson_field(:,:) !(bf_sets*N_cell,time)
+  real(dp), allocatable,target :: boson_field(:,:) !(bf_sets*N_cell,time)
   complex(kind=8), allocatable :: K_mat(:, :),expK(:,:),expK_half(:,:),expK_inv(:,:), expK_inv_half(:,:)
   complex(kind=8), allocatable :: g(:, :), g_h(:, :) ! green function(ns,ns) & inv
   !complex(kind = 8), allocatable :: g_debug(:,:,:)
-  complex(8), ALLOCATABLE ::  Q_string(:, :, :), D_string(:, :) ! (Ns),nelec,nblock
-  complex(8), ALLOCATABLE :: R_string(:, :) ! auxilliary matrix to store R_matrix in qdr decomposition
+  complex(dp), ALLOCATABLE ::  Q_string(:, :, :), D_string(:, :) ! (Ns),nelec,nblock
+  complex(dp), ALLOCATABLE :: R_string(:, :) ! auxilliary matrix to store R_matrix in qdr decomposition
 !!! typed objects
   type :: pf_data_type
     integer,allocatable :: pla_site_list(:,:)! (pf%dim,n_plaquette) the site index in each plaquette for each phonon field
+    logical,allocatable :: boundary_crossing(:)! n_plaquette, if this plaquette crosses the boundary
+    complex(dp),allocatable :: BC_phases(:,:,:) ! (ppf%dim,ppf%dim,n_plaquette), phase factor for each plaquette if it crosses the boundary
     integer,allocatable :: bf_list(:) !> n_plaquette, index of the coupled boson field
-    complex(8),allocatable :: expKV(:,:,:,:) !> exp(-delt* K or V) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
-    complex(8),allocatable :: expKV_inv(:,:,:,:) !> exp(delt* K) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
+    complex(dp),allocatable :: expKV(:,:,:,:) !> exp(-delt* K or V) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
+    complex(dp),allocatable :: expKV_inv(:,:,:,:) !> exp(delt* K) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
   end type pf_data_type
   type :: lat_type
-    logical :: periodic
+    logical,allocatable :: periodic(:) !> for each dimension, if .true, periodic or twisted boundary condition; 
+    !> if .false, open boundary condition
+    complex(dp),allocatable :: BC_phase(:) !> if periodic, phase for each dimension, in unit of pi
     integer :: dim,n_subsite_uc,N_cell,Ns
     integer, allocatable :: dlength(:) !> # of unitcell along each direction
-    real(8), allocatable :: rlength(:) !> length of the lattice in each dimension
-    real(8), allocatable :: tsl_rvec(:,:) !> tsl_rvec(:,i) is the i-th vector
-    real(8), allocatable :: subsite_rvec(:,:) !> subsite_rvec(:,i) is the i-th subsite's vector
-    real(8), allocatable :: recip_vec(:,:) !> unit vector in k-space;
-    real(8), allocatable :: FBZ(:,:) !>  FBZ(:,i) i-th kvec in 1st brillouin zone
-    complex(8),allocatable :: k_phase(:,:) !> k_phase(i,j) = exp(ik(R_i-R_j)) for all cells
+    real(dp), allocatable :: rlength(:) !> length of the lattice in each dimension
+    real(dp), allocatable :: tsl_rvec(:,:) !> tsl_rvec(:,i) is the i-th vector
+    real(dp), allocatable :: subsite_rvec(:,:) !> subsite_rvec(:,i) is the i-th subsite's vector
+    real(dp), allocatable :: recip_vec(:,:) !> unit vector in k-space;
+    real(dp), allocatable :: FBZ(:,:) !>  FBZ(:,i) i-th kvec in 1st brillouin zone
+    complex(dp),allocatable :: k_phase(:,:) !> k_phase(i,j) = exp(ik(R_i-R_j)) for all cells
   end type lat_type
+  
 
   type :: pf_type
     integer :: id
     logical :: K_exist, V_exist
     integer :: dim
     integer :: n_plaquette
-    complex(8) :: K_coe, V_coe !> coefficient of K and V in the pf Hamiltonian
-    complex(8),allocatable :: Vmatrix(:,:)
-    complex(8),allocatable :: Kmatrix(:,:)
+    complex(dp) :: K_coe, V_coe !> coefficient of K and V in the pf Hamiltonian
+    complex(dp),allocatable :: Vmatrix(:,:)
+    complex(dp),allocatable :: Kmatrix(:,:)
     integer, allocatable :: pla_tsl_dvec_uc(:,:)
     !> translational vectors linking all unit cells hosting the first site,(lat%dim,lat%dim)
     integer, allocatable :: pla_offset_dvec_uc(:)
@@ -131,7 +137,7 @@ MODULE input
   type:: cell_type
     integer :: id! unique cell id
     integer, allocatable :: dpos(:) ! position of the unit cell in lattice vectors
-    real(8), allocatable :: rpos(:) ! position in spatial vectors
+    real(dp), allocatable :: rpos(:) ! position in spatial vectors
     integer,allocatable :: sites(:) ! sites indices in the unit cell
     integer, allocatable :: bf_list(:) ! boson fields in this cell
   end type cell_type
@@ -139,7 +145,7 @@ MODULE input
   type :: site_type
     integer :: id,uc_id,subsite_id ! unique site id, unit cell id, subsite id
     integer,allocatable :: uc_dpos(:) ! position of the unit cell in lattice vectors
-    real(8), allocatable :: uc_rpos(:),site_rpos(:) ! position in spatial vectors
+    real(dp), allocatable :: uc_rpos(:),site_rpos(:) ! position in spatial vectors
     type(cell_type), pointer :: p_uc ! pointer to the cell this site belongs to
   end type site_type
 
@@ -203,7 +209,7 @@ contains
   subroutine general_paramter_init()
     implicit none
     namelist /Control_varibles/ proj,record_ph_field,Metropolis,check_acorr,import_ph_field,greatest_decent, &
-    & local_update,Kspace_GU,TBC,global_update,global_update_shift,global_update_flip&
+    & local_update,Kspace_GU,global_update,global_update_shift,global_update_flip&
     & ,global_update_exchange,fixedseeds,second_trotter,TR_weight,TR_slater
     namelist /MC_PARAMETER/ warmup, meas_interval, meas_number, nbin_per_core, nmeas_per_bin
     namelist /General_ARGUMENTS/ ncopy, delt, beta, print_loop,filling,ngroup
@@ -222,6 +228,10 @@ contains
     close(10)
 
   end subroutine
+
+  
+
+
 
 !------------------------------------------------------!
 !-------------------Output_info-------------------------!

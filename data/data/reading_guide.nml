@@ -1,11 +1,11 @@
  &basics
- n_obs=          51
- total_width=        3075
- n_bins=           4
- n_meas_per_bin=           4
+ n_obs=          53
+ total_width=        3203
+ n_bins=           5
+ n_meas_per_bin=           2
  field_width=          64
- n_cores=           4
- MPI_nblock=           4
+ n_cores=           1
+ MPI_nblock=           1
  MPI_one_block=           1
  output_format="f18.8"
  /
@@ -83,7 +83,7 @@
  /
  
  &obs
- name="Jxx_Jxx"
+ name="BFxy_BFxy"
  kind=           2
  width=          64
  offset_lo=         388
@@ -91,7 +91,7 @@
  /
  
  &obs
- name="Jxx_Jxx_k"
+ name="BFxy_BFxy_k"
  kind=           2
  width=          64
  offset_lo=         452
@@ -99,7 +99,7 @@
  /
  
  &obs
- name="Jxxh_Jxxh"
+ name="Jxx_Jxx"
  kind=           2
  width=          64
  offset_lo=         516
@@ -107,7 +107,7 @@
  /
  
  &obs
- name="Jxxh_Jxxh_k"
+ name="Jxx_Jxx_k"
  kind=           2
  width=          64
  offset_lo=         580
@@ -115,7 +115,7 @@
  /
  
  &obs
- name="Jxy_Jxy"
+ name="Jxxh_Jxxh"
  kind=           2
  width=          64
  offset_lo=         644
@@ -123,7 +123,7 @@
  /
  
  &obs
- name="Jxy_Jxy_k"
+ name="Jxxh_Jxxh_k"
  kind=           2
  width=          64
  offset_lo=         708
@@ -131,7 +131,7 @@
  /
  
  &obs
- name="Jxyh_Jxyh"
+ name="Jxy_Jxy"
  kind=           2
  width=          64
  offset_lo=         772
@@ -139,7 +139,7 @@
  /
  
  &obs
- name="Jxyh_Jxyh_k"
+ name="Jxy_Jxy_k"
  kind=           2
  width=          64
  offset_lo=         836
@@ -147,7 +147,7 @@
  /
  
  &obs
- name="Jyx_Jyx"
+ name="Jxyh_Jxyh"
  kind=           2
  width=          64
  offset_lo=         900
@@ -155,7 +155,7 @@
  /
  
  &obs
- name="Jyx_Jyx_k"
+ name="Jxyh_Jxyh_k"
  kind=           2
  width=          64
  offset_lo=         964
@@ -163,7 +163,7 @@
  /
  
  &obs
- name="Jyxh_Jyxh"
+ name="Jyx_Jyx"
  kind=           2
  width=          64
  offset_lo=        1028
@@ -171,7 +171,7 @@
  /
  
  &obs
- name="Jyxh_Jyxh_k"
+ name="Jyx_Jyx_k"
  kind=           2
  width=          64
  offset_lo=        1092
@@ -179,7 +179,7 @@
  /
  
  &obs
- name="Jyy_Jyy"
+ name="Jyxh_Jyxh"
  kind=           2
  width=          64
  offset_lo=        1156
@@ -187,7 +187,7 @@
  /
  
  &obs
- name="Jyy_Jyy_k"
+ name="Jyxh_Jyxh_k"
  kind=           2
  width=          64
  offset_lo=        1220
@@ -195,7 +195,7 @@
  /
  
  &obs
- name="Jyyh_Jyyh"
+ name="Jyy_Jyy"
  kind=           2
  width=          64
  offset_lo=        1284
@@ -203,7 +203,7 @@
  /
  
  &obs
- name="Jyyh_Jyyh_k"
+ name="Jyy_Jyy_k"
  kind=           2
  width=          64
  offset_lo=        1348
@@ -211,7 +211,7 @@
  /
  
  &obs
- name="Jxx_Jyx"
+ name="Jyyh_Jyyh"
  kind=           2
  width=          64
  offset_lo=        1412
@@ -219,7 +219,7 @@
  /
  
  &obs
- name="Jxx_Jyx_k"
+ name="Jyyh_Jyyh_k"
  kind=           2
  width=          64
  offset_lo=        1476
@@ -227,7 +227,7 @@
  /
  
  &obs
- name="Jxxh_Jyxh"
+ name="Jxx_Jyx"
  kind=           2
  width=          64
  offset_lo=        1540
@@ -235,7 +235,7 @@
  /
  
  &obs
- name="Jxxh_Jyxh_k"
+ name="Jxx_Jyx_k"
  kind=           2
  width=          64
  offset_lo=        1604
@@ -243,7 +243,7 @@
  /
  
  &obs
- name="Jxy_Jyy"
+ name="Jxxh_Jyxh"
  kind=           2
  width=          64
  offset_lo=        1668
@@ -251,7 +251,7 @@
  /
  
  &obs
- name="Jxy_Jyy_k"
+ name="Jxxh_Jyxh_k"
  kind=           2
  width=          64
  offset_lo=        1732
@@ -259,7 +259,7 @@
  /
  
  &obs
- name="Jxyh_Jyyh"
+ name="Jxy_Jyy"
  kind=           2
  width=          64
  offset_lo=        1796
@@ -267,7 +267,7 @@
  /
  
  &obs
- name="Jxyh_Jyyh_k"
+ name="Jxy_Jyy_k"
  kind=           2
  width=          64
  offset_lo=        1860
@@ -275,7 +275,7 @@
  /
  
  &obs
- name="Jxx_Jyy"
+ name="Jxyh_Jyyh"
  kind=           2
  width=          64
  offset_lo=        1924
@@ -283,7 +283,7 @@
  /
  
  &obs
- name="Jxx_Jyy_k"
+ name="Jxyh_Jyyh_k"
  kind=           2
  width=          64
  offset_lo=        1988
@@ -291,7 +291,7 @@
  /
  
  &obs
- name="Jxxh_Jyyh"
+ name="Jxx_Jyy"
  kind=           2
  width=          64
  offset_lo=        2052
@@ -299,7 +299,7 @@
  /
  
  &obs
- name="Jxxh_Jyyh_k"
+ name="Jxx_Jyy_k"
  kind=           2
  width=          64
  offset_lo=        2116
@@ -307,7 +307,7 @@
  /
  
  &obs
- name="Jxy_Jyx"
+ name="Jxxh_Jyyh"
  kind=           2
  width=          64
  offset_lo=        2180
@@ -315,7 +315,7 @@
  /
  
  &obs
- name="Jxy_Jyx_k"
+ name="Jxxh_Jyyh_k"
  kind=           2
  width=          64
  offset_lo=        2244
@@ -323,7 +323,7 @@
  /
  
  &obs
- name="Jxyh_Jyxh"
+ name="Jxy_Jyx"
  kind=           2
  width=          64
  offset_lo=        2308
@@ -331,7 +331,7 @@
  /
  
  &obs
- name="Jxyh_Jyxh_k"
+ name="Jxy_Jyx_k"
  kind=           2
  width=          64
  offset_lo=        2372
@@ -339,7 +339,7 @@
  /
  
  &obs
- name="den_den"
+ name="Jxyh_Jyxh"
  kind=           2
  width=          64
  offset_lo=        2436
@@ -347,7 +347,7 @@
  /
  
  &obs
- name="den_den_k"
+ name="Jxyh_Jyxh_k"
  kind=           2
  width=          64
  offset_lo=        2500
@@ -355,7 +355,7 @@
  /
  
  &obs
- name="SC_SC"
+ name="den_den"
  kind=           2
  width=          64
  offset_lo=        2564
@@ -363,7 +363,7 @@
  /
  
  &obs
- name="SC_SC_k"
+ name="den_den_k"
  kind=           2
  width=          64
  offset_lo=        2628
@@ -371,7 +371,7 @@
  /
  
  &obs
- name="Sz_Sz"
+ name="SC_SC"
  kind=           2
  width=          64
  offset_lo=        2692
@@ -379,7 +379,7 @@
  /
  
  &obs
- name="Sz_Sz_k"
+ name="SC_SC_k"
  kind=           2
  width=          64
  offset_lo=        2756
@@ -387,7 +387,7 @@
  /
  
  &obs
- name="Sx_Sx"
+ name="Sz_Sz"
  kind=           2
  width=          64
  offset_lo=        2820
@@ -395,7 +395,7 @@
  /
  
  &obs
- name="Sx_Sx_k"
+ name="Sz_Sz_k"
  kind=           2
  width=          64
  offset_lo=        2884
@@ -403,7 +403,7 @@
  /
  
  &obs
- name="Sy_Sy"
+ name="Sx_Sx"
  kind=           2
  width=          64
  offset_lo=        2948
@@ -411,10 +411,26 @@
  /
  
  &obs
- name="Sy_Sy_k"
+ name="Sx_Sx_k"
  kind=           2
  width=          64
  offset_lo=        3012
  offset_hi=        3075
+ /
+ 
+ &obs
+ name="Sy_Sy"
+ kind=           2
+ width=          64
+ offset_lo=        3076
+ offset_hi=        3139
+ /
+ 
+ &obs
+ name="Sy_Sy_k"
+ kind=           2
+ width=          64
+ offset_lo=        3140
+ offset_hi=        3203
  /
  

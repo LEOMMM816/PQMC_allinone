@@ -1,86 +1,24 @@
- numprocs:           4 mpi_nblock:           4 MPI_one_block:           1
- NMLFILE =model/temp/EPSOCZ_epzO1L8_20251115_b1.nml
- myid:           0 seed:  1704895650  1351736514   803776158 -1083007682 -1518791855
+Rank 0: Running with perf...
+ numprocs:           1 mpi_nblock:           1 MPI_one_block:           1
+ NMLFILE =model/OiL4/EPSOCZ_OiL4_20251214_b1.nml
+ MODEL =EPSOCZ
+ seed:         122         122         122         122         122
  setting lattice...
-   1.0000000000000000        0.0000000000000000     
-   0.0000000000000000        1.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
+ Boundary conditions read from file: T T   1.0000000000000000        1.0000000000000000     
  setting lattice ends.
  char_length,jump_distance,global_update_distance:   1.0000000000000000        1.0000000000000000        10.000000000000000     
  setting boson field...
  setting bf ends.
  set phonon field...
+ Using optimized expKV for EPSOC model.
+ set slater pf...
  set phonon field ends.
-           4           4
- MeasurementSystem: found           51  observables.
- MeasurementSystem: total data width =         3075
+           5           5
+ MeasurementSystem: found           53  observables.
+ MeasurementSystem: total data width =         3203
  MeasurementSystem: data layout:
- myid:           0 /beta,lambda,omega,M   96.000000000000000        1.0000000000000000        1.0000000000000000        1.0000000000000000      /
- myid:           1 seed:  2098332422   475802511   893240641   861936724  -766767005
- setting lattice...
-   1.0000000000000000        0.0000000000000000     
-   0.0000000000000000        1.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
- setting lattice ends.
- char_length,jump_distance,global_update_distance:   1.2000000000000002        1.2000000000000002        12.000000000000002     
- setting boson field...
- setting bf ends.
- set phonon field...
+ myid:           0 /beta,lambda,omega,M   100.00000000000000        1.0000000000000000        1.0000000000000000        1.0000000000000000      /
  init g_T0 finishes
- Monte Carlo starts with ln_cw:               (12170.578638826990,6.2830615165103154)
- set phonon field ends.
-           4           4
- MeasurementSystem: found           51  observables.
- MeasurementSystem: total data width =         3075
- MeasurementSystem: data layout:
- myid:           1 /beta,lambda,omega,M   96.000000000000000        1.0000000000000000        1.2000000000000000       0.69444444444444442      /
- myid:           2 seed:    60375630  1716882697  2144662406   181593881   336240631
- setting lattice...
-   1.0000000000000000        0.0000000000000000     
-   0.0000000000000000        1.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
- setting lattice ends.
- char_length,jump_distance,global_update_distance:   1.3999999999999997        1.3999999999999997        13.999999999999996     
- setting boson field...
- setting bf ends.
- set phonon field...
- init g_T0 finishes
- Monte Carlo starts with ln_cw:               (12893.007542064064,6.2830539981796392)
- set phonon field ends.
-           4           4
- MeasurementSystem: found           51  observables.
- MeasurementSystem: total data width =         3075
- MeasurementSystem: data layout:
- myid:           2 /beta,lambda,omega,M   96.000000000000000        1.0000000000000000        1.3999999999999999       0.51020408163265318      /
- myid:           3 seed:  1481472625  1415759438  1709331823 -1077741476 -1617679328
- setting lattice...
-   1.0000000000000000        0.0000000000000000     
-   0.0000000000000000        1.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
-   0.0000000000000000        0.0000000000000000     
- setting lattice ends.
- char_length,jump_distance,global_update_distance:   1.6000000000000001        1.6000000000000001        16.000000000000000     
- setting boson field...
- setting bf ends.
- set phonon field...
- init g_T0 finishes
- Monte Carlo starts with ln_cw:               (13684.957508993351,6.2830835470304010)
- set phonon field ends.
-           4           4
- MeasurementSystem: found           51  observables.
- MeasurementSystem: total data width =         3075
- MeasurementSystem: data layout:
- myid:           3 /beta,lambda,omega,M   96.000000000000000        1.0000000000000000        1.6000000000000001       0.39062499999999994      /
- init g_T0 finishes
- Monte Carlo starts with ln_cw:               (14522.229123684448,6.2831027800693846)
+ Monte Carlo starts with ln_cw:               (12780.752877517683,6.2830975346951163)
  largest error in           0 process is   9.9999999999999995E-007
- RUN TIME(s):    235.438995    
- largest error in           2 process is   9.9999999999999995E-007
- RUN TIME(s):    233.789001    
- largest error in           1 process is   9.9999999999999995E-007
- RUN TIME(s):    235.078995    
- largest error in           3 process is   9.9999999999999995E-007
- RUN TIME(s):    234.406006    
+ RUN TIME(s):    37.5482254    

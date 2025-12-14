@@ -14,7 +14,6 @@
    greatest_decent = .false.
    local_update = .true.
    Kspace_GU = .true.
-   TBC = .false.
    global_update = .true.
    global_update_shift = .false.
    global_update_flip = .false.
@@ -26,7 +25,6 @@
 /
 
 &MPI_parameter
-  ncore = 8
   nblock = 8
 /
 
@@ -68,7 +66,7 @@
 
 !----------------------------------model specific parameters----------------------------------!
 
-! lattice definition
+!! lattice definition
 &lat_dim
 dim = 2
 n_subsite_uc = 2
@@ -85,7 +83,14 @@ n_subsite_uc = 2
             0,0
 /
 
-! slater determinant definition for PQMC
+&lat_boundary_condition
+  periodic = .true.,.true. !> boundary condition for each dimension
+  BC_phase = 1,1 !> phase for each dimension, in unit of pi
+/
+
+
+
+!! slater determinant definition for PQMC
 &slater
     pf_dim = 6
     n_cover = 3
@@ -111,7 +116,7 @@ n_subsite_uc = 2
 /
 
 
-! interaction field definition
+!!     interaction field definition
 &pf_basic
   id = 1,2,3,4
   K_exist = .true.,.true.,.true.,.true.
@@ -232,7 +237,7 @@ n_subsite_uc = 2
                 (0,-1),(0,0),(0,0),(0,0) ! i sigma_x
 /
 
-! boson field definition
+!! boson field definition
 
 &bf_basics
     bf_sets = 2 ! number of set of boson fields
@@ -248,12 +253,15 @@ n_subsite_uc = 2
     offset = 1 ! range of random number for initial boson field, in unit of character length
 /
 
+
+!! observable definition
 &observable name="BF_KE",   obskind="scalar"/
 &observable name="BF_PE",   obskind="scalar"/
 &observable name="BF_X",    obskind="scalar"/
 &observable name="BFx_BFx", obskind="field"/
 &observable name="BFx_BFy", obskind="field"/
 &observable name="BFy_BFy", obskind="field"/
+&observable name="BFxy_BFxy", obskind="field"/
 &observable name="Jxx_Jxx", obskind="field"/
 &observable name="Jxxh_Jxxh", obskind="field"/
 &observable name="Jxy_Jxy", obskind="field"/

@@ -14,11 +14,14 @@ ntasks=$(( NBLOCK * nperblock ))
 cd ./code
 rm -rf ./*.mod
 rm -rf ./*.out
-mpifort input.f90 mod_nrtype.f90 mod_nrutil.f90 mod_matrixlib.f90  mod_ranstate.f90 mod_lattice.f90 mod_phonon_field.f90 mod_evolution.f90 mod_update.f90 mod_meas.f90 Main_PQMC.f90 \
- -o main.out -cpp -DMPI -DCPPBLOCK=$NBLOCK -DCPPPERBLOCK=$nperblock -lopenblas -g -O3 -fbacktrace -ffpe-trap=invalid,zero,overflow -Wno-unused-parameter -Wno-unused-variable -finit-real=snan
+export OPENBLAS_NUM_THREADS=1
+export OMP_NUM_THREADS=1
+mpifort mod_nrtype.f90 input.f90  mod_nrutil.f90 mod_matrixlib.f90  mod_ranstate.f90 mod_lattice.f90 mod_phonon_field.f90 mod_evolution.f90 mod_update.f90 mod_meas.f90 Main_PQMC.f90 \
+ -o main.out -cpp -DMPI -DCPPBLOCK=$NBLOCK -DCPPPERBLOCK=$nperblock -lopenblas -g -march=native -fno-omit-frame-pointer -O3 -fbacktrace -ffpe-trap=invalid,zero,overflow -Wno-unused-parameter -Wno-unused-variable -finit-real=snan
 cp main.out ../
 cd ..
-mpirun -np "$ntasks" ./main.out -> main.log
+ mpirun -np "$ntasks" ./script/run_perf.sh ./main.out -> main.log
+#mpirun -np "$ntasks" ./main.out > main.log
 rm -rf ./namelists
 
 # post process
