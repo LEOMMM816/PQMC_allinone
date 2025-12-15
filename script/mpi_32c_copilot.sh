@@ -3,8 +3,14 @@
 #SBATCH --output=/storage/wucongjunLab/zhangxiangyu/tmp/slurm-%j.out
 #SBATCH --error=/storage/wucongjunLab/zhangxiangyu/tmp/slurm-%j.err
 
-set -euo pipefail
+#set -euo pipefail
 #set -x
+# ----------------- [编译前检查] -----------------
+echo "================= 节点硬件检查 ================="
+grep -o 'avx512[^ ]*' /proc/cpuinfo | sort -u | head -n 1
+gcc -march=native -Q --help=target | grep march
+echo "================= 检查结束 ====================="
+
 mkdir -p /storage/wucongjunLab/zhangxiangyu/tmp
 # ---------------------------
 # Robust SLURM environment info (use SLURM-provided vars where possible)
@@ -72,7 +78,7 @@ export OMP_NUM_THREADS=1
 
 cd "${submit_dir}"
 # copy executable and necessary files to node-local dir
-cp -r "${submit_dir}/script/cp_middle.sh" "${dir_local}/" || true
+cp -r "${submit_dir}/script" "${dir_local}/" || true
 cp -r "${submit_dir}/code" "${dir_local}/"
 mkdir -p "${dir_local}/model"
 cp -r "${submit_dir}/model/${jobname}" "${dir_local}/model/" || true
@@ -87,16 +93,25 @@ echo "----- Compiling MPI program -----"
 rm -rf ./*.mod
 rm -rf ./*.out
 mpifort mod_nrtype.f90 input.f90  mod_nrutil.f90 mod_matrixlib.f90 mod_ranstate.f90 mod_lattice.f90 mod_phonon_field.f90 mod_evolution.f90 mod_update.f90 mod_meas.f90 Main_PQMC.f90 \
- -cpp -DMPI -DCPPBLOCK=$NBLOCK -DCPPPERBLOCK=$(( ntasks / NBLOCK )) -march-native -lopenblas -g -O3 -o main.out
+ -cpp -DMPI -DCPPBLOCK=$NBLOCK -DCPPPERBLOCK=$(( ntasks / NBLOCK )) -march=icelake-server -lopenblas -g -O3 -o main.out
 cp ./main.out ../
 cd ..
+echo "================= 二进制文件检查 ================="
+# 2. 确认你的程序确实编译出了 AVX-512 指令 (zmm 寄存器)
+# 如果 main.out 里有 zmm，这里会打印出来；如果没有，则是空的
+if [ -f "main.out" ]; then
+    objdump -d main.out | grep zmm | head -n 5
+else
+    echo "Error: main.out not found!"
+fi
+echo "================= 检查结束 ====================="
 echo "----- Running MPI program -----"
 echo "Executable path: $(pwd)/main.out"
 
 # Recommended: use srun (SLURM-native). This usually avoids mpirun/pmix/ssh integration issues.
 # Write both stdout and stderr to main.log
 mkdir -p "${dir_local}/run_logs"
-mpirun --display-map --map-by ppr:${tasks_per_node}:node -np "$ntasks" --bind-to core --report-bindings --tag-output ./main.out 2>&1 | tee -a "${dir_local}/run_logs/main_mpirun.log" || {
+mpirun --display-map --map-by ppr:${tasks_per_node}:node -np "$ntasks" --bind-to core --report-bindings --tag-output  ./main.out 2>&1 | tee -a "${dir_local}/run_logs/main_mpirun.log" || {
     echo "mpi failed or returned non-zero. Trying mpirun fallback..."
     # Fallback for mpirun (only use if OpenMPI is SLURM-aware). Try a conservative mapping.
     srun --mpi=pmi2 -n "$ntasks" --ntasks-per-node="$tasks_per_node" ./main.out &>> main.log || {
