@@ -185,7 +185,7 @@ contains
       open (110, file='check_middle.dat', status='old', position='append')
       WRITE (110, *) 'loop',loop
       WRITE (110, *) 'myid',myid
-      write (110, *) 'Size:', Lat%dlength
+      write (110, *) 'Size,total_dim:', Lat%dlength, Ns
       if(global_update) then
         write (110, *) 'global_update accept :', global_accept
         write (110, *) 'global_update total :', (global_accept + global_reject)

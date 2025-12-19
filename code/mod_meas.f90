@@ -82,7 +82,7 @@ contains
     rs(3,:) = [pc4%sites(1),pc3%sites(2)]
     rs(4,:) = [pc4%sites(2),pc3%sites(1)]
     call cal_wick_contraction(mat, n_g, ls, rs, hatree_only)
-
+    
   end subroutine spin_current_matrix
 
   subroutine spin_momentum_matrix(pc1,pc2,mat,n_g,hatree_only)
@@ -117,12 +117,13 @@ contains
     logical, intent(in) :: hatree_only
     mat = 0.0d0
     ls(1,:) = [pc1%sites(1),pc2%sites(1)]
-    ls(2,:) = [pc2%sites(1),pc1%sites(1)]
-    ls(3,:) = [pc1%sites(2),pc2%sites(2)]
+    ls(2,:) = [pc1%sites(2),pc2%sites(2)]
+    ls(3,:) = [pc2%sites(1),pc1%sites(1)]
     ls(4,:) = [pc2%sites(2),pc1%sites(2)]
+    
     rs(1,:) = [pc3%sites(1),pc4%sites(1)]
-    rs(2,:) = [pc4%sites(1),pc3%sites(1)]
-    rs(3,:) = [pc3%sites(2),pc4%sites(2)]
+    rs(2,:) = [pc3%sites(2),pc4%sites(2)]
+    rs(3,:) = [pc4%sites(1),pc3%sites(1)]
     rs(4,:) = [pc4%sites(2),pc3%sites(2)]
     call cal_wick_contraction(mat, n_g, ls, rs, hatree_only)
   end subroutine kinetic_matrix
@@ -139,17 +140,20 @@ contains
     ls(2,:) = [pc1%sites(2),pc2%sites(1)]
     ls(3,:) = [pc2%sites(1),pc1%sites(2)]
     ls(4,:) = [pc2%sites(2),pc1%sites(1)]
+
     rs(1,:) = [pc3%sites(1),pc4%sites(2)]
     rs(2,:) = [pc3%sites(2),pc4%sites(1)]
     rs(3,:) = [pc4%sites(1),pc3%sites(2)]
     rs(4,:) = [pc4%sites(2),pc3%sites(1)]
+
     ls(5,:) = [pc1%sites(1),pc2%sites(1)]
-    ls(6,:) = [pc2%sites(1),pc1%sites(1)]
-    ls(7,:) = [pc1%sites(2),pc2%sites(2)]
+    ls(6,:) = [pc1%sites(2),pc2%sites(2)]
+    ls(7,:) = [pc2%sites(1),pc1%sites(1)]
     ls(8,:) = [pc2%sites(2),pc1%sites(2)]
+
     rs(5,:) = [pc3%sites(1),pc4%sites(1)]
-    rs(6,:) = [pc4%sites(1),pc3%sites(1)]
-    rs(7,:) = [pc3%sites(2),pc4%sites(2)]
+    rs(6,:) = [pc3%sites(2),pc4%sites(2)]
+    rs(7,:) = [pc4%sites(1),pc3%sites(1)]
     rs(8,:) = [pc4%sites(2),pc3%sites(2)]
     call cal_wick_contraction(mat, 8, ls, rs, hatree_only)
 
@@ -174,6 +178,31 @@ contains
       end do
     end do
   end subroutine cal_wick_contraction
+
+
+  subroutine check_boundary_crossing(pc, cross_boundary)
+    implicit none
+    type(cell_type), pointer,intent(in) :: pc
+    logical, intent(out) :: cross_boundary(2)
+    integer :: i
+    cross_boundary = (/.false., .false./)
+    do i = 1, Lat%dim
+      if(pc%dpos(i) == Lat%dlength(i)-1) then
+        cross_boundary(i) = .true.
+      end if
+    end do
+  end subroutine check_boundary_crossing
+  
+  subroutine add_boundary_phase(vec,cross_boundary,dir)
+    implicit none
+    integer, intent(in) :: dir
+    complex(8), intent(inout) :: vec(4)
+    logical, intent(in) :: cross_boundary(2)
+    if(cross_boundary(dir)) then
+      vec = vec * [(Lat%BC_phase(dir)), (Lat%BC_phase(dir)), conjg(Lat%BC_phase(dir)), conjg(Lat%BC_phase(dir))]
+    end if
+    
+  end subroutine add_boundary_phase
 !=========================main measurement subroutine========================!
   SUBROUTINE ms_take_measurement(this, time)
     implicit none
@@ -187,6 +216,7 @@ contains
     complex(8), allocatable :: vec_l(:), vec_r(:)
     complex(8) :: spinJxy_mat(4,4),spinM_mat(4,4)
     complex(8) :: phy_spinJxy_mat(8,8)
+    logical :: cross_boundary_1(2) = (/.false., .false./), cross_boundary_2(2) = (/.false., .false./)
     La = Lat%dlength(1)
     Lb = Lat%dlength(2)
     N_cell = Lat%N_cell
@@ -241,6 +271,9 @@ contains
         pc2_x => p_cells(ind)
         call get_uc_index_from_dpos(pc2%dpos + [0,1],ind)
         pc2_y => p_cells(ind)
+        call check_boundary_crossing(pc1,cross_boundary_1)
+        call check_boundary_crossing(pc2,cross_boundary_2)
+
         s2_u = pc2%sites(1)
         s2_d = pc2%sites(2)
         bf2_x = pc2%bf_list(1)
@@ -280,6 +313,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 1)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -288,6 +323,9 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 1)
+
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -297,6 +335,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 2)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -305,6 +345,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 2)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_l))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -314,17 +356,30 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
 
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf： x-bond's spin-y current and y-bond's spin-y current correlation
+        
         handle = this%get_handle('Jxy_Jyy')
+        obs_temp = 0d0
+        vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
+        obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
+        call this%record_field_entry(handle, ind, obs_temp)
+
         !! corf1: x-bond's spin-x current correlation
         call spin_current_matrix(pc1,pc1_x,pc2,pc2_x,spinJxy_mat,4,hatree_only = .true.) ! x-bond's spinJ mat
         handle = this%get_handle('Jxxh_Jxxh')
         obs_temp = 0d0
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 1)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -333,6 +388,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 1)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -342,6 +399,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 2)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -350,6 +409,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
         vec_r = vec_l
+        call add_boundary_phase(vec_l,  cross_boundary_1, 2)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_l))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -359,6 +420,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
 
         call this%record_field_entry(handle, ind, obs_temp)
@@ -367,6 +430,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
         vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf: x-bond's spin-x current and y-bond's spin-y current correlation
@@ -375,6 +440,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
         vec_r = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
       !! corf: x-bond's spin-y current and y-bond's spin-x current correlation
@@ -382,6 +449,8 @@ contains
         obs_temp = 0d0
         vec_l = -hop * [-1d0, 1d0, 1d0, -1d0] ! spin-y current vector
         vec_r = -hop * [(0,-1d0), (0,-1d0), (0,1d0), (0,1d0)] ! spin-x current vector
+        call add_boundary_phase(vec_l,  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r,  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -440,12 +509,10 @@ contains
         vec_r(1:4) = vec_l(1:4)
         vec_r(5:8) = ep_parameter * boson_field(bf2_y,time) * [1d0, 1d0, 1d0, 1d0] ! kinetic operator vector
         ! check whether pc1&pc1_y or pc2&pc2_y cross the boundary
-        if(pc1%dpos(2)==Lat%dlength(2)-1) then
-          vec_l(5:8) = vec_l(5:8) * [Lat%BC_phase(2), conjg(Lat%BC_phase(2)), Lat%BC_phase(2), conjg(Lat%BC_phase(2))]
-        end if
-        if(pc2%dpos(2)==Lat%dlength(2)-1) then
-          vec_r(5:8) = vec_r(5:8) * [Lat%BC_phase(2), conjg(Lat%BC_phase(2)), Lat%BC_phase(2), conjg(Lat%BC_phase(2))]
-        end if
+        call add_boundary_phase(vec_l(1:4),  cross_boundary_1, 2)
+        call add_boundary_phase(vec_r(1:4),  cross_boundary_2, 2)
+        call add_boundary_phase(vec_l(5:8),  cross_boundary_1, 2)
+        call add_boundary_phase(vec_r(5:8),  cross_boundary_2, 2)
         obs_temp = obs_temp + sum(vec_l * matmul(phy_spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -458,12 +525,10 @@ contains
         vec_r(1:4) = vec_l(1:4)
         vec_r(5:8) = ep_parameter * boson_field(bf2_x,time) * [1d0, 1d0, 1d0, 1d0] ! kinetic operator vector
         ! check whether pc1&pc1_x or pc2&pc2_x cross the boundary
-        if(pc1%dpos(1)==Lat%dlength(1)-1) then
-          vec_l(5:8) = vec_l(5:8) * [Lat%BC_phase(1), conjg(Lat%BC_phase(1)), Lat%BC_phase(1), conjg(Lat%BC_phase(1))]
-        end if
-        if(pc2%dpos(1)==Lat%dlength(1)-1) then
-          vec_r(5:8) = vec_r(5:8) * [Lat%BC_phase(1), conjg(Lat%BC_phase(1)), Lat%BC_phase(1), conjg(Lat%BC_phase(1))]
-        end if
+        call add_boundary_phase(vec_l(1:4),  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r(1:4),  cross_boundary_2, 1)
+        call add_boundary_phase(vec_l(5:8),  cross_boundary_1, 1)
+        call add_boundary_phase(vec_r(5:8),  cross_boundary_2, 1)
         obs_temp = obs_temp + sum(vec_l * matmul(phy_spinJxy_mat, vec_r))/N_cell
         call this%record_field_entry(handle, ind, obs_temp)
 
@@ -471,7 +536,8 @@ contains
     end do !for c1
 
       !! END MEASUREMENT
-
+    ! print*,"Jxy_Jxy_k:", this%data(this%get_handle('Jxy_Jxy_k'), this%cur_meas, this%cur_bin)
+    
   END SUBROUTINE ms_take_measurement
 
   subroutine ms_k_space_obs(this)
@@ -489,6 +555,11 @@ contains
       end if
     end do
   end subroutine ms_k_space_obs
+
+
+
+
+
 
 !======================================================================!
 !                             NAMELIST INIT                             !

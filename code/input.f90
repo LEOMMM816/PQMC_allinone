@@ -61,7 +61,7 @@ MODULE input
   integer :: bf_sets ! number of boson fields
   integer :: n_boson_field ! number of decomposed phonon field
   real(dp) :: D = 1d0,M = 1d0 !>stiffness constant and Mass
-  real(kind=8) :: ep_parameter = 1d0, U = 0d0 ! Hubbard U and steps delt * U < 0.5
+  real(dp) :: ep_parameter = 1d0, U = 0d0 ! Hubbard U and steps delt * U < 0.5
   real(dp) :: char_length = 1.0 !> characteristic length of phonon field
   real(dp) :: omega = 1d0!> phonon frequency
   real(dp) :: end_field = 0d0
@@ -81,14 +81,14 @@ MODULE input
 ! projection formulae
   real(dp) :: disorder = 0d0
   integer :: nelec
-  real(kind=8) R_nflv ! relative boltzmann weight for different particles
+  real(dp) R_nflv ! relative boltzmann weight for different particles
   complex(dp), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:)
-  complex(kind=8), allocatable :: K_slater(:, :)! kinetic energy ns*ns
+  complex(dp), allocatable :: K_slater(:, :)! kinetic energy ns*ns
   real(dp), allocatable :: TR_mat(:,:)
 ! boson & fermion matrices
   real(dp), allocatable,target :: boson_field(:,:) !(bf_sets*N_cell,time)
-  complex(kind=8), allocatable :: K_mat(:, :),expK(:,:),expK_half(:,:),expK_inv(:,:), expK_inv_half(:,:)
-  complex(kind=8), allocatable :: g(:, :), g_h(:, :) ! green function(ns,ns) & inv
+  complex(dp), allocatable :: K_mat(:, :),expK(:,:),expK_half(:,:),expK_inv(:,:), expK_inv_half(:,:)
+  complex(dp), allocatable :: g(:, :), g_h(:, :) ! green function(ns,ns) & inv
   !complex(kind = 8), allocatable :: g_debug(:,:,:)
   complex(dp), ALLOCATABLE ::  Q_string(:, :, :), D_string(:, :) ! (Ns),nelec,nblock
   complex(dp), ALLOCATABLE :: R_string(:, :) ! auxilliary matrix to store R_matrix in qdr decomposition
@@ -253,7 +253,7 @@ contains
     do i_dim = 1, Lat%dim
       write(ci, '(I3)') Lat%dlength(i_dim)
       task_name = trim(task_name)//trim(ci)
-      if(i_dim < Lat%dim) task_name = trim(task_name)//'*'
+      if(i_dim < Lat%dim) task_name = trim(task_name)//'by'
     end do
     write(ci,'(a,1i4,a,1f5.2,a,1i4)') 'Lt', ntime, 'dtau',delt,'Nup',nelec
     task_name = trim(task_name)//trim(ci)

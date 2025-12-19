@@ -56,7 +56,7 @@ contains
     flag = .true.
 
       !! fix two endpoints
-    if ( time ==1 .or. time == ntime ) return
+    ! if ( time ==1 .or. time == ntime ) return
 
       !! preparation
 
@@ -97,6 +97,7 @@ contains
           R_mat_sub(j, j) = R_mat_sub(j, j) + 1d0
         end do
         R_elec = R_elec * det(pfdim,R_mat_sub)! R_elec = det(I + delta*G_h)
+        
         IF(TR_weight) R_elec = R_elec * CONJG(R_elec) ! for TR system, the weight is squared
         R_elec = R_elec**ncopy
 
@@ -321,10 +322,15 @@ contains
 
     if(Kspace_GU) then
       K_vec = 2*PI*[0.5d0,0.5d0]  ! Initialize K_vec with appropriate values
-      incell_phase = [1d0, -1d0]  ! Initialize incell_phase with appropriate values
+      ! incell_phase = [1d0, -1d0]  ! Initialize incell_phase with appropriate values
+      incell_phase(1) = irands(2)*2d0 - 1d0 ! random phase + or - 1
+      incell_phase(2) = irands(2)*2d0 - 1d0
+      ! generate new field in K space
       call generate_newfield_space(bf_temp_space, K_vec, incell_phase)
-      do i = 1, n_boson_field
-        boson_field(i, :) = boson_field(i, :) + bf_temp_space(i)
+      do time = 1, ntime
+        do i = 1,n_boson_field
+          boson_field(i,time) = boson_field(i,time) + bf_temp_space(i)
+        end do
       end do
       !boson_field(:, 1) = end_field
       !boson_field(:, ntime) = end_field

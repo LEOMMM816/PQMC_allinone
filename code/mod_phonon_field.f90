@@ -237,8 +237,8 @@ contains
     complex(dp),intent(in) :: K_coe,V_coe,Vmatrix(dim*dim),Kmatrix(dim*dim)
     integer, intent(in) ::pla_tsl_dvec_uc(Lat%dim*Lat%dim),pla_offset_dvec_uc(Lat%dim)
     integer, intent(in) :: pla_int_subsites((Lat%dim+1)*ppf%dim)
-    integer :: i_site,i_cell, i_plaquette,pla,pla_count,cell_index,j,temp_id,p
-    integer :: pla_pos_vec(lat%dim),cell_dpos(lat%dim)
+    integer :: i_site,j_site,i_cell, i_plaquette,pla,pla_count,cell_index,i,j,temp_id,k
+    integer :: pla_pos_vec(lat%dim),cell_dpos(lat%dim),i_dpos(lat%dim),j_dpos(lat%dim)
     real(dp) :: inv_tsl_vec(lat%dim,lat%dim),cell_xpos(lat%dim)
     allocate(ppf%Vmatrix(dim,dim), &
              ppf%Kmatrix(dim,dim))
@@ -258,7 +258,7 @@ contains
              p_data_temp%BC_phases(ppf%dim,ppf%dim,ppf%n_plaquette))
     p_data_temp%pla_site_list = -1
     p_data_temp%boundary_crossing = .false.
-    p_data_temp%BC_phases = (1.0d0,0.0d0)
+    p_data_temp%BC_phases = complex(1.0d0,0.0d0)
     ! run over all cells in the lattice and check if the cell is in one plaquette of the phonon field
     ! to check if the cell is in the plaquette, we need to check if the cell's dpos(denoted by v) is integer multiple of
     ! the pf translational dvec(denoted by M). That's to say M x = v has integer solution x.
@@ -286,25 +286,21 @@ contains
       ! record the subsite index of the first site in the plaquette(the representative site)
       p_data_temp%pla_site_list(1,pla_count) = p_cells(i_cell)%sites(ppf%pla_int_subsites(lat%dim+1,1))
     end do
+
     if(ppf%dim > 1) then
       ! loop over each plaquette and determine the plaquette index and pos vec first
       do i_plaquette = 1, ppf%n_plaquette
         pla_pos_vec = p_sites(p_data_temp%pla_site_list(1,i_plaquette))%uc_dpos
         do i_site = 2, ppf%dim
-          ! calculate the position of the site in the plaquette
+          ! calculate the position of unit cell that occupies the i-th site in the plaquette
           cell_dpos = pla_pos_vec + ppf%pla_int_subsites(1:lat%dim,i_site)
-          ! check if the site cross the boundary
+          ! check if the bond from site 1 to i_site cross the boundary
           do j = 1, Lat%dim
-            ! apply BC_phase if crossing boundary
+
             if(cell_dpos(j) > Lat%dlength(j)-0.0001d0) then ! site cross positive boundary
-              p_data_temp%boundary_crossing(i_plaquette) = .true.
-              p_data_temp%BC_phases(1,i_site,i_plaquette) = p_data_temp%BC_phases(1,i_site,i_plaquette) * lat%BC_phase(j)
-              p_data_temp%BC_phases(i_site,1,i_plaquette) = p_data_temp%BC_phases(i_site,1,i_plaquette) * conjg(lat%BC_phase(j))
               cell_dpos(j) = cell_dpos(j) - Lat%dlength(j)
-            else if(cell_dpos(j) < -0.0001d0) then ! site cross negative boundary
-              p_data_temp%boundary_crossing(i_plaquette) = .true.
-              p_data_temp%BC_phases(1,i_site,i_plaquette) = p_data_temp%BC_phases(1,i_site,i_plaquette) * conjg(lat%BC_phase(j))
-              p_data_temp%BC_phases(i_site,1,i_plaquette) = p_data_temp%BC_phases(i_site,1,i_plaquette) * (lat%BC_phase(j))
+            end if
+            if(cell_dpos(j) < -0.0001d0) then ! site cross negative boundary
               cell_dpos(j) = cell_dpos(j) + Lat%dlength(j)
             end if
             !cell_dpos(j) = modulo(cell_dpos(j), Lat%dlength(j))
@@ -314,18 +310,36 @@ contains
           ! store the site index in the pla_site_list
           p_data_temp%pla_site_list(i_site,i_plaquette) = p_cells(cell_index)%sites(ppf%pla_int_subsites(lat%dim+1,i_site))
         end do
+      end do
 
-        ! set the remaining BC_phases
-        do i_site = 2, ppf%dim
-          do j = 2, ppf%dim
-            if(i_site /= j) then
-              p_data_temp%BC_phases(i_site,j,i_plaquette) = p_data_temp%BC_phases(i_site,1,i_plaquette) * &
-              & p_data_temp%BC_phases(1,j,i_plaquette)
+      ! apply BC_phase if crossing boundary
+      do i_plaquette = 1, ppf%n_plaquette
+      do i = 1,ppf%dim
+        do j = 1,ppf%dim
+          i_site = p_data_temp%pla_site_list(i,i_plaquette)
+          i_dpos = p_sites(i_site)%uc_dpos
+          j_dpos = i_dpos - ppf%pla_int_subsites(1:lat%dim,i) + ppf%pla_int_subsites(1:lat%dim,j) ! relative dpos inferred
+          ! check boundary crossing
+          ! different subsite, no BC phase
+          ! if(abs(ppf%pla_int_subsites(lat%dim+1,i) - ppf%pla_int_subsites(lat%dim+1,j)) < 0.01d0) cycle
+          do k  = 1, Lat%dim
+            if(j_dpos(k) >= Lat%dlength(k)-0.0001d0) then
+              p_data_temp%boundary_crossing(i_plaquette) = .true.
+              p_data_temp%BC_phases(i,j,i_plaquette) = p_data_temp%BC_phases(i,j,i_plaquette) * lat%BC_phase(k)
+            end if
+            if(j_dpos(k) < -0.0001d0) then
+              p_data_temp%boundary_crossing(i_plaquette) = .true.
+              p_data_temp%BC_phases(i,j,i_plaquette) = p_data_temp%BC_phases(i,j,i_plaquette) * conjg(lat%BC_phase(k))
             end if
           end do
+
         end do
-        ! debug
-        if(.false.) then
+      end do
+      end do
+
+      ! debug
+      if(.false.) then
+        do i_plaquette = 1, ppf%n_plaquette
           write(*,'(A,I4,A)',advance='no') 'plaquette ',i_plaquette,' sites:'
           do i_site = 1, ppf%dim
             write(*,'(I6)',advance='no') p_data_temp%pla_site_list(i_site,i_plaquette)
@@ -341,9 +355,13 @@ contains
             print*,''
           end do
 
-        end if
-      end do
+        end do
+        stop
+      end if
+
     end if
+
+    ! set the bf_list and expKV if bf_index is present
     if(present(bf_index)) then
       ! set the bf_list
 

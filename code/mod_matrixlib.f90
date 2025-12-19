@@ -499,6 +499,90 @@ CONTAINS
 ! In fact, calculating determinant is not recommendated in real calculations.
 !========================================================================================
 
+
+
+  !-----------------------------------------------------------
+  ! 主函数：智能分发的行列式计算
+  !-----------------------------------------------------------
+  FUNCTION zdet(n, a) RESULT(res)
+    INTEGER, INTENT(IN) :: n
+    COMPLEX(DP), INTENT(IN) :: a(n, n)
+    COMPLEX(DP) :: res
+    
+    ! 针对 N <= 4 的情况，直接跳转到专用函数
+    ! 编译器会将这些小函数自动内联 (Inline)
+    SELECT CASE (n)
+    CASE (1)
+       res = a(1, 1)
+    CASE (2)
+       res = det2x2(a)
+    CASE (3)
+       res = det3x3(a)
+    CASE (4)
+       res = det4x4(a)
+       
+    CASE DEFAULT
+       ! 只有大矩阵才用原本的 LAPACK 方法
+       res = zdet_lapack(n, a)
+      
+    END SELECT
+  END FUNCTION zdet
+
+  !-----------------------------------------------------------
+  ! N=2 解析解
+  !-----------------------------------------------------------
+  PURE FUNCTION det2x2(a) RESULT(res)
+    COMPLEX(DP), INTENT(IN) :: a(2, 2)
+    COMPLEX(DP) :: res
+    res = a(1,1)*a(2,2) - a(1,2)*a(2,1)
+  END FUNCTION det2x2
+
+  !-----------------------------------------------------------
+  ! N=3 解析解 (Sarrus Rule)
+  !-----------------------------------------------------------
+
+  PURE FUNCTION det3x3(a) RESULT(res)
+    COMPLEX(DP), INTENT(IN) :: a(3, 3)
+    COMPLEX(DP) :: res
+    res = a(1,1)*(a(2,2)*a(3,3) - a(2,3)*a(3,2)) &
+        - a(1,2)*(a(2,1)*a(3,3) - a(2,3)*a(3,1)) &
+        + a(1,3)*(a(2,1)*a(3,2) - a(2,2)*a(3,1))
+  END FUNCTION det3x3
+
+  !-----------------------------------------------------------
+  ! N=4 解析解 (拉普拉斯展开 -> 转化为 4 个 3x3)
+  !-----------------------------------------------------------
+  PURE FUNCTION det4x4(a) RESULT(res)
+    COMPLEX(DP), INTENT(IN) :: a(4, 4)
+    COMPLEX(DP) :: res
+    
+    ! 这种写法比高斯消元更适合现代 CPU 的流水线优化
+    ! 展开第一行：Sum_{j=1}^4 (-1)^(1+j) * a(1,j) * M(1,j)
+    
+    ! 子式 1 (去掉第1行第1列)
+    res = a(1,1) * ( a(2,2)*(a(3,3)*a(4,4) - a(3,4)*a(4,3)) &
+                   - a(2,3)*(a(3,2)*a(4,4) - a(3,4)*a(4,2)) &
+                   + a(2,4)*(a(3,2)*a(4,3) - a(3,3)*a(4,2)) )
+                   
+    ! 子式 2 (去掉第1行第2列)
+    res = res - a(1,2) * ( a(2,1)*(a(3,3)*a(4,4) - a(3,4)*a(4,3)) &
+                         - a(2,3)*(a(3,1)*a(4,4) - a(3,4)*a(4,1)) &
+                         + a(2,4)*(a(3,1)*a(4,3) - a(3,3)*a(4,1)) )
+
+    ! 子式 3 (去掉第1行第3列)
+    res = res + a(1,3) * ( a(2,1)*(a(3,2)*a(4,4) - a(3,4)*a(4,2)) &
+                         - a(2,2)*(a(3,1)*a(4,4) - a(3,4)*a(4,1)) &
+                         + a(2,4)*(a(3,1)*a(4,2) - a(3,2)*a(4,1)) )
+
+    ! 子式 4 (去掉第1行第4列)
+    res = res - a(1,4) * ( a(2,1)*(a(3,2)*a(4,3) - a(3,3)*a(4,2)) &
+                         - a(2,2)*(a(3,1)*a(4,3) - a(3,3)*a(4,1)) &
+                         + a(2,3)*(a(3,1)*a(4,2) - a(3,2)*a(4,1)) )
+                         
+  END FUNCTION det4x4
+
+
+
   FUNCTION ddet(n, a)
     IMPLICIT NONE
     INTEGER n, i, info, ipvt(n)
@@ -507,9 +591,9 @@ CONTAINS
     IF (n == 1) THEN
       ddet = a(1, 1); RETURN
     END IF
-    !IF(n==2)THEN
-    !   ddet=a(1,1)*a(2,2)-a(1,2)*a(2,1);RETURN
-    !END IF
+    IF(n==2)THEN
+       ddet=a(1,1)*a(2,2)-a(1,2)*a(2,1);RETURN
+    END IF
     b = a
     CALL dgetrf(n, n, b, n, ipvt, info)
     IF (info /= 0) THEN
@@ -529,7 +613,7 @@ CONTAINS
     IF (info < 0) ddet = -ddet
   END FUNCTION
 
-  FUNCTION zdet(n, a)
+  FUNCTION zdet_lapack(n, a) RESULT(zdet)
     use, intrinsic :: ieee_arithmetic
     IMPLICIT NONE
     INTEGER i, n, info, ipvt(n)
@@ -538,6 +622,7 @@ CONTAINS
     IF (n == 1) THEN
       zdet = a(1, 1); RETURN
     END IF
+    
     !IF(n==2)THEN
     !   zdet=a(1,1)*a(2,2)-a(1,2)*a(2,1);RETURN
     !END IF
@@ -557,7 +642,7 @@ CONTAINS
     END DO
     !zdet=exp(zdet)
     IF (info < 0) zdet = -zdet
-  END FUNCTION
+  END FUNCTION zdet_lapack
 
 
 
