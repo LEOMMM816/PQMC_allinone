@@ -278,6 +278,8 @@ n_subsite_uc = 2
 &observable name="Jxxh_Jyyh", obskind="field"/
 &observable name="Jxy_Jyx", obskind="field"/
 &observable name="Jxyh_Jyxh", obskind="field"/
+&observable name="cJxy_cJxy", obskind="field"/
+&observable name="cJyx_cJyx", obskind="field"/
 &observable name="den_den", obskind="field"/
 &observable name="SC_SC",   obskind="field"/
 &observable name="Sz_Sz",   obskind="field"/
