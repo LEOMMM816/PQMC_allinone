@@ -147,10 +147,10 @@ n_subsite_uc = 2
 &pf_V
       V_coe = (1d0,0d0)  !> coupling constant for V matrix
       bf_index = 1 !> index of the coupled boson field
-      Vmatrix = (0,0),(0,0),(0,0),(1,0),
-                (0,0),(0,0),(-1,0),(0,0),
-                (0,0),(-1,0),(0,0),(0,0),
-                (1,0),(0,0),(0,0),(0,0) ! i sigma_y
+      Vmatrix = (0,0),(0,0),(0,0),(-1,0),
+                (0,0),(0,0),(1,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0),
+                (-1,0),(0,0),(0,0),(0,0) ! -i sigma_y
 /
 
 ! pf 2 : sigma_y along x direction, off by (1,0)
@@ -175,10 +175,10 @@ n_subsite_uc = 2
 &pf_V
       V_coe = (1d0,0d0)  !> coupling constant for V matrix
       bf_index = 1 !> index of the coupled boson field
-      Vmatrix = (0,0),(0,0),(0,0),(1,0),
-                (0,0),(0,0),(-1,0),(0,0),
-                (0,0),(-1,0),(0,0),(0,0),
-                (1,0),(0,0),(0,0),(0,0) ! i sigma_y
+      Vmatrix = (0,0),(0,0),(0,0),(-1,0),
+                (0,0),(0,0),(1,0),(0,0),
+                (0,0),(1,0),(0,0),(0,0),
+                (-1,0),(0,0),(0,0),(0,0) ! -i sigma_y
 /
 
 ! pf 3 : sigma_x along y direction
@@ -203,10 +203,10 @@ n_subsite_uc = 2
 &pf_V
       V_coe = (1d0,0d0)  !> coupling constant for V matrix
       bf_index = 2 !> index of the coupled boson field
-      Vmatrix = (0,0),(0,0),(0,0),(0,1),
-                (0,0),(0,0),(0,1),(0,0),
-                (0,0),(0,-1),(0,0),(0,0),
-                (0,-1),(0,0),(0,0),(0,0) ! i sigma_x
+      Vmatrix = (0,0),(0,0),(0,0),(0,-1),
+                (0,0),(0,0),(0,-1),(0,0),
+                (0,0),(0,1),(0,0),(0,0),
+                (0,1),(0,0),(0,0),(0,0) ! -i sigma_x
 /
 
 ! pf 4 : sigma_x along y direction, off by (0,1)
@@ -231,11 +231,13 @@ n_subsite_uc = 2
 &pf_V
       V_coe = (1d0,0d0)  !> coupling constant for V matrix
       bf_index = 2 !> index of the coupled boson field
-      Vmatrix = (0,0),(0,0),(0,0),(0,1),
-                (0,0),(0,0),(0,1),(0,0),
-                (0,0),(0,-1),(0,0),(0,0),
-                (0,-1),(0,0),(0,0),(0,0) ! i sigma_x
+      Vmatrix = (0,0),(0,0),(0,0),(0,-1),
+                (0,0),(0,0),(0,-1),(0,0),
+                (0,0),(0,1),(0,0),(0,0),
+                (0,1),(0,0),(0,0),(0,0) ! -i sigma_x
 /
+
+
 
 !! boson field definition
 

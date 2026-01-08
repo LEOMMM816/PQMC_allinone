@@ -23,11 +23,11 @@ import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
 # here I from scratch write an independent version to visionalize data
-jobname_list = ["O1623","BCO1623"]
+jobname_list = ["O1275","BCO1275"]
 n_block = 8
 # omega in 1.6,1.7...2.3, kept to 2 significant digits
-omega = [round(1.6 + 0.1*i,2) for i in range(n_block)]
-lat_size = [4, 6, 8, 10,12]
+omega = [round(1 + 0.25*i,3) for i in range(n_block)]
+lat_size = [4, 6, 8, 10,12,14]
 data = {}
 for jn in jobname_list:
     data[jn] = data.get(jn, {})
@@ -37,7 +37,7 @@ for jn in jobname_list:
         data[jn][size_name] = data[jn].get(size_name, {})
         base_path = ROOT/f"./{file_name}/data/out_files/"
         if not base_path.exists():
-            print(f"{base_path} doesn't exist, skipped")
+            print(f"skipped {base_path} as it does not exist")
             continue
         print(f"Loading data from {file_name} ...")
         for block in range(1, n_block+1):
@@ -74,22 +74,34 @@ for jn in jobname_list:
                     if name != "Name":
                         print(f"Could not find value for {name} in {jn} {size_name} {block_name}, skipping...")
                     continue
-   
+
+# now we have data, we need to output it to a portable format like json or pickle for later use
+import json
+output_path = ROOT/"extracted_data.json"
+#with open(output_path, "w") as f:
+#    json.dump(data, f)
+#print(f"Data extracted and saved to {output_path}")
+# now we can load the data from json for later use
+with open(output_path, "r") as f:
+    data = json.load(f)
+print(f"Data loaded from {output_path}")
 
 # %% 
 # average the data from with BC and without BC
-jobname_list_avg = ["O1623"]
-data_avg = {}
+# %% 
+# average the data from with BC and without BC
+jobname_list_avg = ["O1275"]
 for jn in jobname_list_avg:
     jn1 = jn  # without BC
     jn2 = "BC" + jn  # with BC
-    data_avg[jn] = {}
+    jn_target = f"avg_{jn}"
+    data[jn_target] = {}
     for size in lat_size:
         size_name = f"L{size}"
-        data_avg[jn][size_name] = {}
+        data[jn_target][size_name] = {}
         for block in range(1, n_block+1):
             block_name = f"b{block}"
-            data_avg[jn][size_name][block_name] = {}
+            data[jn_target][size_name][block_name] = {}
             keys = set(data[jn1][size_name][block_name].keys()).intersection(set(data[jn2][size_name][block_name].keys()))
             for key in keys:
                 vals1 = np.array(data[jn1][size_name][block_name][key]["vals"])
@@ -98,14 +110,15 @@ for jn in jobname_list_avg:
                 errs2 = np.array(data[jn2][size_name][block_name][key]["errs"])
                 avg_vals = (vals1 + vals2) / 2
                 avg_errs = np.sqrt(errs1**2 + errs2**2) / 2
-                data_avg[jn][size_name][block_name][key] = {"vals": avg_vals.tolist(), "errs": avg_errs.tolist()}
+                data[jn_target][size_name][block_name][key] = {"vals": avg_vals.tolist(), "errs": avg_errs.tolist()}
+# %%
 #plot some data from data_avg for verification
 example_name = "Jyx_Jyx_k"
 jn1 = jn  # without BC
 jn2 = "BC" + jn  # with BC
 for size in lat_size:
     size_name = f"L{size}"
-    block_name = "b4"
+    block_name = "b1"
     vals1 = np.array(data[jn1][size_name][block_name][example_name]["vals"])
     errs1 = np.array(data[jn1][size_name][block_name][example_name]["errs"])
     vals2 = np.array(data[jn2][size_name][block_name][example_name]["vals"])
@@ -116,6 +129,7 @@ for size in lat_size:
 # %%
 # plot certain observable vs real(momentum) space for a given lattice size and block(omega)
 jn = jobname_list_avg[0]
+jn = f"BC{jn}"
 size_i = 12
 size_id = f"L{size_i}"
 block_id = "b1"
@@ -123,10 +137,10 @@ xlabel = "x"
 #ylabel = "BFxy_BFxy_k"
 # ylabel = "SC_SC_k"
 ylabel = "Jxy_Jxy_k"
-title = "Test plot"
+title = f"{jn}'s {size_id} {ylabel}"
 x = range(size_i**2)  # example x values
 y = data[jn][size_id][block_id][ylabel]["vals"]
-y[int(size_i**2/2 + size_i/2)] = 0  # set the middle point to 0 for better visualization
+#y[int(size_i**2/2 + size_i/2)] = 0  # set the middle point to 0 for better visualization
 yerr = data[jn][size_id][block_id][ylabel]["errs"]
 plt.errorbar(x, y, yerr=yerr, marker='o', linestyle='-', label=f'{size_id} {block_id} {ylabel}')
 plt.xlabel(xlabel)
@@ -190,26 +204,27 @@ for ylbl in ylabel:
 # for den_den_k and SC_SC_k, use 1/L as x_val, and do a second order polynomial fit
 
 jn = jobname_list_avg[0]
+jn = f"avg_{jn}"
 block_id = [f"b{i}" for i in range(1,n_block+1)] # every block
-ylabel = ["Jxy_Jxy_k","den_den_k"]
+ylabel = ["Jxy_Jxy_k","Jyx_Jyx_k"]
 title = "Finite Size Scaling Analysis"
-all_sizes = lat_size  # 
+all_sizes = lat_size[1:]  # 
 x_val = {}
 x1 = 1/np.array([float(size) for size in all_sizes])
 x2 = 1/np.array([float(size)*float(size) for size in all_sizes])
-x_val[ylabel[0]] = x2
+x_val[ylabel[0]] = x1
 x_val[ylabel[1]] = x1
 order = {}
-order[ylabel[0]] = 1
+order[ylabel[0]] = 2
 order[ylabel[1]] = 2
 
 for ylbl in ylabel:
-    x = x_val[ylbl]
+    x = x_val.get(ylbl, x1)
     plt.figure()
     for b_idx, block_id_i in enumerate(block_id):
         y = []
         yerr = []
-        if b_idx % 2 ==0:
+        if b_idx >= 2:
             continue  # plot only half of the omegas for clarity
         for size_i in all_sizes:
             size_id = f"L{size_i}"
@@ -229,7 +244,7 @@ for ylbl in ylabel:
         plt.errorbar(x, y, yerr=yerr, marker='o', linestyle='-', color=f"C{b_idx}", label=f'omega={omega[b_idx]}')
         # for fitting purpose, you can use np.polyfit or other fitting methods here
         # do a second order polynomial fit
-        coeffs = np.polyfit(x, y, order[ylbl])
+        coeffs = np.polyfit(x, y, order.get(ylbl, 2))
         poly = np.poly1d(coeffs)
         x_fit = np.linspace(0, max(1.2*x), 100)
         y_fit = poly(x_fit)

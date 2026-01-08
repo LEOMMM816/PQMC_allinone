@@ -1,1296 +1,1476 @@
- loop         400
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :          71
- global_update total :         200
- local_update accept ratio:  0.351828903    
+ loop         300
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :          76
+ global_update total :         150
+ local_update accept ratio:  0.352619767    
  error_fast:   9.9999999999999995E-007
- time spent   6986.19189    
+ time spent   19506.0566    
  
- loop         400
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :          79
- global_update total :         200
- local_update accept ratio:  0.351191372    
- error_fast:   9.9999999999999995E-007
- time spent   7365.76953    
- 
- loop         400
- myid          64
- Size,total_dim:          12          12         288
+ loop         300
+ myid          16
+ Size,total_dim:          14          14         392
  global_update accept :          69
- global_update total :         200
- local_update accept ratio:  0.351584196    
+ global_update total :         150
+ local_update accept ratio:  0.352487028    
  error_fast:   9.9999999999999995E-007
- time spent   7625.64990    
+ time spent   19529.5645    
  
- loop         400
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :          74
- global_update total :         200
- local_update accept ratio:  0.352241725    
- error_fast:   9.9999999999999995E-007
- time spent   7683.50342    
- 
- loop         400
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :          69
- global_update total :         200
- local_update accept ratio:  0.352017343    
- error_fast:   9.9999999999999995E-007
- time spent   7686.53174    
- 
- loop         400
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :          79
- global_update total :         200
- local_update accept ratio:  0.350912899    
- error_fast:   9.9999999999999995E-007
- time spent   7830.33936    
- 
- loop         400
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :          59
- global_update total :         200
- local_update accept ratio:  0.352331400    
- error_fast:   9.9999999999999995E-007
- time spent   8048.37646    
- 
- loop         400
+ loop         300
  myid          80
- Size,total_dim:          12          12         288
- global_update accept :          68
- global_update total :         200
- local_update accept ratio:  0.351486474    
+ Size,total_dim:          14          14         392
+ global_update accept :          66
+ global_update total :         150
+ local_update accept ratio:  0.351828843    
  error_fast:   9.9999999999999995E-007
- time spent   7987.18848    
+ time spent   20801.9961    
  
- loop         800
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         131
- global_update total :         400
- local_update accept ratio:  0.351591438    
- error_fast:   9.9999999999999995E-007
- time spent   13976.5254    
- 
- loop         800
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         147
- global_update total :         400
- local_update accept ratio:  0.351022899    
- error_fast:   9.9999999999999995E-007
- time spent   14732.8555    
- 
- loop         800
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         119
- global_update total :         400
- local_update accept ratio:  0.351462454    
- error_fast:   9.9999999999999995E-007
- time spent   15224.8604    
- 
- loop         800
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         129
- global_update total :         400
- local_update accept ratio:  0.351973921    
- error_fast:   9.9999999999999995E-007
- time spent   15315.1748    
- 
- loop         800
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         129
- global_update total :         400
- local_update accept ratio:  0.351861179    
- error_fast:   9.9999999999999995E-007
- time spent   15395.6826    
- 
- loop         800
+ loop         300
  myid         112
- Size,total_dim:          12          12         288
- global_update accept :         163
- global_update total :         400
- local_update accept ratio:  0.350726575    
+ Size,total_dim:          14          14         392
+ global_update accept :          78
+ global_update total :         150
+ local_update accept ratio:  0.351469934    
  error_fast:   9.9999999999999995E-007
- time spent   15701.8740    
+ time spent   20830.3496    
  
- loop         800
+ loop         300
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :          70
+ global_update total :         150
+ local_update accept ratio:  0.351659745    
+ error_fast:   9.9999999999999995E-007
+ time spent   21006.8242    
+ 
+ loop         300
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :          66
+ global_update total :         150
+ local_update accept ratio:  0.352240801    
+ error_fast:   9.9999999999999995E-007
+ time spent   21194.9355    
+ 
+ loop         300
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :          64
+ global_update total :         150
+ local_update accept ratio:  0.351994842    
+ error_fast:   9.9999999999999995E-007
+ time spent   21413.5801    
+ 
+ loop         300
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :          60
+ global_update total :         150
+ local_update accept ratio:  0.352376759    
+ error_fast:   9.9999999999999995E-007
+ time spent   22139.0996    
+ 
+ loop         600
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :         116
- global_update total :         400
- local_update accept ratio:  0.352045059    
+ Size,total_dim:          14          14         392
+ global_update accept :         133
+ global_update total :         300
+ local_update accept ratio:  0.352389008    
  error_fast:   9.9999999999999995E-007
- time spent   15944.0693    
+ time spent   39046.2109    
  
- loop         800
+ loop         600
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         124
+ global_update total :         300
+ local_update accept ratio:  0.352257907    
+ error_fast:   9.9999999999999995E-007
+ time spent   39116.2969    
+ 
+ loop         600
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         144
+ global_update total :         300
+ local_update accept ratio:  0.351166040    
+ error_fast:   9.9999999999999995E-007
+ time spent   41500.0781    
+ 
+ loop         600
  myid          80
- Size,total_dim:          12          12         288
- global_update accept :         138
- global_update total :         400
- local_update accept ratio:  0.351277053    
+ Size,total_dim:          14          14         392
+ global_update accept :         126
+ global_update total :         300
+ local_update accept ratio:  0.351646751    
  error_fast:   9.9999999999999995E-007
- time spent   15991.9873    
+ time spent   41742.1289    
  
- loop        1200
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         209
- global_update total :         600
- local_update accept ratio:  0.351695895    
- error_fast:   9.9999999999999995E-007
- time spent   21014.7773    
- 
- loop        1200
+ loop         600
  myid          96
- Size,total_dim:          12          12         288
- global_update accept :         211
- global_update total :         600
- local_update accept ratio:  0.350916088    
+ Size,total_dim:          14          14         392
+ global_update accept :         130
+ global_update total :         300
+ local_update accept ratio:  0.351416945    
  error_fast:   9.9999999999999995E-007
- time spent   22092.7773    
+ time spent   42032.5859    
  
- loop        1200
+ loop         600
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         121
+ global_update total :         300
+ local_update accept ratio:  0.351987273    
+ error_fast:   9.9999999999999995E-007
+ time spent   42477.4375    
+ 
+ loop         600
  myid          64
- Size,total_dim:          12          12         288
- global_update accept :         190
- global_update total :         600
- local_update accept ratio:  0.351372182    
+ Size,total_dim:          14          14         392
+ global_update accept :         123
+ global_update total :         300
+ local_update accept ratio:  0.351872534    
  error_fast:   9.9999999999999995E-007
- time spent   22733.6914    
+ time spent   42629.7500    
  
- loop        1200
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         183
- global_update total :         600
- local_update accept ratio:  0.351978719    
- error_fast:   9.9999999999999995E-007
- time spent   22912.8242    
- 
- loop        1200
+ loop         600
  myid          32
- Size,total_dim:          12          12         288
- global_update accept :         195
- global_update total :         600
- local_update accept ratio:  0.351711988    
+ Size,total_dim:          14          14         392
+ global_update accept :         112
+ global_update total :         300
+ local_update accept ratio:  0.352131546    
  error_fast:   9.9999999999999995E-007
- time spent   23090.1699    
+ time spent   44385.3750    
  
- loop        1200
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :         240
- global_update total :         600
- local_update accept ratio:  0.350789577    
- error_fast:   9.9999999999999995E-007
- time spent   23525.1172    
- 
- loop        1200
+ loop         900
  myid           0
- Size,total_dim:          12          12         288
+ Size,total_dim:          14          14         392
  global_update accept :         186
- global_update total :         600
- local_update accept ratio:  0.352207869    
+ global_update total :         450
+ local_update accept ratio:  0.352377623    
  error_fast:   9.9999999999999995E-007
- time spent   23734.1973    
+ time spent   58455.8555    
+ 
+ loop         900
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         182
+ global_update total :         450
+ local_update accept ratio:  0.352314979    
+ error_fast:   9.9999999999999995E-007
+ time spent   58693.2422    
+ 
+ loop         900
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         207
+ global_update total :         450
+ local_update accept ratio:  0.351112098    
+ error_fast:   9.9999999999999995E-007
+ time spent   62252.4062    
+ 
+ loop         900
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         200
+ global_update total :         450
+ local_update accept ratio:  0.351589382    
+ error_fast:   9.9999999999999995E-007
+ time spent   62726.6875    
+ 
+ loop         900
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         200
+ global_update total :         450
+ local_update accept ratio:  0.351394624    
+ error_fast:   9.9999999999999995E-007
+ time spent   62956.7656    
+ 
+ loop         900
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         176
+ global_update total :         450
+ local_update accept ratio:  0.351732433    
+ error_fast:   9.9999999999999995E-007
+ time spent   63742.6758    
+ 
+ loop         900
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         175
+ global_update total :         450
+ local_update accept ratio:  0.351916373    
+ error_fast:   9.9999999999999995E-007
+ time spent   63790.8672    
+ 
+ loop         900
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         176
+ global_update total :         450
+ local_update accept ratio:  0.352227747    
+ error_fast:   9.9999999999999995E-007
+ time spent   66789.8047    
+ 
+ loop        1200
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         250
+ global_update total :         600
+ local_update accept ratio:  0.352396071    
+ error_fast:   9.9999999999999995E-007
+ time spent   77892.1328    
+ 
+ loop        1200
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         247
+ global_update total :         600
+ local_update accept ratio:  0.352344006    
+ error_fast:   9.9999999999999995E-007
+ time spent   78214.3828    
+ 
+ loop        1200
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         276
+ global_update total :         600
+ local_update accept ratio:  0.351140052    
+ error_fast:   9.9999999999999995E-007
+ time spent   83033.3438    
  
  loop        1200
  myid          80
- Size,total_dim:          12          12         288
- global_update accept :         200
+ Size,total_dim:          14          14         392
+ global_update accept :         270
  global_update total :         600
- local_update accept ratio:  0.351224512    
+ local_update accept ratio:  0.351593405    
  error_fast:   9.9999999999999995E-007
- time spent   23959.7188    
+ time spent   83693.7656    
  
- loop        1600
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         273
- global_update total :         800
- local_update accept ratio:  0.351696193    
- error_fast:   9.9999999999999995E-007
- time spent   28018.8320    
- 
- loop        1600
+ loop        1200
  myid          96
- Size,total_dim:          12          12         288
- global_update accept :         285
- global_update total :         800
- local_update accept ratio:  0.350938588    
+ Size,total_dim:          14          14         392
+ global_update accept :         258
+ global_update total :         600
+ local_update accept ratio:  0.351335734    
  error_fast:   9.9999999999999995E-007
- time spent   29470.9336    
+ time spent   83845.5312    
  
- loop        1600
+ loop        1200
  myid          64
- Size,total_dim:          12          12         288
- global_update accept :         249
- global_update total :         800
- local_update accept ratio:  0.351401269    
+ Size,total_dim:          14          14         392
+ global_update accept :         238
+ global_update total :         600
+ local_update accept ratio:  0.351775378    
  error_fast:   9.9999999999999995E-007
- time spent   30095.4590    
+ time spent   84915.1250    
  
- loop        1600
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         241
- global_update total :         800
- local_update accept ratio:  0.352005124    
+ loop        1200
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         237
+ global_update total :         600
+ local_update accept ratio:  0.351921737    
  error_fast:   9.9999999999999995E-007
- time spent   30537.6094    
+ time spent   85118.5312    
  
- loop        1600
+ loop        1200
  myid          32
- Size,total_dim:          12          12         288
- global_update accept :         253
- global_update total :         800
- local_update accept ratio:  0.351809174    
+ Size,total_dim:          14          14         392
+ global_update accept :         234
+ global_update total :         600
+ local_update accept ratio:  0.352151603    
  error_fast:   9.9999999999999995E-007
- time spent   30765.7930    
+ time spent   89182.0781    
  
- loop        1600
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :         325
- global_update total :         800
- local_update accept ratio:  0.350832969    
- error_fast:   9.9999999999999995E-007
- time spent   31355.4922    
- 
- loop        1600
+ loop        1500
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :         248
- global_update total :         800
- local_update accept ratio:  0.352121443    
+ Size,total_dim:          14          14         392
+ global_update accept :         303
+ global_update total :         750
+ local_update accept ratio:  0.352443904    
  error_fast:   9.9999999999999995E-007
- time spent   31516.7695    
+ time spent   97280.2734    
  
- loop        1600
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         264
- global_update total :         800
- local_update accept ratio:  0.351279289    
- error_fast:   9.9999999999999995E-007
- time spent   31902.0273    
- 
- loop        2000
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         330
- global_update total :        1000
- local_update accept ratio:  0.351605892    
- error_fast:   9.9999999999999995E-007
- time spent   35005.6953    
- 
- loop        2000
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         349
- global_update total :        1000
- local_update accept ratio:  0.351041585    
- error_fast:   9.9999999999999995E-007
- time spent   36846.4141    
- 
- loop        2000
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         318
- global_update total :        1000
- local_update accept ratio:  0.351430207    
- error_fast:   9.9999999999999995E-007
- time spent   37450.5938    
- 
- loop        2000
+ loop        1500
  myid          16
- Size,total_dim:          12          12         288
- global_update accept :         293
- global_update total :        1000
- local_update accept ratio:  0.351972729    
+ Size,total_dim:          14          14         392
+ global_update accept :         302
+ global_update total :         750
+ local_update accept ratio:  0.352232009    
  error_fast:   9.9999999999999995E-007
- time spent   38156.2422    
+ time spent   97698.4297    
  
- loop        2000
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         313
- global_update total :        1000
- local_update accept ratio:  0.351873666    
- error_fast:   9.9999999999999995E-007
- time spent   38482.1406    
- 
- loop        2000
+ loop        1500
  myid         112
- Size,total_dim:          12          12         288
+ Size,total_dim:          14          14         392
+ global_update accept :         343
+ global_update total :         750
+ local_update accept ratio:  0.351193219    
+ error_fast:   9.9999999999999995E-007
+ time spent   103793.555    
+ 
+ loop        1500
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         333
+ global_update total :         750
+ local_update accept ratio:  0.351549149    
+ error_fast:   9.9999999999999995E-007
+ time spent   104660.742    
+ 
+ loop        1500
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         327
+ global_update total :         750
+ local_update accept ratio:  0.351386368    
+ error_fast:   9.9999999999999995E-007
+ time spent   104779.656    
+ 
+ loop        1500
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         283
+ global_update total :         750
+ local_update accept ratio:  0.351754487    
+ error_fast:   9.9999999999999995E-007
+ time spent   106022.727    
+ 
+ loop        1500
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         281
+ global_update total :         750
+ local_update accept ratio:  0.351924598    
+ error_fast:   9.9999999999999995E-007
+ time spent   106369.000    
+ 
+ loop        1500
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         292
+ global_update total :         750
+ local_update accept ratio:  0.352197319    
+ error_fast:   9.9999999999999995E-007
+ time spent   111617.609    
+ 
+ loop        1800
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         361
+ global_update total :         900
+ local_update accept ratio:  0.352439672    
+ error_fast:   9.9999999999999995E-007
+ time spent   116693.062    
+ 
+ loop        1800
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         365
+ global_update total :         900
+ local_update accept ratio:  0.352233291    
+ error_fast:   9.9999999999999995E-007
+ time spent   117216.250    
+ 
+ loop        1800
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         418
+ global_update total :         900
+ local_update accept ratio:  0.351191252    
+ error_fast:   9.9999999999999995E-007
+ time spent   124600.062    
+ 
+ loop        1800
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         392
+ global_update total :         900
+ local_update accept ratio:  0.351569474    
+ error_fast:   9.9999999999999995E-007
+ time spent   125599.953    
+ 
+ loop        1800
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         382
+ global_update total :         900
+ local_update accept ratio:  0.351386726    
+ error_fast:   9.9999999999999995E-007
+ time spent   125663.664    
+ 
+ loop        1800
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         336
+ global_update total :         900
+ local_update accept ratio:  0.351810396    
+ error_fast:   9.9999999999999995E-007
+ time spent   127143.852    
+ 
+ loop        1800
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         341
+ global_update total :         900
+ local_update accept ratio:  0.351980448    
+ error_fast:   9.9999999999999995E-007
+ time spent   127667.859    
+ 
+ loop        1800
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         351
+ global_update total :         900
+ local_update accept ratio:  0.352172494    
+ error_fast:   9.9999999999999995E-007
+ time spent   134014.453    
+ 
+ loop        2100
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         419
+ global_update total :        1050
+ local_update accept ratio:  0.352483511    
+ error_fast:   9.9999999999999995E-007
+ time spent   136082.469    
+ 
+ loop        2100
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         415
+ global_update total :        1050
+ local_update accept ratio:  0.352202326    
+ error_fast:   9.9999999999999995E-007
+ time spent   136667.281    
+ 
+ loop        2100
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         483
+ global_update total :        1050
+ local_update accept ratio:  0.351236850    
+ error_fast:   9.9999999999999995E-007
+ time spent   145391.344    
+ 
+ loop        2100
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         447
+ global_update total :        1050
+ local_update accept ratio:  0.351595581    
+ error_fast:   9.9999999999999995E-007
+ time spent   146513.453    
+ 
+ loop        2100
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         439
+ global_update total :        1050
+ local_update accept ratio:  0.351356506    
+ error_fast:   9.9999999999999995E-007
+ time spent   146555.422    
+ 
+ loop        2100
+ myid          64
+ Size,total_dim:          14          14         392
  global_update accept :         396
- global_update total :        1000
- local_update accept ratio:  0.350799710    
+ global_update total :        1050
+ local_update accept ratio:  0.351738721    
  error_fast:   9.9999999999999995E-007
- time spent   39166.6953    
+ time spent   148269.188    
  
- loop        2000
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         314
- global_update total :        1000
- local_update accept ratio:  0.352158099    
- error_fast:   9.9999999999999995E-007
- time spent   39297.4648    
- 
- loop        2000
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         322
- global_update total :        1000
- local_update accept ratio:  0.351204634    
- error_fast:   9.9999999999999995E-007
- time spent   39818.2578    
- 
- loop        2400
+ loop        2100
  myid          48
- Size,total_dim:          12          12         288
- global_update accept :         385
- global_update total :        1200
- local_update accept ratio:  0.351639211    
+ Size,total_dim:          14          14         392
+ global_update accept :         393
+ global_update total :        1050
+ local_update accept ratio:  0.351987809    
  error_fast:   9.9999999999999995E-007
- time spent   42018.5039    
+ time spent   148928.906    
  
  loop        2400
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         423
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         481
  global_update total :        1200
- local_update accept ratio:  0.351092875    
+ local_update accept ratio:  0.352436125    
  error_fast:   9.9999999999999995E-007
- time spent   44227.8984    
- 
- loop        2400
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         384
- global_update total :        1200
- local_update accept ratio:  0.351416260    
- error_fast:   9.9999999999999995E-007
- time spent   44810.0938    
+ time spent   155511.250    
  
  loop        2400
  myid          16
- Size,total_dim:          12          12         288
- global_update accept :         349
+ Size,total_dim:          14          14         392
+ global_update accept :         474
  global_update total :        1200
- local_update accept ratio:  0.351885527    
+ local_update accept ratio:  0.352236390    
  error_fast:   9.9999999999999995E-007
- time spent   45766.6836    
+ time spent   156165.828    
  
- loop        2400
+ loop        2100
  myid          32
- Size,total_dim:          12          12         288
- global_update accept :         381
- global_update total :        1200
- local_update accept ratio:  0.351815403    
+ Size,total_dim:          14          14         392
+ global_update accept :         399
+ global_update total :        1050
+ local_update accept ratio:  0.352125674    
  error_fast:   9.9999999999999995E-007
- time spent   46206.2891    
- 
- loop        2400
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         369
- global_update total :        1200
- local_update accept ratio:  0.352137148    
- error_fast:   9.9999999999999995E-007
- time spent   47072.6289    
+ time spent   156375.531    
  
  loop        2400
  myid         112
- Size,total_dim:          12          12         288
- global_update accept :         469
+ Size,total_dim:          14          14         392
+ global_update accept :         549
  global_update total :        1200
- local_update accept ratio:  0.350763887    
+ local_update accept ratio:  0.351159871    
  error_fast:   9.9999999999999995E-007
- time spent   46973.1016    
+ time spent   166163.312    
+ 
+ loop        2400
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         487
+ global_update total :        1200
+ local_update accept ratio:  0.351469189    
+ error_fast:   9.9999999999999995E-007
+ time spent   167430.062    
  
  loop        2400
  myid          80
- Size,total_dim:          12          12         288
- global_update accept :         398
+ Size,total_dim:          14          14         392
+ global_update accept :         513
  global_update total :        1200
- local_update accept ratio:  0.351203561    
+ local_update accept ratio:  0.351601869    
  error_fast:   9.9999999999999995E-007
- time spent   47767.4531    
+ time spent   167484.094    
  
- loop        2800
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         441
- global_update total :        1400
- local_update accept ratio:  0.351681173    
- error_fast:   9.9999999999999995E-007
- time spent   49017.1602    
- 
- loop        2800
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         495
- global_update total :        1400
- local_update accept ratio:  0.351081163    
- error_fast:   9.9999999999999995E-007
- time spent   51604.3164    
- 
- loop        2800
+ loop        2400
  myid          64
- Size,total_dim:          12          12         288
- global_update accept :         444
- global_update total :        1400
- local_update accept ratio:  0.351393759    
+ Size,total_dim:          14          14         392
+ global_update accept :         445
+ global_update total :        1200
+ local_update accept ratio:  0.351896584    
  error_fast:   9.9999999999999995E-007
- time spent   52161.4453    
+ time spent   169353.375    
  
- loop        2800
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         409
- global_update total :        1400
- local_update accept ratio:  0.351930976    
+ loop        2400
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         451
+ global_update total :        1200
+ local_update accept ratio:  0.351995081    
  error_fast:   9.9999999999999995E-007
- time spent   53386.6055    
+ time spent   170268.109    
  
- loop        2800
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         444
- global_update total :        1400
- local_update accept ratio:  0.351792485    
- error_fast:   9.9999999999999995E-007
- time spent   53863.3594    
- 
- loop        2800
+ loop        2700
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :         435
- global_update total :        1400
- local_update accept ratio:  0.352233857    
+ Size,total_dim:          14          14         392
+ global_update accept :         529
+ global_update total :        1350
+ local_update accept ratio:  0.352374405    
  error_fast:   9.9999999999999995E-007
- time spent   54862.8047    
+ time spent   174878.781    
  
- loop        2800
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :         537
- global_update total :        1400
- local_update accept ratio:  0.350822777    
- error_fast:   9.9999999999999995E-007
- time spent   54781.1797    
- 
- loop        2800
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         477
- global_update total :        1400
- local_update accept ratio:  0.351289600    
- error_fast:   9.9999999999999995E-007
- time spent   55724.9844    
- 
- loop        3200
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         506
- global_update total :        1600
- local_update accept ratio:  0.351648867    
- error_fast:   9.9999999999999995E-007
- time spent   55994.2070    
- 
- loop        3200
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         569
- global_update total :        1600
- local_update accept ratio:  0.351143867    
- error_fast:   9.9999999999999995E-007
- time spent   58984.8633    
- 
- loop        3200
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         514
- global_update total :        1600
- local_update accept ratio:  0.351442397    
- error_fast:   9.9999999999999995E-007
- time spent   59533.2578    
- 
- loop        3200
+ loop        2700
  myid          16
- Size,total_dim:          12          12         288
- global_update accept :         465
- global_update total :        1600
- local_update accept ratio:  0.351965278    
+ Size,total_dim:          14          14         392
+ global_update accept :         527
+ global_update total :        1350
+ local_update accept ratio:  0.352226883    
  error_fast:   9.9999999999999995E-007
- time spent   60994.0273    
+ time spent   175641.062    
  
- loop        3200
+ loop        2400
  myid          32
- Size,total_dim:          12          12         288
- global_update accept :         500
- global_update total :        1600
+ Size,total_dim:          14          14         392
+ global_update accept :         454
+ global_update total :        1200
+ local_update accept ratio:  0.352133870    
+ error_fast:   9.9999999999999995E-007
+ time spent   178778.359    
+ 
+ loop        2700
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         623
+ global_update total :        1350
+ local_update accept ratio:  0.351212770    
+ error_fast:   9.9999999999999995E-007
+ time spent   186965.375    
+ 
+ loop        2700
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         567
+ global_update total :        1350
+ local_update accept ratio:  0.351555109    
+ error_fast:   9.9999999999999995E-007
+ time spent   188371.312    
+ 
+ loop        2700
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         558
+ global_update total :        1350
+ local_update accept ratio:  0.351431668    
+ error_fast:   9.9999999999999995E-007
+ time spent   188378.453    
+ 
+ loop        2700
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         505
+ global_update total :        1350
+ local_update accept ratio:  0.351747543    
+ error_fast:   9.9999999999999995E-007
+ time spent   190473.297    
+ 
+ loop        2700
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         510
+ global_update total :        1350
+ local_update accept ratio:  0.351939827    
+ error_fast:   9.9999999999999995E-007
+ time spent   191615.359    
+ 
+ loop        3000
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         589
+ global_update total :        1500
+ local_update accept ratio:  0.352353394    
+ error_fast:   9.9999999999999995E-007
+ time spent   194286.406    
+ 
+ loop        3000
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         584
+ global_update total :        1500
+ local_update accept ratio:  0.352349877    
+ error_fast:   9.9999999999999995E-007
+ time spent   195103.938    
+ 
+ loop        2700
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         515
+ global_update total :        1350
+ local_update accept ratio:  0.352073729    
+ error_fast:   9.9999999999999995E-007
+ time spent   201184.734    
+ 
+ loop        3000
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         687
+ global_update total :        1500
+ local_update accept ratio:  0.351061881    
+ error_fast:   9.9999999999999995E-007
+ time spent   207716.703    
+ 
+ loop        3000
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         618
+ global_update total :        1500
+ local_update accept ratio:  0.351366222    
+ error_fast:   9.9999999999999995E-007
+ time spent   209261.594    
+ 
+ loop        3000
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         626
+ global_update total :        1500
+ local_update accept ratio:  0.351574302    
+ error_fast:   9.9999999999999995E-007
+ time spent   209289.141    
+ 
+ loop        3000
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         554
+ global_update total :        1500
+ local_update accept ratio:  0.351755470    
+ error_fast:   9.9999999999999995E-007
+ time spent   211524.641    
+ 
+ loop        3000
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         565
+ global_update total :        1500
+ local_update accept ratio:  0.351982862    
+ error_fast:   9.9999999999999995E-007
+ time spent   212920.172    
+ 
+ loop        3300
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         653
+ global_update total :        1650
+ local_update accept ratio:  0.352389455    
+ error_fast:   9.9999999999999995E-007
+ time spent   213797.344    
+ 
+ loop        3300
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         640
+ global_update total :        1650
+ local_update accept ratio:  0.352270097    
+ error_fast:   9.9999999999999995E-007
+ time spent   214673.766    
+ 
+ loop        3000
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         568
+ global_update total :        1500
+ local_update accept ratio:  0.352100939    
+ error_fast:   9.9999999999999995E-007
+ time spent   223515.047    
+ 
+ loop        3300
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         754
+ global_update total :        1650
+ local_update accept ratio:  0.351155698    
+ error_fast:   9.9999999999999995E-007
+ time spent   228595.266    
+ 
+ loop        3300
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         682
+ global_update total :        1650
+ local_update accept ratio:  0.351343572    
+ error_fast:   9.9999999999999995E-007
+ time spent   230274.344    
+ 
+ loop        3300
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         687
+ global_update total :        1650
+ local_update accept ratio:  0.351608515    
+ error_fast:   9.9999999999999995E-007
+ time spent   230305.844    
+ 
+ loop        3300
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         616
+ global_update total :        1650
+ local_update accept ratio:  0.351730257    
+ error_fast:   9.9999999999999995E-007
+ time spent   232711.469    
+ 
+ loop        3600
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         709
+ global_update total :        1800
+ local_update accept ratio:  0.352438658    
+ error_fast:   9.9999999999999995E-007
+ time spent   233223.609    
+ 
+ loop        3600
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         695
+ global_update total :        1800
+ local_update accept ratio:  0.352234840    
+ error_fast:   9.9999999999999995E-007
+ time spent   234296.844    
+ 
+ loop        3300
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         623
+ global_update total :        1650
+ local_update accept ratio:  0.351981670    
+ error_fast:   9.9999999999999995E-007
+ time spent   234344.891    
+ 
+ loop        3300
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         621
+ global_update total :        1650
+ local_update accept ratio:  0.352120161    
+ error_fast:   9.9999999999999995E-007
+ time spent   246223.000    
+ 
+ loop        3600
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         813
+ global_update total :        1800
+ local_update accept ratio:  0.351177067    
+ error_fast:   9.9999999999999995E-007
+ time spent   249465.906    
+ 
+ loop        3600
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         748
+ global_update total :        1800
+ local_update accept ratio:  0.351562679    
+ error_fast:   9.9999999999999995E-007
+ time spent   251300.484    
+ 
+ loop        3600
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         742
+ global_update total :        1800
+ local_update accept ratio:  0.351418614    
+ error_fast:   9.9999999999999995E-007
+ time spent   251320.578    
+ 
+ loop        3900
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         765
+ global_update total :        1950
+ local_update accept ratio:  0.352426410    
+ error_fast:   9.9999999999999995E-007
+ time spent   252634.844    
+ 
+ loop        3600
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         674
+ global_update total :        1800
+ local_update accept ratio:  0.351710618    
+ error_fast:   9.9999999999999995E-007
+ time spent   253854.734    
+ 
+ loop        3900
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         749
+ global_update total :        1950
+ local_update accept ratio:  0.352223665    
+ error_fast:   9.9999999999999995E-007
+ time spent   253919.219    
+ 
+ loop        3600
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         666
+ global_update total :        1800
+ local_update accept ratio:  0.351929426    
+ error_fast:   9.9999999999999995E-007
+ time spent   255589.750    
+ 
+ loop        3600
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         689
+ global_update total :        1800
+ local_update accept ratio:  0.352151811    
+ error_fast:   9.9999999999999995E-007
+ time spent   269062.938    
+ 
+ loop        3900
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         886
+ global_update total :        1950
+ local_update accept ratio:  0.351107597    
+ error_fast:   9.9999999999999995E-007
+ time spent   270396.188    
+ 
+ loop        4200
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         824
+ global_update total :        2100
+ local_update accept ratio:  0.352385044    
+ error_fast:   9.9999999999999995E-007
+ time spent   272052.156    
+ 
+ loop        3900
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         796
+ global_update total :        1950
+ local_update accept ratio:  0.351600677    
+ error_fast:   9.9999999999999995E-007
+ time spent   272178.281    
+ 
+ loop        3900
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         805
+ global_update total :        1950
+ local_update accept ratio:  0.351442814    
+ error_fast:   9.9999999999999995E-007
+ time spent   272384.656    
+ 
+ loop        4200
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         799
+ global_update total :        2100
+ local_update accept ratio:  0.352250427    
+ error_fast:   9.9999999999999995E-007
+ time spent   273579.875    
+ 
+ loop        3900
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         731
+ global_update total :        1950
+ local_update accept ratio:  0.351784319    
+ error_fast:   9.9999999999999995E-007
+ time spent   274923.312    
+ 
+ loop        3900
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         722
+ global_update total :        1950
+ local_update accept ratio:  0.352009892    
+ error_fast:   9.9999999999999995E-007
+ time spent   276830.969    
+ 
+ loop        4200
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :         953
+ global_update total :        2100
+ local_update accept ratio:  0.351094455    
+ error_fast:   9.9999999999999995E-007
+ time spent   291277.844    
+ 
+ loop        4500
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         878
+ global_update total :        2250
+ local_update accept ratio:  0.352403402    
+ error_fast:   9.9999999999999995E-007
+ time spent   291451.938    
+ 
+ loop        3900
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         739
+ global_update total :        1950
+ local_update accept ratio:  0.352174401    
+ error_fast:   9.9999999999999995E-007
+ time spent   291800.125    
+ 
+ loop        4200
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         856
+ global_update total :        2100
+ local_update accept ratio:  0.351608276    
+ error_fast:   9.9999999999999995E-007
+ time spent   293109.906    
+ 
+ loop        4500
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         862
+ global_update total :        2250
+ local_update accept ratio:  0.352322191    
+ error_fast:   9.9999999999999995E-007
+ time spent   293320.906    
+ 
+ loop        4200
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         863
+ global_update total :        2100
+ local_update accept ratio:  0.351318359    
+ error_fast:   9.9999999999999995E-007
+ time spent   293450.250    
+ 
+ loop        4200
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         795
+ global_update total :        2100
+ local_update accept ratio:  0.351805985    
+ error_fast:   9.9999999999999995E-007
+ time spent   296058.500    
+ 
+ loop        4200
+ myid          48
+ Size,total_dim:          14          14         392
+ global_update accept :         774
+ global_update total :        2100
+ local_update accept ratio:  0.351948977    
+ error_fast:   9.9999999999999995E-007
+ time spent   298074.656    
+ 
+ loop        4800
+ myid           0
+ Size,total_dim:          14          14         392
+ global_update accept :         937
+ global_update total :        2400
+ local_update accept ratio:  0.352383673    
+ error_fast:   9.9999999999999995E-007
+ time spent   310874.688    
+ 
+ loop        4500
+ myid         112
+ Size,total_dim:          14          14         392
+ global_update accept :        1019
+ global_update total :        2250
+ local_update accept ratio:  0.351129621    
+ error_fast:   9.9999999999999995E-007
+ time spent   312150.125    
+ 
+ loop        4800
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :         909
+ global_update total :        2400
+ local_update accept ratio:  0.352275491    
+ error_fast:   9.9999999999999995E-007
+ time spent   312978.469    
+ 
+ loop        4500
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         927
+ global_update total :        2250
+ local_update accept ratio:  0.351487964    
+ error_fast:   9.9999999999999995E-007
+ time spent   314089.375    
+ 
+ loop        4200
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         782
+ global_update total :        2100
+ local_update accept ratio:  0.352084070    
+ error_fast:   9.9999999999999995E-007
+ time spent   314515.438    
+ 
+ loop        4500
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         929
+ global_update total :        2250
+ local_update accept ratio:  0.351361036    
+ error_fast:   9.9999999999999995E-007
+ time spent   314542.594    
+ 
+ loop        4500
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         853
+ global_update total :        2250
  local_update accept ratio:  0.351784825    
  error_fast:   9.9999999999999995E-007
- time spent   61504.6094    
+ time spent   317181.656    
  
- loop        3200
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         499
- global_update total :        1600
- local_update accept ratio:  0.352212608    
- error_fast:   9.9999999999999995E-007
- time spent   62636.6211    
- 
- loop        3200
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :         623
- global_update total :        1600
- local_update accept ratio:  0.350769967    
- error_fast:   9.9999999999999995E-007
- time spent   62623.2148    
- 
- loop        3600
+ loop        4500
  myid          48
- Size,total_dim:          12          12         288
- global_update accept :         558
- global_update total :        1800
- local_update accept ratio:  0.351643771    
+ Size,total_dim:          14          14         392
+ global_update accept :         836
+ global_update total :        2250
+ local_update accept ratio:  0.351903379    
  error_fast:   9.9999999999999995E-007
- time spent   62960.5781    
+ time spent   319364.750    
  
- loop        3200
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         554
- global_update total :        1600
- local_update accept ratio:  0.351204127    
- error_fast:   9.9999999999999995E-007
- time spent   63668.2109    
- 
- loop        3600
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         642
- global_update total :        1800
- local_update accept ratio:  0.351037771    
- error_fast:   9.9999999999999995E-007
- time spent   66378.4375    
- 
- loop        3600
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         574
- global_update total :        1800
- local_update accept ratio:  0.351446241    
- error_fast:   9.9999999999999995E-007
- time spent   66904.7500    
- 
- loop        3600
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         528
- global_update total :        1800
- local_update accept ratio:  0.351949364    
- error_fast:   9.9999999999999995E-007
- time spent   68622.2500    
- 
- loop        3600
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         567
- global_update total :        1800
- local_update accept ratio:  0.351717860    
- error_fast:   9.9999999999999995E-007
- time spent   69176.4609    
- 
- loop        4000
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         621
- global_update total :        2000
- local_update accept ratio:  0.351579070    
- error_fast:   9.9999999999999995E-007
- time spent   69991.1328    
- 
- loop        3600
+ loop        5100
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :         557
- global_update total :        1800
- local_update accept ratio:  0.352250874    
+ Size,total_dim:          14          14         392
+ global_update accept :         993
+ global_update total :        2550
+ local_update accept ratio:  0.352366686    
  error_fast:   9.9999999999999995E-007
- time spent   70401.2812    
+ time spent   329873.531    
  
- loop        3600
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :         691
- global_update total :        1800
- local_update accept ratio:  0.350727111    
- error_fast:   9.9999999999999995E-007
- time spent   70449.3516    
- 
- loop        3600
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         609
- global_update total :        1800
- local_update accept ratio:  0.351189315    
- error_fast:   9.9999999999999995E-007
- time spent   71590.1875    
- 
- loop        4000
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         722
- global_update total :        2000
- local_update accept ratio:  0.350985318    
- error_fast:   9.9999999999999995E-007
- time spent   73832.2266    
- 
- loop        4000
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         636
- global_update total :        2000
- local_update accept ratio:  0.351449460    
- error_fast:   9.9999999999999995E-007
- time spent   74327.0703    
- 
- loop        4000
+ loop        5100
  myid          16
- Size,total_dim:          12          12         288
- global_update accept :         595
- global_update total :        2000
- local_update accept ratio:  0.351938844    
+ Size,total_dim:          14          14         392
+ global_update accept :         974
+ global_update total :        2550
+ local_update accept ratio:  0.352290809    
  error_fast:   9.9999999999999995E-007
- time spent   76298.7891    
- 
- loop        4000
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         633
- global_update total :        2000
- local_update accept ratio:  0.351759195    
- error_fast:   9.9999999999999995E-007
- time spent   76884.7656    
- 
- loop        4400
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         675
- global_update total :        2200
- local_update accept ratio:  0.351675421    
- error_fast:   9.9999999999999995E-007
- time spent   76979.6484    
- 
- loop        4000
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         613
- global_update total :        2000
- local_update accept ratio:  0.352169871    
- error_fast:   9.9999999999999995E-007
- time spent   78209.7812    
- 
- loop        4000
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :         752
- global_update total :        2000
- local_update accept ratio:  0.350780994    
- error_fast:   9.9999999999999995E-007
- time spent   78308.7578    
- 
- loop        4000
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         678
- global_update total :        2000
- local_update accept ratio:  0.351180434    
- error_fast:   9.9999999999999995E-007
- time spent   79593.2500    
- 
- loop        4400
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         785
- global_update total :        2200
- local_update accept ratio:  0.351011693    
- error_fast:   9.9999999999999995E-007
- time spent   81256.0859    
- 
- loop        4400
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         692
- global_update total :        2200
- local_update accept ratio:  0.351496249    
- error_fast:   9.9999999999999995E-007
- time spent   81740.0156    
- 
- loop        4400
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         651
- global_update total :        2200
- local_update accept ratio:  0.352002233    
- error_fast:   9.9999999999999995E-007
- time spent   83925.3984    
+ time spent   332276.562    
  
  loop        4800
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         729
- global_update total :        2400
- local_update accept ratio:  0.351682484    
- error_fast:   9.9999999999999995E-007
- time spent   83970.0234    
- 
- loop        4400
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         694
- global_update total :        2200
- local_update accept ratio:  0.351856411    
- error_fast:   9.9999999999999995E-007
- time spent   84578.5625    
- 
- loop        4400
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         670
- global_update total :        2200
- local_update accept ratio:  0.352074623    
- error_fast:   9.9999999999999995E-007
- time spent   86023.6641    
- 
- loop        4400
  myid         112
- Size,total_dim:          12          12         288
+ Size,total_dim:          14          14         392
+ global_update accept :        1100
+ global_update total :        2400
+ local_update accept ratio:  0.351161689    
+ error_fast:   9.9999999999999995E-007
+ time spent   332976.938    
+ 
+ loop        4800
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :         987
+ global_update total :        2400
+ local_update accept ratio:  0.351518512    
+ error_fast:   9.9999999999999995E-007
+ time spent   335022.688    
+ 
+ loop        4800
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :         981
+ global_update total :        2400
+ local_update accept ratio:  0.351415426    
+ error_fast:   9.9999999999999995E-007
+ time spent   335465.594    
+ 
+ loop        4500
+ myid          32
+ Size,total_dim:          14          14         392
  global_update accept :         840
- global_update total :        2200
- local_update accept ratio:  0.350741416    
+ global_update total :        2250
+ local_update accept ratio:  0.352039725    
  error_fast:   9.9999999999999995E-007
- time spent   86220.5625    
- 
- loop        4400
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         745
- global_update total :        2200
- local_update accept ratio:  0.351238251    
- error_fast:   9.9999999999999995E-007
- time spent   87590.0625    
- 
- loop        4800
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         857
- global_update total :        2400
- local_update accept ratio:  0.351033807    
- error_fast:   9.9999999999999995E-007
- time spent   88680.8906    
+ time spent   337241.156    
  
  loop        4800
  myid          64
- Size,total_dim:          12          12         288
- global_update accept :         761
+ Size,total_dim:          14          14         392
+ global_update accept :         908
  global_update total :        2400
- local_update accept ratio:  0.351431817    
+ local_update accept ratio:  0.351810902    
  error_fast:   9.9999999999999995E-007
- time spent   89166.6484    
+ time spent   338277.844    
  
- loop        5200
+ loop        4800
  myid          48
- Size,total_dim:          12          12         288
- global_update accept :         790
- global_update total :        2600
- local_update accept ratio:  0.351629198    
- error_fast:   9.9999999999999995E-007
- time spent   90953.7031    
- 
- loop        4800
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         708
- global_update total :        2400
- local_update accept ratio:  0.352073431    
- error_fast:   9.9999999999999995E-007
- time spent   91546.9453    
- 
- loop        4800
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         762
- global_update total :        2400
- local_update accept ratio:  0.351844966    
- error_fast:   9.9999999999999995E-007
- time spent   92266.0078    
- 
- loop        4800
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         727
- global_update total :        2400
- local_update accept ratio:  0.352186501    
- error_fast:   9.9999999999999995E-007
- time spent   93856.3672    
- 
- loop        4800
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :         921
- global_update total :        2400
- local_update accept ratio:  0.350763589    
- error_fast:   9.9999999999999995E-007
- time spent   94106.9531    
- 
- loop        4800
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         812
- global_update total :        2400
- local_update accept ratio:  0.351281315    
- error_fast:   9.9999999999999995E-007
- time spent   95582.5391    
- 
- loop        5200
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         918
- global_update total :        2600
- local_update accept ratio:  0.350949883    
- error_fast:   9.9999999999999995E-007
- time spent   96111.3359    
- 
- loop        5200
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         819
- global_update total :        2600
- local_update accept ratio:  0.351456314    
- error_fast:   9.9999999999999995E-007
- time spent   96597.0078    
- 
- loop        5600
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         851
- global_update total :        2800
- local_update accept ratio:  0.351567626    
- error_fast:   9.9999999999999995E-007
- time spent   97940.4609    
- 
- loop        5200
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         761
- global_update total :        2600
- local_update accept ratio:  0.351932377    
- error_fast:   9.9999999999999995E-007
- time spent   99172.9219    
- 
- loop        5200
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         821
- global_update total :        2600
- local_update accept ratio:  0.351852357    
- error_fast:   9.9999999999999995E-007
- time spent   99952.1875    
- 
- loop        5200
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         786
- global_update total :        2600
- local_update accept ratio:  0.352166146    
- error_fast:   9.9999999999999995E-007
- time spent   101698.781    
- 
- loop        5200
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :        1009
- global_update total :        2600
- local_update accept ratio:  0.350756884    
- error_fast:   9.9999999999999995E-007
- time spent   101999.766    
- 
- loop        5200
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :         866
- global_update total :        2600
- local_update accept ratio:  0.351221919    
- error_fast:   9.9999999999999995E-007
- time spent   103551.633    
- 
- loop        5600
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :         994
- global_update total :        2800
- local_update accept ratio:  0.351004273    
- error_fast:   9.9999999999999995E-007
- time spent   103555.977    
- 
- loop        5600
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         882
- global_update total :        2800
- local_update accept ratio:  0.351498157    
- error_fast:   9.9999999999999995E-007
- time spent   104042.516    
- 
- loop        6000
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         912
- global_update total :        3000
- local_update accept ratio:  0.351712465    
- error_fast:   9.9999999999999995E-007
- time spent   104921.328    
- 
- loop        5600
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         814
- global_update total :        2800
- local_update accept ratio:  0.352026671    
- error_fast:   9.9999999999999995E-007
- time spent   106789.555    
- 
- loop        5600
- myid          32
- Size,total_dim:          12          12         288
+ Size,total_dim:          14          14         392
  global_update accept :         886
- global_update total :        2800
- local_update accept ratio:  0.351817578    
+ global_update total :        2400
+ local_update accept ratio:  0.351879716    
  error_fast:   9.9999999999999995E-007
- time spent   107637.828    
+ time spent   340560.875    
  
- loop        5600
+ loop        5400
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :         860
- global_update total :        2800
- local_update accept ratio:  0.352117121    
+ Size,total_dim:          14          14         392
+ global_update accept :        1062
+ global_update total :        2700
+ local_update accept ratio:  0.352406412    
  error_fast:   9.9999999999999995E-007
- time spent   109565.836    
+ time spent   345928.156    
  
- loop        5600
+ loop        5400
+ myid          16
+ Size,total_dim:          14          14         392
+ global_update accept :        1037
+ global_update total :        2700
+ local_update accept ratio:  0.352285445    
+ error_fast:   9.9999999999999995E-007
+ time spent   348214.812    
+ 
+ loop        5100
  myid         112
- Size,total_dim:          12          12         288
- global_update accept :        1101
- global_update total :        2800
- local_update accept ratio:  0.350789338    
+ Size,total_dim:          14          14         392
+ global_update accept :        1161
+ global_update total :        2550
+ local_update accept ratio:  0.351139754    
  error_fast:   9.9999999999999995E-007
- time spent   109899.961    
+ time spent   352911.156    
  
- loop        6000
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :        1061
- global_update total :        3000
- local_update accept ratio:  0.350980371    
- error_fast:   9.9999999999999995E-007
- time spent   110984.695    
- 
- loop        6000
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :         948
- global_update total :        3000
- local_update accept ratio:  0.351314455    
- error_fast:   9.9999999999999995E-007
- time spent   111505.258    
- 
- loop        5600
+ loop        5100
  myid          80
- Size,total_dim:          12          12         288
+ Size,total_dim:          14          14         392
+ global_update accept :        1051
+ global_update total :        2550
+ local_update accept ratio:  0.351653516    
+ error_fast:   9.9999999999999995E-007
+ time spent   355191.656    
+ 
+ loop        5100
+ myid          96
+ Size,total_dim:          14          14         392
+ global_update accept :        1040
+ global_update total :        2550
+ local_update accept ratio:  0.351319551    
+ error_fast:   9.9999999999999995E-007
+ time spent   355585.531    
+ 
+ loop        5100
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :         972
+ global_update total :        2550
+ local_update accept ratio:  0.351729900    
+ error_fast:   9.9999999999999995E-007
+ time spent   358125.156    
+ 
+ loop        4800
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         897
+ global_update total :        2400
+ local_update accept ratio:  0.352110147    
+ error_fast:   9.9999999999999995E-007
+ time spent   359215.844    
+ 
+ loop        5100
+ myid          48
+ Size,total_dim:          14          14         392
  global_update accept :         937
- global_update total :        2800
- local_update accept ratio:  0.351253867    
+ global_update total :        2550
+ local_update accept ratio:  0.352033168    
  error_fast:   9.9999999999999995E-007
- time spent   111555.242    
+ time spent   360833.500    
  
- loop        6400
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :         975
- global_update total :        3200
- local_update accept ratio:  0.351660460    
- error_fast:   9.9999999999999995E-007
- time spent   111905.906    
- 
- loop        6000
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         867
- global_update total :        3000
- local_update accept ratio:  0.351963073    
- error_fast:   9.9999999999999995E-007
- time spent   114407.516    
- 
- loop        6000
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :         944
- global_update total :        3000
- local_update accept ratio:  0.351829976    
- error_fast:   9.9999999999999995E-007
- time spent   115329.797    
- 
- loop        6000
- myid           0
- Size,total_dim:          12          12         288
- global_update accept :         926
- global_update total :        3000
- local_update accept ratio:  0.352088749    
- error_fast:   9.9999999999999995E-007
- time spent   117407.023    
- 
- loop        6000
+ loop        5400
  myid         112
- Size,total_dim:          12          12         288
- global_update accept :        1195
- global_update total :        3000
- local_update accept ratio:  0.350898594    
+ Size,total_dim:          14          14         392
+ global_update accept :        1229
+ global_update total :        2700
+ local_update accept ratio:  0.351142257    
  error_fast:   9.9999999999999995E-007
- time spent   117835.875    
+ time spent   369330.688    
  
- loop        6400
+ loop        5400
+ myid          80
+ Size,total_dim:          14          14         392
+ global_update accept :        1117
+ global_update total :        2700
+ local_update accept ratio:  0.351555645    
+ error_fast:   9.9999999999999995E-007
+ time spent   370996.469    
+ 
+ loop        5400
  myid          96
- Size,total_dim:          12          12         288
- global_update accept :        1136
- global_update total :        3200
- local_update accept ratio:  0.350978404    
+ Size,total_dim:          14          14         392
+ global_update accept :        1108
+ global_update total :        2700
+ local_update accept ratio:  0.351356149    
  error_fast:   9.9999999999999995E-007
- time spent   118449.453    
+ time spent   371161.094    
  
- loop        6800
+ loop        5400
+ myid          64
+ Size,total_dim:          14          14         392
+ global_update accept :        1021
+ global_update total :        2700
+ local_update accept ratio:  0.351800084    
+ error_fast:   9.9999999999999995E-007
+ time spent   373011.094    
+ 
+ loop        5100
+ myid          32
+ Size,total_dim:          14          14         392
+ global_update accept :         959
+ global_update total :        2550
+ local_update accept ratio:  0.352234155    
+ error_fast:   9.9999999999999995E-007
+ time spent   375928.375    
+ 
+ loop        5400
  myid          48
- Size,total_dim:          12          12         288
- global_update accept :        1032
- global_update total :        3400
- local_update accept ratio:  0.351629257    
+ Size,total_dim:          14          14         392
+ global_update accept :         985
+ global_update total :        2700
+ local_update accept ratio:  0.352034837    
  error_fast:   9.9999999999999995E-007
- time spent   118873.414    
+ time spent   376880.844    
  
- loop        6400
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :        1017
- global_update total :        3200
- local_update accept ratio:  0.351470381    
- error_fast:   9.9999999999999995E-007
- time spent   118967.016    
- 
- loop        6000
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :        1012
- global_update total :        3000
- local_update accept ratio:  0.351191580    
- error_fast:   9.9999999999999995E-007
- time spent   119567.602    
- 
- loop        6400
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :         926
- global_update total :        3200
- local_update accept ratio:  0.352006972    
- error_fast:   9.9999999999999995E-007
- time spent   122034.805    
- 
- loop        6400
+ loop        5400
  myid          32
- Size,total_dim:          12          12         288
- global_update accept :        1023
- global_update total :        3200
- local_update accept ratio:  0.351811856    
+ Size,total_dim:          14          14         392
+ global_update accept :        1021
+ global_update total :        2700
+ local_update accept ratio:  0.352192879    
  error_fast:   9.9999999999999995E-007
- time spent   123054.805    
+ time spent   388394.688    
  
- loop        6400
+ loop           2
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :        1004
- global_update total :        3200
- local_update accept ratio:  0.352158189    
- error_fast:   9.9999999999999995E-007
- time spent   125282.828    
+ Size,total_dim:          10          10         200
+ global_update accept :           0
+ global_update total :           1
+ local_update accept ratio:  0.286343753    
+ error_fast:   2.8745063955116671E-002
+ time spent  0.858462870    
  
- loop        6400
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :        1278
- global_update total :        3200
- local_update accept ratio:  0.350681126    
- error_fast:   9.9999999999999995E-007
- time spent   125741.719    
- 
- loop        7200
- myid          48
- Size,total_dim:          12          12         288
- global_update accept :        1089
- global_update total :        3600
- local_update accept ratio:  0.351681799    
- error_fast:   9.9999999999999995E-007
- time spent   125825.289    
- 
- loop        6800
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :        1197
- global_update total :        3400
- local_update accept ratio:  0.351032704    
- error_fast:   9.9999999999999995E-007
- time spent   125883.484    
- 
- loop        6800
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :        1088
- global_update total :        3400
- local_update accept ratio:  0.351450980    
- error_fast:   9.9999999999999995E-007
- time spent   126458.633    
- 
- loop        6400
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :        1082
- global_update total :        3200
- local_update accept ratio:  0.351242840    
- error_fast:   9.9999999999999995E-007
- time spent   127569.961    
- 
- loop        6800
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :        1001
- global_update total :        3400
- local_update accept ratio:  0.351897269    
- error_fast:   9.9999999999999995E-007
- time spent   129687.781    
- 
- loop        6800
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :        1083
- global_update total :        3400
- local_update accept ratio:  0.351844549    
- error_fast:   9.9999999999999995E-007
- time spent   130696.984    
- 
- loop        6800
+ loop           4
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :        1061
- global_update total :        3400
- local_update accept ratio:  0.352091193    
- error_fast:   9.9999999999999995E-007
- time spent   132852.516    
+ Size,total_dim:          10          10         200
+ global_update accept :           1
+ global_update total :           2
+ local_update accept ratio:  0.321312487    
+ error_fast:  0.19476888322806826     
+ time spent   2.35229158    
  
- loop        7200
- myid          96
- Size,total_dim:          12          12         288
- global_update accept :        1262
- global_update total :        3600
- local_update accept ratio:  0.351088822    
- error_fast:   9.9999999999999995E-007
- time spent   133332.062    
- 
- loop        6800
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :        1350
- global_update total :        3400
- local_update accept ratio:  0.350818843    
- error_fast:   9.9999999999999995E-007
- time spent   133641.625    
- 
- loop        7200
- myid          64
- Size,total_dim:          12          12         288
- global_update accept :        1154
- global_update total :        3600
- local_update accept ratio:  0.351431847    
- error_fast:   9.9999999999999995E-007
- time spent   133951.688    
- 
- loop        6800
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :        1143
- global_update total :        3400
- local_update accept ratio:  0.351252466    
- error_fast:   9.9999999999999995E-007
- time spent   135550.125    
- 
- loop        7200
- myid          16
- Size,total_dim:          12          12         288
- global_update accept :        1061
- global_update total :        3600
- local_update accept ratio:  0.352036685    
- error_fast:   9.9999999999999995E-007
- time spent   136507.125    
- 
- loop        7200
- myid          32
- Size,total_dim:          12          12         288
- global_update accept :        1140
- global_update total :        3600
- local_update accept ratio:  0.351869226    
- error_fast:   9.9999999999999995E-007
- time spent   137633.547    
- 
- loop        7200
+ loop           6
  myid           0
- Size,total_dim:          12          12         288
- global_update accept :        1121
- global_update total :        3600
- local_update accept ratio:  0.352168322    
- error_fast:   9.9999999999999995E-007
- time spent   139597.516    
+ Size,total_dim:          10          10         200
+ global_update accept :           2
+ global_update total :           3
+ local_update accept ratio:  0.341468751    
+ error_fast:  0.19476888322806826     
+ time spent   3.95116401    
  
- loop        7200
- myid         112
- Size,total_dim:          12          12         288
- global_update accept :        1429
- global_update total :        3600
- local_update accept ratio:  0.350791156    
- error_fast:   9.9999999999999995E-007
- time spent   140948.562    
+ loop           8
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           3
+ global_update total :           4
+ local_update accept ratio:  0.344359368    
+ error_fast:  0.19476888322806826     
+ time spent   5.54006004    
  
- loop        7200
- myid          80
- Size,total_dim:          12          12         288
- global_update accept :        1215
- global_update total :        3600
- local_update accept ratio:  0.351276755    
+ loop          10
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           4
+ global_update total :           5
+ local_update accept ratio:  0.344359368    
+ error_fast:  0.19476888322806826     
+ time spent   7.13125467    
+ 
+ loop          12
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           5
+ global_update total :           6
+ local_update accept ratio:  0.350093752    
+ error_fast:  0.19476888322806826     
+ time spent   8.75576305    
+ 
+ loop           2
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           1
+ global_update total :           1
+ local_update accept ratio:  0.284343749    
  error_fast:   9.9999999999999995E-007
- time spent   143416.172    
+ time spent  0.840964913    
+ 
+ loop           4
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           1
+ global_update total :           2
+ local_update accept ratio:  0.316718757    
+ error_fast:   9.9999999999999995E-007
+ time spent   2.23264170    
+ 
+ loop           6
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           2
+ global_update total :           3
+ local_update accept ratio:  0.337359369    
+ error_fast:   9.9999999999999995E-007
+ time spent   3.79538107    
+ 
+ loop           8
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           3
+ global_update total :           4
+ local_update accept ratio:  0.343124986    
+ error_fast:   9.9999999999999995E-007
+ time spent   5.35764885    
+ 
+ loop          10
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           4
+ global_update total :           5
+ local_update accept ratio:  0.347062498    
+ error_fast:   9.9999999999999995E-007
+ time spent   6.92315435    
+ 
+ loop          12
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           5
+ global_update total :           6
+ local_update accept ratio:  0.348484367    
+ error_fast:   9.9999999999999995E-007
+ time spent   8.48963928    
+ 
+ loop           2
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           1
+ global_update total :           1
+ local_update accept ratio:  0.287203133    
+ error_fast:   9.9999999999999995E-007
+ time spent   5.08311558    
+ 
+ loop           4
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           2
+ global_update total :           2
+ local_update accept ratio:  0.321770847    
+ error_fast:   9.9999999999999995E-007
+ time spent   13.7781754    
+ 
+ loop           6
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           2
+ global_update total :           3
+ local_update accept ratio:  0.339763016    
+ error_fast:   9.9999999999999995E-007
+ time spent   22.3246536    
+ 
+ loop           8
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           2
+ global_update total :           4
+ local_update accept ratio:  0.345434904    
+ error_fast:   9.9999999999999995E-007
+ time spent   30.9124146    
+ 
+ loop          10
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           3
+ global_update total :           5
+ local_update accept ratio:  0.349067718    
+ error_fast:   9.9999999999999995E-007
+ time spent   39.9890594    
+ 
+ loop          12
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           4
+ global_update total :           6
+ local_update accept ratio:  0.348734379    
+ error_fast:   9.9999999999999995E-007
+ time spent   49.1002617    
+ 
+ loop           2
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           0
+ global_update total :           1
+ local_update accept ratio:  0.284906238    
+ error_fast:   7.0778247944981558     
+ time spent   69.2393494    
+ 
+ loop           4
+ myid           0
+ Size,total_dim:          10          10         200
+ global_update accept :           1
+ global_update total :           2
+ local_update accept ratio:  0.320221364    
+ error_fast:   7.0778247944981558     
+ time spent   78.1229019    
  

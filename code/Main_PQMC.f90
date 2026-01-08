@@ -16,7 +16,8 @@ program Pqmc_main
   integer :: iteration  ! # of Monte Carlo loops
   logical :: forward = .true.
   character*10 :: ci_myid
-
+  integer :: i_cell,j
+  real(dp) :: temp_bf,phi
 !> mpi
 #ifdef MPI
   call my_mpi_init()
@@ -33,6 +34,7 @@ program Pqmc_main
   call init()
   print*,"setting boson field..."
   call init_boson_field()
+
   print*,"setting bf ends."
   ! phonon-field initialize
   print *, 'set phonon field...'
@@ -58,6 +60,42 @@ program Pqmc_main
 !simulation begins here
   call init_MC()
   print *, 'Monte Carlo starts with ln_cw:', ln_cw
+
+
+  ! ------------------debug part------------------------------!
+  do j = 1 , 100
+    phi =j/100d0 * PI_D*2
+    print *, 'cos(phi):', cos(phi), 'sin(phi):', sin(phi)
+  do i_cell = 1, Lat%N_cell
+    !print *, '------------------'
+    !print *, 'i_cell:', i_cell, 'bf1:', boson_field(p_cells(i_cell)%bf_list(1),1), &  
+    !'bf2:', boson_field(p_cells(i_cell)%bf_list(2),1)
+    ! exchange two boson fields in a cell
+    !temp_bf = boson_field(p_cells(i_cell)%bf_list(1),1)
+    !boson_field(p_cells(i_cell)%bf_list(1),:) = boson_field(p_cells(i_cell)%bf_list(2),1)
+    !boson_field(p_cells(i_cell)%bf_list(2),:) = temp_bf
+
+    ! change the sign of one boson field in a cell
+    !boson_field(p_cells(i_cell)%bf_list(1),:) = - boson_field(p_cells(i_cell)%bf_list(1),:)
+    
+    ! rotating two boson fields in a cell
+    temp_bf = sqrt(sum( boson_field(p_cells(i_cell)%bf_list,1)**2))
+    boson_field(p_cells(i_cell)%bf_list(1),:) = & 
+    & temp_bf * cos(phi) * boson_field(p_cells(i_cell)%bf_list(1),1)/abs(boson_field(p_cells(i_cell)%bf_list(1),1))
+    boson_field(p_cells(i_cell)%bf_list(2),:) = & 
+    & temp_bf * sin(phi) * boson_field(p_cells(i_cell)%bf_list(2),1)/abs(boson_field(p_cells(i_cell)%bf_list(2),1))
+    !print *, ''
+    !print *, 'i_cell:', i_cell, 'bf1:', boson_field(p_cells(i_cell)%bf_list(1),1), &  
+    !'bf2:', boson_field(p_cells(i_cell)%bf_list(2),1)
+    !print *, '------------------'
+  end do
+
+  call cal_new_weight()
+  print *, 'new ln_cw:', ln_cw
+  end do
+  !stop
+
+  ! ------------------debug part ends-------------------------!
   do loop = 1, iteration ! Monte Carlo steps ()
 
     call middle_check()
@@ -310,7 +348,8 @@ contains
         do i_cell = 1, Lat%N_cell
           phase_factor = exp(complex(0d0,sum(phase_k_inter_cell * p_cells(i_cell)%rpos * PI)))
           do i_bf = 1, bf_sets
-            boson_field(p_cells(i_cell)%bf_list, l) = real((random_range*ran_sysm() + (phase_factor*offset))*phase_intra_cell(i_bf))
+            boson_field(p_cells(i_cell)%bf_list(i_bf), l) = & 
+            & real((random_range*ran_sysm() + (phase_factor*offset))*phase_intra_cell(i_bf))
           end do
         end do
       end do

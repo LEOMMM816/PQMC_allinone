@@ -367,8 +367,9 @@ contains
     real(dp), intent(out) :: bf_jump(n_boson_field)
     real(dp) :: phi, amplitude,distance
     integer :: i_bf,i_cell
+   ! print*,"interphase:", incell_phase
     bf_jump = 0d0
-    distance = 2* global_update_distance/lat%N_cell ! can be adjusted
+    distance = 2 * global_update_distance/lat%N_cell ! can be adjusted
     amplitude =  distance * rands()
     phi = 2d0*pi*rands()
     do i_cell = 1, Lat%N_cell
@@ -381,7 +382,7 @@ contains
 
   subroutine cal_new_weight()
     ! calculate the relative weight caused by det(), the expKV are not available
-    ! this subroutine is called in update_global
+    ! this subroutine is called in update_global(backup version)
     ! note that boson_field have been updated but the expKV and expKV_inv need to be calculated explicitly
     ! the Q,D,R are not changed in this subroutine
     implicit none
@@ -419,7 +420,6 @@ contains
         end do
         deallocate(expKV_temp, lmat_temp_B, lmat_temp_C)
       end do
-
       flag = flag + 1
       if (flag /= ngroup) cycle
       flag = 0
@@ -445,18 +445,16 @@ contains
     ln_cw = complex(real(ln_cw),mod(aimag(ln_cw),2*pi)) ! make sure weight is in the principal branch
   end subroutine
 
-    subroutine cal_new_weight_gemm()
-    ! calculate the relative weight caused by det(), the expKV are not available
-    ! this subroutine is called in update_global
-    ! note that boson_field have been updated but the expKV and expKV_inv need to be calculated explicitly
+  subroutine cal_new_weight_gemm()
+    ! calculate the relative weight caused by det(), the expKV are  available in pf_data
+    ! this subroutine is called in update_global(working version)
     ! the Q,D,R are not changed in this subroutine
     implicit none
     integer flv, p, d, flag, i, i_pf,i_pla
     complex(dp) :: lndet
     complex(dp), allocatable :: tmat(:, :), lmat(:, :), rmat(:, :), expKV_temp(:,:)
-    complex(dp),allocatable :: lmat_temp_B(:, :),lmat_temp_C(:,:)
+    complex(dp), allocatable :: lmat_temp_B(:, :),lmat_temp_C(:,:)
     ln_cw = 0d0
-
     lndet = 0d0
     d = nelec
     allocate (tmat(d, d), lmat(d, ns), rmat(ns, d))
@@ -470,24 +468,8 @@ contains
     flag = 0
     do p = ntime, 1, -1
       do i_pf = n_phonon_field,1,-1
-        allocate (expKV_temp(ppf_list(i_pf)%dim, ppf_list(i_pf)%dim), & 
-        & lmat_temp_B(d,ppf_list(i_pf)%dim), lmat_temp_C(d,ppf_list(i_pf)%dim))
-        do i_pla = 1, ppf_list(i_pf)%n_plaquette
-          if(pf_list(i_pf)%V_exist) then
-            call get_expKV(expKV_temp, ppf_list(i_pf), i_pla, boson_field(ppf_list(i_pf)%p_data%bf_list(i_pla), p), inv=.false.)
-          else
-            expKV_temp = pf_list(i_pf)%p_data%expKV(:,:,i_pla,p) ! if no V, expKV = I
-          end if
-          
-          ! right evolve the lmat matrix : expK * expV * Q
-          lmat_temp_B = lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla))
-          call gemm(lmat_temp_C,lmat_temp_B, expKV_temp,d, ppf_list(i_pf)%dim, ppf_list(i_pf)%dim, (1d0,0d0), (0d0,0d0))
-          lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) = lmat_temp_C
-          !! lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) = matmul(lmat_temp,expKV_temp)
-        end do
-        deallocate(expKV_temp, lmat_temp_B, lmat_temp_C)
+        call right_evolve(p, lmat, nelec,ppf_list(i_pf),two_way=.false.)
       end do
-
       flag = flag + 1
       if (flag /= ngroup) cycle
       flag = 0
