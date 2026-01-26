@@ -78,6 +78,7 @@
       "parameter": { "foreground": "#89DDFF", "italic": true },
       "variable.readonly": { "foreground": "#C792EA" }
     }
-  }
+  },
+  "cmake.sourceDirectory": "/home/zhangxiangyu/project/all_in_one_git"
 }
   

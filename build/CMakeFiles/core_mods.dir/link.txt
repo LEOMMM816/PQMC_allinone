@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcore_mods.a  CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o CMakeFiles/core_mods.dir/src/mod_lattice.f90.o CMakeFiles/core_mods.dir/src/input.f90.o CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o CMakeFiles/core_mods.dir/src/mod_evolution.f90.o CMakeFiles/core_mods.dir/src/mod_update.f90.o CMakeFiles/core_mods.dir/src/mod_meas.f90.o
+/usr/bin/ranlib libcore_mods.a

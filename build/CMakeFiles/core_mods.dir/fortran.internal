@@ -1,0 +1,12 @@
+# The fortran modules provided by this target.
+provides
+ dqmc_measurements.mod
+ evolution.mod
+ input.mod
+ lattice.mod
+ matrixlib.mod
+ nrtype.mod
+ nrutil.mod
+ pf_setting.mod
+ ran_state.mod
+ update.mod

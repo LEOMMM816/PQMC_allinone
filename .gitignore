@@ -3,3 +3,5 @@
 # Ignore Fortran module files
 code/**/*.mod
 **/*.dSYM/
+.DS_Store
+**/.DS_Store
