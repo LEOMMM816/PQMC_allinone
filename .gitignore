@@ -5,3 +5,4 @@ code/**/*.mod
 **/*.dSYM/
 .DS_Store
 **/.DS_Store
+workdir/
