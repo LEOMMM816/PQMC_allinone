@@ -266,7 +266,7 @@ HPC_Project_SOURCE_DIR:STATIC=/home/zhangxiangyu/project/all_in_one_git
 MPIEXEC_EXECUTABLE:FILEPATH=/usr/bin/mpiexec
 
 //Maximum number of processors available to run MPI applications.
-MPIEXEC_MAX_NUMPROCS:STRING=8
+MPIEXEC_MAX_NUMPROCS:STRING=4
 
 //Flag used by MPI to specify the number of processes for mpiexec;
 // the next option will be the number of processes.

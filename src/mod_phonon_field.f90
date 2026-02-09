@@ -29,7 +29,7 @@ contains
     call readin_pf_basic()
     !print*,'Finished reading in pf basic info.'
     call set_pf_detail()
-
+    call set_pf_expKV_mat()
     ! debug
     if(.false.) then
       ! print the pf_site_list information
@@ -475,9 +475,15 @@ contains
     SELECT CASE (TRIM(model_name))
     CASE ('EPSOCZ')
       ! 指针指向优化版
-      get_expKV => get_expKV_epsoc
+      get_expKV => get_expKV_epsocz
       if(myid == 0) then
         print*,'Using optimized expKV for EPSOCZ model.'
+      end if
+    CASE ('EPSOC')
+      ! 指针指向优化版
+      get_expKV => get_expKV_epsoc
+      if(myid == 0) then
+        print*,'Using optimized expKV for EPSOC model.'
       end if
     CASE DEFAULT
       ! 指针指向标准版
@@ -525,7 +531,7 @@ contains
     end if
   end subroutine get_expKV_general
 
-  subroutine get_expKV_epsoc(expKV, ppf,n_pla,bf_value,inv)
+  subroutine get_expKV_epsocz(expKV, ppf,n_pla,bf_value,inv)
     ! this subroutine is used to get the expKV for epsoc model, which should be faster than the above one
     implicit none
     type(pf_type), intent(in) :: ppf
@@ -560,5 +566,51 @@ contains
     end if
     expKV(3:4,1:2) = conjg(transpose(expKV(1:2,3:4)))
 
+  end subroutine get_expKV_epsocz
+
+
+  subroutine get_expKV_epsoc(expKV, ppf,n_pla,bf_value,inv)
+
+    implicit none
+    type(pf_type), intent(in) :: ppf
+    integer, intent(in) :: n_pla
+    logical, intent(in) :: inv
+    real(dp),intent(in) :: bf_value
+    complex(dp), intent(out) :: expKV(ppf%dim, ppf%dim)
+    complex(dp) :: sub_h
+    real(dp) :: norm
+    integer :: i,j
+    expKV = 0d0
+    ! this is a simpler version of get_expKV_epsocz, which deal with spin-z conserved case
+    ! now the expKV is 2x2 matrix, only spin-up electrons are involved
+    ! H = -t * K + gX * J, so exp(-delt * H) =  cosh(norm) * I - H * sinh(norm) / norm
+    ! where norm = delt * sqrt(t^2 + (gX * bf_value)^2)
+    norm = delt * sqrt((abs(ppf%K_coe))**2 + (abs(ppf%V_coe) * bf_value)**2)
+    do i = 1, ppf%dim
+      ! set the diagonal elements
+      expKV(i,i) = cosh(norm)
+    end do
+    sub_h = -delt * (ppf%K_coe * ppf%Kmatrix(1,2) + ppf%V_coe * bf_value * ppf%Vmatrix(1,2))
+    if(ppf%p_data%boundary_crossing(n_pla)) then
+      sub_h = sub_h * ppf%p_data%BC_phases(1,2,n_pla)
+    end if
+    if(.not.inv) then
+      expKV(1,2) = sub_h * sinh(norm) / norm
+    else
+      expKV(1,2) = -sub_h * sinh(norm) / norm
+    end if
+    expKV(2,1) = conjg(expKV(1,2))
+
   end subroutine get_expKV_epsoc
+  subroutine set_pf_expKV_mat()
+    ! this subroutine is suspended for now.
+
+
+
+
+
+
+
+
+  end subroutine set_pf_expKV_mat
 end module pf_setting

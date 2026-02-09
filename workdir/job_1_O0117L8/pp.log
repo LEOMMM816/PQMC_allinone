@@ -14,9 +14,9 @@
  meas_interval  =               1
  meas_timerange  =               0
  total_iterations  =              20
- number of mpi_blocks  =               4
- number of cores per block  =               2
- global update is not used
+ number of mpi_blocks  =               1
+ number of cores per block  =               1
+ global update is used
  
  ####################################
  #######  Physical parameter  #######
@@ -25,19 +25,22 @@
  Lt    =             960
  dtau  =    0.100000000000000
  Beta  = dtau*Lt =   96.000000000000000
- lambda, el-phonon coupling =    0.500000000000000
- Anti-aidabatic limit, M = 0.0
+ lambda, el-phonon coupling =    1.000000000000000
+ omega   =    1.000000000000000
+ M   =    1.000000000000000
+ K   =    1.000000000000000
+ U_eff = lam^2/omega^2   =    1.000000000000000
  disorder =    0.000000000000000
  filling  =    0.500000000000000
- N_up = N_down  =              64
+ N_up = N_down  =              98
  
  List of observables, averages and errors
  Description:
  e_PE = -U/2 * (n_up + n_down)^2 = -U/2*(n_up+n_down) - U*n_up*n_down
  #--observables--#
-   9.4190356291317681        10.529160944572553        11.442847236185447        11.966246579241215        10.918428368401710     
-   8.9247384247952191        9.5942396160815626        8.6719454936384430        9.3624365074317915        10.379836094975840     
-   10.855143751506537        9.3866392273845722     
-   10.120891489445555     
-  0.34798065384835197     
-  0.73425226206098237     
+   0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000        0.0000000000000000     
+   2.6136072665001942E-321   2.5214973887862436E-258   1.3328769906317248E+049   7.4873792693168521E-260   6.0561032030055901E-154
+   0.0000000000000000     
+   0.0000000000000000     
+   0.0000000000000000     
+                       NaN

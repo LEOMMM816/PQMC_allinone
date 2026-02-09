@@ -23,11 +23,11 @@ import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
 # here I from scratch write an independent version to visionalize data
-jobname_list = ["O1275","BCO1275"]
+jobname_list = ["O0124","BCO0124"]
 n_block = 8
 # omega in 1.6,1.7...2.3, kept to 2 significant digits
-omega = [round(1 + 0.25*i,3) for i in range(n_block)]
-lat_size = [4, 6, 8, 10,12,14]
+omega = [round(1 + 0.2*i,3) for i in range(n_block)]
+lat_size = [6, 8, 10,12,14]
 data = {}
 for jn in jobname_list:
     data[jn] = data.get(jn, {})
@@ -64,12 +64,12 @@ for jn in jobname_list:
                     continue
                 parts = re.split(r'\s+', line)
                 name = parts[0]
-                data[jn][size_name][block_name][name] = data[jn][size_name][block_name].get(name, {"vals": [], "errs": []})
-                try:
+                data[jn][size_name][block_name][name] = data[jn][size_name][block_name].get(name, {"val": [], "err": []})
+                try: 
                     val = float(parts[2])
                     err = float(parts[3])
-                    data[jn][size_name][block_name][name]["vals"].append(val)
-                    data[jn][size_name][block_name][name]["errs"].append(err)
+                    data[jn][size_name][block_name][name]["val"].append(val)
+                    data[jn][size_name][block_name][name]["err"].append(err)
                 except ValueError:
                     if name != "Name":
                         print(f"Could not find value for {name} in {jn} {size_name} {block_name}, skipping...")
@@ -86,11 +86,10 @@ with open(output_path, "r") as f:
     data = json.load(f)
 print(f"Data loaded from {output_path}")
 
+
 # %% 
 # average the data from with BC and without BC
-# %% 
-# average the data from with BC and without BC
-jobname_list_avg = ["O1275"]
+jobname_list_avg = ["O0124"]
 for jn in jobname_list_avg:
     jn1 = jn  # without BC
     jn2 = "BC" + jn  # with BC
@@ -104,27 +103,32 @@ for jn in jobname_list_avg:
             data[jn_target][size_name][block_name] = {}
             keys = set(data[jn1][size_name][block_name].keys()).intersection(set(data[jn2][size_name][block_name].keys()))
             for key in keys:
-                vals1 = np.array(data[jn1][size_name][block_name][key]["vals"])
-                errs1 = np.array(data[jn1][size_name][block_name][key]["errs"])
-                vals2 = np.array(data[jn2][size_name][block_name][key]["vals"])
-                errs2 = np.array(data[jn2][size_name][block_name][key]["errs"])
-                avg_vals = (vals1 + vals2) / 2
-                avg_errs = np.sqrt(errs1**2 + errs2**2) / 2
-                data[jn_target][size_name][block_name][key] = {"vals": avg_vals.tolist(), "errs": avg_errs.tolist()}
+                val1 = np.array(data[jn1][size_name][block_name][key]["val"])
+                err1 = np.array(data[jn1][size_name][block_name][key]["err"])
+                Lerr1 = np.array(data[jn1][size_name][block_name][key]["Lerr"])
+                val2 = np.array(data[jn2][size_name][block_name][key]["val"])
+                err2 = np.array(data[jn2][size_name][block_name][key]["err"])
+                Lerr2 = np.array(data[jn2][size_name][block_name][key]["Lerr"])
+                avg_val = (val1 + val2) / 2
+                avg_err = np.sqrt(err1**2 + err2**2) / 2
+                avg_Lerr = np.sqrt(Lerr1**2 + Lerr2**2) / 2
+                data[jn_target][size_name][block_name][key] = {"val": avg_val.tolist(), "err": avg_err.tolist(), "Lerr": avg_Lerr.tolist()}
 # %%
-#plot some data from data_avg for verification
-example_name = "Jyx_Jyx_k"
-jn1 = jn  # without BC
-jn2 = "BC" + jn  # with BC
+#plot some data to compare different BC
+example_name = "BFx_BFx_k"
+jn1 = jobname_list_avg[0]  # without BC
+jn2 = "BC" + jn1  # with BC
 for size in lat_size:
     size_name = f"L{size}"
     block_name = "b1"
-    vals1 = np.array(data[jn1][size_name][block_name][example_name]["vals"])
-    errs1 = np.array(data[jn1][size_name][block_name][example_name]["errs"])
-    vals2 = np.array(data[jn2][size_name][block_name][example_name]["vals"])
-    errs2 = np.array(data[jn2][size_name][block_name][example_name]["errs"])
-    plt.errorbar(size,vals1[0], yerr=errs1[0], marker='o', linestyle='-', color='blue', label=f'{jn1} {size_name} {block_name} {example_name}')
-    plt.errorbar(size,vals2[0], yerr=errs2[0], marker='o', linestyle='-', color='red', label=f'{jn2} {size_name} {block_name} {example_name}')
+    val1 = np.array(data[jn1][size_name][block_name][example_name]["val"])
+    err1 = np.array(data[jn1][size_name][block_name][example_name]["err"])
+    Lerr1 = np.array(data[jn1][size_name][block_name][example_name]["Lerr"])
+    val2 = np.array(data[jn2][size_name][block_name][example_name]["val"])
+    err2 = np.array(data[jn2][size_name][block_name][example_name]["err"])
+    Lerr2 = np.array(data[jn2][size_name][block_name][example_name]["Lerr"])
+    plt.errorbar(size,val1[0], yerr=Lerr1[0], marker='o', linestyle='-', color='blue', label=f'{jn1} {size_name} {block_name} {example_name}')
+    plt.errorbar(size,val2[0], yerr=Lerr2[0], marker='o', linestyle='-', color='red', label=f'{jn2} {size_name} {block_name} {example_name}')
     
 # %%
 # plot certain observable vs real(momentum) space for a given lattice size and block(omega)
@@ -132,17 +136,18 @@ jn = jobname_list_avg[0]
 jn = f"BC{jn}"
 size_i = 12
 size_id = f"L{size_i}"
-block_id = "b1"
+block_id = "b2"
 xlabel = "x"
 #ylabel = "BFxy_BFxy_k"
-# ylabel = "SC_SC_k"
-ylabel = "Jxy_Jxy_k"
+ylabel = "SC_SC_k"
+#ylabel = "Jxy_Jxy_k"
 title = f"{jn}'s {size_id} {ylabel}"
 x = range(size_i**2)  # example x values
-y = data[jn][size_id][block_id][ylabel]["vals"]
+y = data[jn][size_id][block_id][ylabel]["val"]
 #y[int(size_i**2/2 + size_i/2)] = 0  # set the middle point to 0 for better visualization
-yerr = data[jn][size_id][block_id][ylabel]["errs"]
-plt.errorbar(x, y, yerr=yerr, marker='o', linestyle='-', label=f'{size_id} {block_id} {ylabel}')
+yerr = data[jn][size_id][block_id][ylabel]["err"]
+Lerr = data[jn][size_id][block_id][ylabel]["Lerr"]
+plt.errorbar(x, y, yerr=Lerr, marker='o', linestyle='-', label=f'{size_id} {block_id} {ylabel}')
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.title(title)
@@ -168,12 +173,12 @@ for ylbl in ylabel:
             size_id = f"L{size_i}"
             try:
                 if(ylbl != "SC_SC_k"):
-                    val = data[jn][size_id][block_id_i][ylbl]["vals"][0]
-                    err = data[jn][size_id][block_id_i][ylbl]["errs"][0]
+                    val = data[jn][size_id][block_id_i][ylbl]["val"][0]
+                    err = data[jn][size_id][block_id_i][ylbl]["err"][0]
                 else:
                     y_ind = int(size_i**2/2 + size_i/2)
-                    val = data[jn][size_id][block_id_i][ylbl]["vals"][y_ind]
-                    err = data[jn][size_id][block_id_i][ylbl]["errs"][y_ind]
+                    val = data[jn][size_id][block_id_i][ylbl]["val"][y_ind]
+                    err = data[jn][size_id][block_id_i][ylbl]["err"][y_ind]
             except KeyError:
                 val = np.nan
                 err = np.nan
@@ -206,9 +211,9 @@ for ylbl in ylabel:
 jn = jobname_list_avg[0]
 jn = f"avg_{jn}"
 block_id = [f"b{i}" for i in range(1,n_block+1)] # every block
-ylabel = ["Jxy_Jxy_k","Jyx_Jyx_k"]
+ylabel = ["Jxy_Jxy_k","den_den_k"]
 title = "Finite Size Scaling Analysis"
-all_sizes = lat_size[1:]  # 
+all_sizes = lat_size  # 
 x_val = {}
 x1 = 1/np.array([float(size) for size in all_sizes])
 x2 = 1/np.array([float(size)*float(size) for size in all_sizes])
@@ -224,18 +229,18 @@ for ylbl in ylabel:
     for b_idx, block_id_i in enumerate(block_id):
         y = []
         yerr = []
-        if b_idx >= 2:
+        if b_idx >= 9:
             continue  # plot only half of the omegas for clarity
         for size_i in all_sizes:
             size_id = f"L{size_i}"
             try:
                 if(ylbl!= "SC_SC_k"):
-                    val = data[jn][size_id][block_id_i][ylbl]["vals"][0]
-                    err = data[jn][size_id][block_id_i][ylbl]["errs"][0]
+                    val = data[jn][size_id][block_id_i][ylbl]["val"][0]
+                    err = data[jn][size_id][block_id_i][ylbl]["err"][0]
                 else:
                     y_ind = int(size_i**2/2 + size_i/2)
-                    val = data[jn][size_id][block_id_i][ylbl]["vals"][y_ind]
-                    err = data[jn][size_id][block_id_i][ylbl]["errs"][y_ind]
+                    val = data[jn][size_id][block_id_i][ylbl]["val"][y_ind]
+                    err = data[jn][size_id][block_id_i][ylbl]["err"][y_ind]
             except KeyError:
                 val = np.nan
                 err = np.nan

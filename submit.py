@@ -186,7 +186,7 @@ def convert_tsv_lines_to_dicts(lines):
 
 
 #----------------- 生成 CMakeLists.txt ----------------- #
-def generate_cmake(project_name, compiler, use_mpi,platform):
+def generate_cmake(project_name, compiler, use_mpi,platform,debug):
     # ---------------------------------------------------------
     # 1. 定义不同编译器的 Flag 配置 (核心逻辑)
     # ---------------------------------------------------------
@@ -244,7 +244,14 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
     set(CMAKE_Fortran_FLAGS_DEBUG "{intel_flags_debug}")
     
     # 默认通用 Flags
-    set(CMAKE_Fortran_FLAGS "{intel_flags_release}  -qopt-report=5 -qopt-report-phase=vec")
+    """
+        if(debug):
+            content += f"""set(CMAKE_Fortran_FLAGS "{intel_flags_debug}")
+            """
+        else:
+            content += f"""set(CMAKE_Fortran_FLAGS "{intel_flags_release}  -qopt-report=5 -qopt-report-phase=vec")
+            """
+        content += f"""
 else()
     message(WARNING "你选择了生成 Intel 配置，但 CMake 检测到的编译器不是 Intel！")
 endif()
@@ -260,7 +267,16 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
     # Debug 模式 Flags
     set(CMAKE_Fortran_FLAGS_DEBUG "{gnu_flags_debug}")
     
-    set(CMAKE_Fortran_FLAGS "{gnu_flags_release}")
+    # set(CMAKE_Fortran_FLAGS "{gnu_flags_release}")
+    # set(CMAKE_Fortran_FLAGS "{gnu_flags_debug}")
+    """
+        if(debug):
+            content += f"""set(CMAKE_Fortran_FLAGS "{gnu_flags_debug}")
+            """
+        else:
+            content += f"""set(CMAKE_Fortran_FLAGS "{gnu_flags_release}")
+            """
+        content += f"""
 endif()
 # ---------------------------------------------------------
 # 2. MPI 配置
@@ -661,7 +677,12 @@ if __name__ == "__main__":
                         help='CMake 项目名称')
     parser.add_argument('--jobfile', required=True,help='任务参数文件 jobs.tsv 的路径')
 
+    parser.add_argument('--debug', action='store_true', default=False,
+                        help='是否启用调试模式 (默认关闭)')
+
     args = parser.parse_args()
     
-    generate_cmake(args.project, args.compiler, args.mpi, args.platform)
+    if(args.debug):
+        print("⚠️  调试模式已启用！编译器 Flags 将切换到 Debug 模式，且脚本中会设置更多调试环境变量。")
+    generate_cmake(args.project, args.compiler, args.mpi, args.platform, args.debug)
     submit_main(args.compiler, args.platform, args.jobfile)

@@ -214,8 +214,10 @@ CONTAINS
     c_mat = transpose(mat)
     if(maxval(abs(mat - c_mat)) < 1d-7) then
       Hermitian = .true.
+      print*,'matrix is symmetric in dexpm'
     else if( maxval(abs(mat + c_mat)) < 1d-7) then
       Hermitian = .false.
+      print*,'matrix is anti-symmetric in dexpm'
     else
       stop 'matrix is neither symmetric nor anti-symmetric in dexpm'
     end if

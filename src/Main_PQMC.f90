@@ -55,7 +55,9 @@ program Pqmc_main
 
   if(mod(myid,MPI_one_block) == 0) then
     print *, 'myid:',myid, '/', &
-    &'beta,lambda,omega,M', beta,  ep_parameter,omega,M, '/'
+    &'beta,lambda,omega,M', beta,  ep_parameter,omega,M, &
+    & 'nelec:', nelec
+    print *, 'ntime,nblock:', ntime, nblock
     !print*, "MPI_one_block", MPI_one_block
   end if
 #else
@@ -77,9 +79,9 @@ program Pqmc_main
       updated = .false.
       !print*,''
       call update_global("kspace")
-      call update_global("rotate")
-      call update_global("kspace")
-      call update_global("rotate")
+      !call update_global("rotate")
+      !call update_global("kspace")
+      !call update_global("rotate")
       if(updated) call init_g_T0()
 
     end if
@@ -132,7 +134,7 @@ program Pqmc_main
       if (loop > warmup .and. mod(loop - warmup, meas_interval) == 0) then
         if(time >= ntime/2 - meas_number .and. time <= ntime/2 + meas_number) then
           ! take measurement every meas_interval MCS
-          call Meas_sys%begin_measure( forward,time)
+          !call Meas_sys%begin_measure( forward,time)
         end if
       end if
 
@@ -169,13 +171,13 @@ program Pqmc_main
 contains
   subroutine init_MC()
     implicit none
-    if (.not. allocated(g)) then
+
     do i_pf = 1 , n_phonon_field
       call init_expKV(ppf_list(i_pf))
     end do
     call init_g_T0()
     ! print*,'init g_T0 finishes'
-    end if
+    print*,'startup ln_cw:', ln_cw
 
     iteration = (nbin_per_core*nmeas_per_bin)*meas_interval + warmup
     forward = .true.

@@ -4,7 +4,7 @@ project(HPC_Project LANGUAGES Fortran C CXX)
 # =========================================================
 #  自动生成的 CMakeLists.txt
 #  编译器模式: GNU
-#  生成时间: Fri Jan 23 11:23:50 CST 2026
+#  生成时间: Mon Feb  9 16:00:16 CST 2026
 # =========================================================
 
 # 设置 C++ 标准 (如果用到)
@@ -23,7 +23,10 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
     # Debug 模式 Flags
     set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
     
+    # set(CMAKE_Fortran_FLAGS "-O3 -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
+    # set(CMAKE_Fortran_FLAGS "-O0 -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
     set(CMAKE_Fortran_FLAGS "-O3 -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
+            
 endif()
 # ---------------------------------------------------------
 # 2. MPI 配置

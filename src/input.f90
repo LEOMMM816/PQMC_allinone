@@ -89,6 +89,7 @@ MODULE input
   !complex(kind = 8), allocatable :: g_debug(:,:,:)
   complex(dp), ALLOCATABLE ::  Q_string(:, :, :), D_string(:, :) ! (Ns),nelec,nblock
   complex(dp), ALLOCATABLE :: R_string(:, :) ! auxilliary matrix to store R_matrix in qdr decomposition
+  complex(dp), ALLOCATABLE :: expKV(:,:,:,:,:),expKV_inv(:,:,:,:,:) !>(ppf%dim,ppf%dim,n_plaquette,n_phonon_field,ntime)
 !!! typed objects
   type :: pf_data_type
     integer,allocatable :: pla_site_list(:,:)! (pf%dim,n_plaquette) the site index in each plaquette for each phonon field
@@ -98,6 +99,7 @@ MODULE input
     complex(dp),allocatable :: expKV(:,:,:,:) !> exp(-delt* K or V) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
     complex(dp),allocatable :: expKV_inv(:,:,:,:) !> exp(delt* K) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
   end type pf_data_type
+  
   type :: lat_type 
     logical,allocatable :: periodic(:) !> for each dimension, if .true, periodic or twisted boundary condition;
     !> if .false, open boundary condition
@@ -245,7 +247,7 @@ contains
     !print *, "DEBUG: Successfully read Control_varibles."
     rewind(10)
     read(10, nml=MC_PARAMETER)
-    !print *, "DEBUG: Successfully read MC_PARAMETER."
+   !! print *, "DEBUG: Successfully read MC_PARAMETER."
     rewind(10)
     read(10, nml=PHONON_ARGUMENTS)
     !print *, "DEBUG: Successfully read phonon_parameter."

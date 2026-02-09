@@ -25,6 +25,8 @@ contains
 
     Q_string(:, 1:nelec, 1) = slater_Q(:, 1:nelec)
     Q_string(:, 1:nelec, nblock) = slater_Q(:, 1:nelec)
+    D_string(:, 1) = slater_D(1:nelec)
+    D_string(:, nblock) = slater_D(1:nelec)
     if(second_trotter) then
       !Q_string(:, 1:nelec, 1) =  matmul(expK_half , Q_string(:, 1:nelec, 1))
       !Q_string(:, 1:nelec, nblock) =  matmul(expK_inv_half,Q_string(:, 1:nelec, nblock))
@@ -203,14 +205,16 @@ contains
     type(pf_data_type), pointer :: p_data
     complex(dp),allocatable :: temp_mat_B(:,:),temp_mat_C(:,:)
     complex(dp),allocatable :: temp_expKV(:,:)
+    integer, allocatable :: site_list(:,:) ! (ppf%dim, ppf%n_plaquette)
     p_data => ppf%p_data
     pfdim = ppf%dim
-    allocate(temp_mat_B(ppf%dim,n),temp_mat_C(ppf%dim,n), temp_expKV(ppf%dim,ppf%dim))
+    allocate(temp_mat_B(ppf%dim,n),temp_mat_C(ppf%dim,n), temp_expKV(ppf%dim,ppf%dim), site_list(ppf%dim, ppf%n_plaquette))
+    site_list = p_data%pla_site_list
     do i_pla = 1, ppf%n_plaquette
-      temp_mat_B = mat(p_data%pla_site_list(:,i_pla), :)
+      temp_mat_B = mat(site_list(:,i_pla), :)
       temp_expKV = p_data%expKV(:,:,i_pla,time)
       call gemm(temp_mat_C, temp_expKV, temp_mat_B, pfdim, pfdim, n , (1d0,0d0), (0d0,0d0))
-      mat(p_data%pla_site_list(:,i_pla), :) = temp_mat_C
+      mat(site_list(:,i_pla), :) = temp_mat_C
       !!! mat(p_data%pla_site_list(:,i_pla), :) = matmul(p_data%expKV(:,:,i_pla,time) , mat(p_data%pla_site_list(:,i_pla), :))
     end do
     deallocate(temp_mat_B, temp_mat_C, temp_expKV)
@@ -239,14 +243,16 @@ contains
     type(pf_data_type), pointer :: p_data
     complex(dp),allocatable :: temp_mat_B(:,:),temp_mat_C(:,:)
     complex(dp),allocatable :: temp_expKV(:,:)
+    integer, allocatable :: site_list(:,:) ! (ppf%dim, ppf%n_plaquette)
     p_data => ppf%p_data
     pfdim = ppf%dim
-    allocate(temp_mat_B(n,pfdim),temp_mat_C(n,pfdim), temp_expKV(pfdim,pfdim))
+    allocate(temp_mat_B(n,pfdim),temp_mat_C(n,pfdim), temp_expKV(pfdim,pfdim), site_list(ppf%dim, ppf%n_plaquette))
+    site_list = p_data%pla_site_list
     do i_pla = 1, ppf%n_plaquette
-      temp_mat_B = mat(:,p_data%pla_site_list(:,i_pla))
+      temp_mat_B = mat(:,site_list(:,i_pla))
       temp_expKV = p_data%expKV(:,:,i_pla,time)
       call gemm(temp_mat_C, temp_mat_B, temp_expKV, n, pfdim, pfdim , (1d0,0d0), (0d0,0d0))
-      mat(:,p_data%pla_site_list(:,i_pla)) = temp_mat_C
+      mat(:,site_list(:,i_pla)) = temp_mat_C
       !!! mat(:,p_data%pla_site_list(:,i_pla)) = matmul(mat(:,p_data%pla_site_list(:,i_pla)),p_data%expKV(:,:,i_pla,time))
     end do
     deallocate(temp_mat_B, temp_mat_C, temp_expKV)
@@ -273,6 +279,8 @@ contains
     complex(dp) :: inner_prod(nelec,nelec)
     complex(dp) :: g_h_buffer(Ns,nelec)
         ln_cw = 0d0
+        g_h_buffer = (0d0,0d0)
+        g_h = (0d0,0d0)
     if(.true.) then
       allocate(PBP(nelec,nelec))
       !!!PBP = matmul(lmat,rmat)
@@ -306,6 +314,9 @@ contains
       call inverse(2*nelec, PBP) ! PBP^(-1) -> PBP
       g_h(:, :) = MATMUL(rmat_T, matmul(PBP, lmat_T))
       stop
+    end if
+    if(TR_weight) then
+      ln_cw = ln_cw + conjg(ln_cw)
     end if
     ln_cw = ln_cw*ncopy
     ln_cw = cmplx(real(ln_cw),mod(aimag(ln_cw),2*pi),kind=dp) ! make sure weight is in the principal branch

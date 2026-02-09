@@ -31,7 +31,7 @@ contains
     complex(dp) :: g_part_dn(ppf%dim,Ns)!> d*Ns of G,auxillary matrix to construct updated g
     complex(dp) :: gh_part_nd_temp(Ns,ppf%dim),scalar_val
     integer ::  i,j,k,i_pla
-    integer :: site_list(ppf%dim)
+    integer :: site_list(ppf%dim),pf_site_list(ppf%dim,ppf%n_plaquette)
     logical :: flag = .true., update_accept
     real(dp), pointer :: p_bf
     integer :: pfdim
@@ -54,6 +54,7 @@ contains
     R_temp_sub = 0d0
     pfdim = ppf%dim !> dimension of phonon field
     flag = .true.
+    pf_site_list = p_data%pla_site_list
 
       !! fix two endpoints
     ! if ( time ==1 .or. time == ntime ) return
@@ -63,7 +64,7 @@ contains
     do i_pla = 1 , ppf%n_plaquette
 
       ! get the site index of the plaquette
-      site_list = p_data%pla_site_list(:,i_pla)
+      site_list = pf_site_list(:,i_pla)
       ! get the old field value
       p_bf => boson_field(p_data%bf_list(i_pla), time)
       old_bf = p_bf
@@ -113,23 +114,25 @@ contains
           ! reject
           p_bf = p_bf - bf_jump
         else
+
           update_accept = .true.
           ! update pf_datam
           call get_expKV(p_data%expKV(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.false.)
           call get_expKV(p_data%expKV_inv(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.true.)
-
-          ! update G_sub
-          ! g_h_sub = g_h_sub + g_h_sub * Delta * R^(-1) * (I - g_h_sub)
-          call inverse(pfdim, R_mat_sub) ! R_mat_sub => R_mat_sub^(-1)
-          R_temp_sub = matmul(Delta_sub,R_mat_sub)
-          ! g_h_sub = g_h_sub + matmul(matmul(g_h_sub,R_temp_sub),g_sub)
-          g_sub = matmul(R_temp_sub, g_sub)
-          g_sub = matmul(g_h_sub, g_sub)
-          g_h_sub = g_h_sub + g_sub
-          g_sub = -g_h_sub
-          do j = 1 , pfdim
-            g_sub = g_sub + 1d0
-          end do
+          if(n_local_update >1) then
+            ! update G_sub
+            ! g_h_sub = g_h_sub + g_h_sub * Delta * R^(-1) * (I - g_h_sub)
+            call inverse(pfdim, R_mat_sub) ! R_mat_sub => R_mat_sub^(-1)
+            R_temp_sub = matmul(Delta_sub,R_mat_sub)
+            ! g_h_sub = g_h_sub + matmul(matmul(g_h_sub,R_temp_sub),g_sub)
+            g_sub = matmul(R_temp_sub, g_sub)
+            g_sub = matmul(g_h_sub, g_sub)
+            g_h_sub = g_h_sub + g_sub
+            g_sub = -g_h_sub
+            do j = 1 , pfdim
+              g_sub = g_sub + 1d0
+            end do
+          end if
           ln_cw = ln_cw + log(real(R_elec))
         end if
       end do  ! end of local update for one plaquette
@@ -241,7 +244,8 @@ contains
   subroutine update_global(update_type)
     implicit NONE
     character(len=*), intent(in) :: update_type
-    real(dp) :: oldfield(Ns, ntime)
+    real(dp) :: oldfield(size(boson_field,1), size(boson_field,2))
+    !real(dp) :: oldfield(Ns, ntime)
     complex(dp) :: oldconfigurationweight
     real(dp) :: ph_ln_cw,prob,test_ln_cw
     type(pf_data_type) :: old_pdata(n_phonon_field)
@@ -254,9 +258,10 @@ contains
     call generate_newfield_global(update_type) ! generate new pf and sum over the weight caused by energy difference
     !call generate_newfield_space(bf_jump, global_update_Kvec, global_update_distance)
     ph_ln_cw = real(ln_cw)
-
+    !print*,'ph_ln_cw:',ph_ln_cw
     call cal_new_weight_gemm() ! calculate the relative weight caused by det()
-
+    !print*,'total ln_cw:',ln_cw
+    !print*,'old ln_cw:',oldconfigurationweight
     call cal_prob(ln_cw + ph_ln_cw - oldconfigurationweight,prob,"global update")
 
     if (rands() < prob) then ! accept this global update
@@ -264,17 +269,19 @@ contains
       updated = .true.
       ! need to update expKV and expKV_inv in pf_list
       ! do it in generate_newfield_global subroutine
-      ! print*,update_type//' accepted!'
-      !print*,''
+      !print*,update_type//' accepted!'
+
     else
-      ! print*,update_type//' rejected!'
+      !print*,update_type//' rejected!'
       boson_field = oldfield
       ln_cw = oldconfigurationweight
       pf_data_list = old_pdata
+      !print*,'old_pdata expKV:',old_pdata(1)%expKV(:,:,1,1)
+      !print*,'current_pdata expKV:',ppf_list(1)%p_data%expKV(:,:,1,1)
       !Kmat = old_Kmat
       global_reject = global_reject + 1
     end if
-
+    !print*,'---------------------------------------------------'
   end subroutine
 
   subroutine generate_newfield_global(update_type)
@@ -303,9 +310,11 @@ contains
       K_vec = 2*PI*[0.5d0,0.5d0]  ! Initialize K_vec with appropriate values
       ! incell_phase = [1d0, -1d0]  ! Initialize incell_phase with appropriate values
       incell_phase(1) = irands(2)*2d0 - 1d0 ! random phase + or - 1
-      incell_phase(2) = irands(2)*2d0 - 1d0
+      incell_phase(2) = - incell_phase(1)
       ! generate new field in K space
       call generate_newfield_space(bf_temp_space, K_vec, incell_phase)
+      !print*,'bf_temp_space:',bf_temp_space
+      !print*,'bf_now:',boson_field(:,1)
       do time = 1, ntime
         do i = 1,n_boson_field
           boson_field(i,time) = boson_field(i,time) + bf_temp_space(i)
@@ -405,6 +414,9 @@ contains
         & incell_phase(i_bf) * amplitude*(cos(sum(K_vec * p_cells(i_cell)%rpos) + phi))
       end do
     end do
+    !print*,'amplitude:',amplitude
+    !print*,'bf_jump:',bf_jump
+    !print*,''
     ! print*,'amplitude:',amplitude
   end subroutine
 
@@ -414,7 +426,7 @@ contains
     ! note that boson_field have been updated but the expKV and expKV_inv need to be calculated explicitly
     ! the Q,D,R are not changed in this subroutine
     implicit none
-    integer flv, p, d, flag, i, i_pf,i_pla
+    integer ::  flv, p, d, flag, i, i_pf,i_pla,pdim
     complex(dp) :: lndet
     complex(dp), allocatable :: tmat(:, :), lmat(:, :), rmat(:, :), expKV_temp(:,:)
     complex(dp),allocatable :: lmat_temp_B(:, :),lmat_temp_C(:,:)
@@ -433,8 +445,9 @@ contains
     flag = 0
     do p = ntime, 1, -1
       do i_pf = n_phonon_field,1,-1
-        allocate (expKV_temp(ppf_list(i_pf)%dim, ppf_list(i_pf)%dim), &
-        & lmat_temp_B(d,ppf_list(i_pf)%dim), lmat_temp_C(d,ppf_list(i_pf)%dim))
+        pdim = ppf_list(i_pf)%dim
+        allocate (expKV_temp(pdim, pdim), lmat_temp_B(d,pdim), lmat_temp_C(d,pdim))
+
         do i_pla = 1, ppf_list(i_pf)%n_plaquette
           if(pf_list(i_pf)%V_exist) then
             call get_expKV(expKV_temp, ppf_list(i_pf), i_pla, boson_field(ppf_list(i_pf)%p_data%bf_list(i_pla), p), inv=.false.)
@@ -443,8 +456,13 @@ contains
           end if
 
           ! right evolve the lmat matrix : expK * expV * Q
-          lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) = &
-          & matmul(lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)),expKV_temp)
+          lmat_temp_B = lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla))
+          lmat_temp_C = 0d0
+          ! lmat_temp_C = matmul(lmat_temp_B, expKV_temp)
+          call gemm(lmat_temp_C, lmat_temp_B, expKV_temp, d, pdim, pdim, (1d0,0d0), (0d0,0d0))
+
+          lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) = lmat_temp_C
+
         end do
         deallocate(expKV_temp, lmat_temp_B, lmat_temp_C)
       end do
@@ -468,7 +486,7 @@ contains
 
     lndet = lndet + log((det(d, tmat)))
     !print*,'lndet:',log(abs(det(d,tmat)))
-    if(TR_weight) lndet = lndet * conjg(lndet)
+    if(TR_weight) lndet = lndet + conjg(lndet)
     ln_cw = ln_cw + lndet * ncopy
     ln_cw = cmplx(real(ln_cw),mod(aimag(ln_cw),2*pi),kind=dpc) ! make sure weight is in the principal branch
   end subroutine
@@ -518,7 +536,7 @@ contains
     call gemm(tmat, lmat, rmat, d, ns, d, (1d0,0d0), (0d0,0d0))
     lndet = lndet + log((det(d, tmat)))
     !print*,'lndet:',log(abs(det(d,tmat)))
-    if(TR_weight) lndet = lndet * conjg(lndet)
+    if(TR_weight) lndet = lndet + conjg(lndet)
     ln_cw = ln_cw + lndet * ncopy
     ln_cw = cmplx(real(ln_cw),mod(aimag(ln_cw),2*pi),kind=dpc) ! make sure weight is in the principal branch
   end subroutine
