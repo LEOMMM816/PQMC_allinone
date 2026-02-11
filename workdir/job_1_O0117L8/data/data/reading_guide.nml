@@ -1,9 +1,9 @@
  &basics
- n_obs=          15
- total_width=        2355
+ n_obs=          21
+ total_width=        2595
  n_bins=           5
- n_meas_per_bin=           2
- field_width=         196
+ n_meas_per_bin=          20
+ field_width=         144
  size_of_dp=           8
  n_cores=           1
  MPI_nblock=           1
@@ -38,96 +38,144 @@
  &obs
  name="BFx_BFx"
  kind=           2
- width=         196
+ width=         144
  offset_lo=           4
- offset_hi=         199
+ offset_hi=         147
  /
  
  &obs
  name="BFx_BFx_k"
  kind=           2
- width=         196
- offset_lo=         200
- offset_hi=         395
+ width=         144
+ offset_lo=         148
+ offset_hi=         291
  /
  
  &obs
  name="BFx_BFy"
  kind=           2
- width=         196
- offset_lo=         396
- offset_hi=         591
+ width=         144
+ offset_lo=         292
+ offset_hi=         435
  /
  
  &obs
  name="BFx_BFy_k"
  kind=           2
- width=         196
- offset_lo=         592
- offset_hi=         787
+ width=         144
+ offset_lo=         436
+ offset_hi=         579
  /
  
  &obs
  name="BFy_BFy"
  kind=           2
- width=         196
- offset_lo=         788
- offset_hi=         983
+ width=         144
+ offset_lo=         580
+ offset_hi=         723
  /
  
  &obs
  name="BFy_BFy_k"
  kind=           2
- width=         196
- offset_lo=         984
- offset_hi=        1179
+ width=         144
+ offset_lo=         724
+ offset_hi=         867
  /
  
  &obs
  name="BFxy_BFxy"
  kind=           2
- width=         196
- offset_lo=        1180
- offset_hi=        1375
+ width=         144
+ offset_lo=         868
+ offset_hi=        1011
  /
  
  &obs
  name="BFxy_BFxy_k"
  kind=           2
- width=         196
- offset_lo=        1376
- offset_hi=        1571
+ width=         144
+ offset_lo=        1012
+ offset_hi=        1155
  /
  
  &obs
  name="Jx_Jx"
  kind=           2
- width=         196
- offset_lo=        1572
- offset_hi=        1767
+ width=         144
+ offset_lo=        1156
+ offset_hi=        1299
  /
  
  &obs
  name="Jx_Jx_k"
  kind=           2
- width=         196
- offset_lo=        1768
- offset_hi=        1963
+ width=         144
+ offset_lo=        1300
+ offset_hi=        1443
  /
  
  &obs
  name="Jx_Jy"
  kind=           2
- width=         196
- offset_lo=        1964
- offset_hi=        2159
+ width=         144
+ offset_lo=        1444
+ offset_hi=        1587
  /
  
  &obs
  name="Jx_Jy_k"
  kind=           2
- width=         196
- offset_lo=        2160
- offset_hi=        2355
+ width=         144
+ offset_lo=        1588
+ offset_hi=        1731
+ /
+ 
+ &obs
+ name="Jy_Jy"
+ kind=           2
+ width=         144
+ offset_lo=        1732
+ offset_hi=        1875
+ /
+ 
+ &obs
+ name="Jy_Jy_k"
+ kind=           2
+ width=         144
+ offset_lo=        1876
+ offset_hi=        2019
+ /
+ 
+ &obs
+ name="den_den"
+ kind=           2
+ width=         144
+ offset_lo=        2020
+ offset_hi=        2163
+ /
+ 
+ &obs
+ name="den_den_k"
+ kind=           2
+ width=         144
+ offset_lo=        2164
+ offset_hi=        2307
+ /
+ 
+ &obs
+ name="SC_SC"
+ kind=           2
+ width=         144
+ offset_lo=        2308
+ offset_hi=        2451
+ /
+ 
+ &obs
+ name="SC_SC_k"
+ kind=           2
+ width=         144
+ offset_lo=        2452
+ offset_hi=        2595
  /
  

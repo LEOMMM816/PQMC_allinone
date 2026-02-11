@@ -1,6 +1,0 @@
-Running in zxy_work_dir_20260202/job_8_L10BCO0124
-==============================
-=== Slurm Allocation Check ===
-Total MPI Tasks (核心总数): 64
-Nodes (节点数): 2
-Node List (节点列表): intel[063-064]

@@ -6,3 +6,6 @@ code/**/*.mod
 .DS_Store
 **/.DS_Store
 workdir/
+bin/
+build/
+*.o

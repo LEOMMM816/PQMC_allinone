@@ -5,19 +5,22 @@ module evolution
 
 contains
 
-  SUBROUTINE init_g_T0()
+  SUBROUTINE init_g_T0(start_time)
+
     implicit none
-    ! calculate without B_string tech from time = 1 to ntime, yielding green function at time = ntime+1
-    integer :: i, p, block_num, i_pf , i_pla
+    integer, intent(in) :: start_time
+    integer :: start_block, start_time_by_block
+    ! recalculate B_string(s) from time = start_time to ntime, yielding green function at time = ntime+1
+    ! start_time ranges from 1 to ntime, e.g. start_time = 1 means recalulate all B_strings
+    ! start_time = ntime means no evolution, just calculate g_h at ntime+1
+    ! start_time and start_block are where the evolution starts.
+    integer ::  p, block_num, i_pf 
     complex(dp), allocatable :: lmat(:, :), rmat(:, :), PBP(:, :)
-    complex(dp),allocatable :: lmat_T(:,:), rmat_T(:, :), PBP_T(:, :)
-    type(pf_data_type),pointer :: p_data
     IF (.not. allocated(g)) allocate (g(Ns, Ns))
     IF (.not. allocated(g_h)) allocate (g_h(Ns, Ns))
-    IF (.not. allocated(Q_string)) allocate (Q_string(Ns, nelec, nblock),&
-    & D_string(nelec, nblock))
+    IF (.not. allocated(Q_string)) allocate (Q_string(Ns, nelec, nblock),D_string(nelec, nblock))
 
-    !print*,'slater_D:',slater_D
+
     ln_cw = 0d0 ! initialize configuration weight
     allocate (rmat(Ns, nelec), lmat(nelec, Ns), PBP(nelec, nelec))
 
@@ -31,36 +34,33 @@ contains
       !Q_string(:, 1:nelec, 1) =  matmul(expK_half , Q_string(:, 1:nelec, 1))
       !Q_string(:, 1:nelec, nblock) =  matmul(expK_inv_half,Q_string(:, 1:nelec, nblock))
     end if
-    call qdr(ns, nelec, Q_string(:, 1:nelec, 1),  &
-    & R_string(1:nelec, 1:nelec),D_string(1:nelec, 1))
-    call qdr(ns, nelec, Q_string(:, 1:nelec, nblock),  &
-   & R_string(1:nelec, 1:nelec),D_string(1:nelec, nblock))
-    rmat = Q_string(:, 1:nelec, 1)
 
-    DO p = 1, ntime
+    start_block = start_time/ngroup + 1 ! e.g. start_time = 48, ngroup = 5, start_block = 48/5 + 1 = 10
+    start_time_by_block = (start_block-1)*ngroup + 1 ! e.g. start_block = 10, ngroup = 5, start_time_by_block = (10-1)*5 + 1 = 46
+     !print*,'start_time,start_block,start_time_by_block:',start_time,start_block,start_time_by_block
+     if (start_time_by_block > start_time) then
+       print *, 'Error in init_g_T0: start_time_by_block should not be larger than start_time'
+       stop
+     end if
+
+    rmat = Q_string(:, 1:nelec, start_block)
+
+    DO p = start_time_by_block, ntime
       do i_pf = 1, n_phonon_field
         ! left evolve the rmat matrix : expK * expV * Q
-        call left_evolve(p, rmat, nelec,ppf_list(i_pf),two_way=.false.)
+        call left_evolve(p, rmat, nelec,i_pf,two_way=.false.)
 
       end do
 
       if (mod(p, ngroup) /= 0) cycle; 
       block_num = (p - 1)/ngroup + 2
-      do i = 1, nelec
-
-        !rmat(:,i) = rmat(:,i) * D_string(i,block_num-1)
-      end do
+ 
       call qdr(ns, nelec, rmat, R_string(1:nelec, 1:nelec), D_string(1:nelec, block_num))
 
       Q_string(:, 1:nelec, block_num) = rmat
       !print*,'D_string:',block_num,':',D_string(1:nelec,flv,block_num)
-      !R_string(1:nelec,1:nelec,flv,block_num) = matmul(R_string(1:nelec,1:nelec,flv,block_num),&
-      !& R_string(1:nelec,1:nelec,flv,block_num-1))
 
     end do
-
-    !ln_cw = ln_cw + sum(log(D_string(1:nelec,flv,nblock-1)))
-         !! abs only for sign problem free to avoid minus value of D_string
 
     lmat = conjg(transpose(Q_string(:, 1:nelec, nblock)))
     call cal_g_and_det(lmat,rmat)
@@ -97,7 +97,7 @@ contains
 
       DO p = time - ngroup, time - 1
         do i_pf = 1 , n_phonon_field
-          call left_evolve(p, rmat, nelec,ppf_list(i_pf),two_way=.false.) !expK * expV * Q
+          call left_evolve(p, rmat, nelec,i_pf,two_way=.false.) !expK * expV * Q
         end do
       end do
       !forall(i = 1:nelec) rmat(:,i) = rmat(:,i) * D_string(i,flv,block_num-1) !Q' = Q*D
@@ -118,7 +118,7 @@ contains
 
       DO p = time + ngroup - 1, time, -1
         do i_pf = n_phonon_field,1,-1
-          call right_evolve(p, lmat, nelec,ppf_list(i_pf),two_way=.false.)!Q*expK * expV
+          call right_evolve(p, lmat, nelec,i_pf,two_way=.false.)!Q*expK * expV
         end do
       end do
 
@@ -173,7 +173,7 @@ contains
     gfast = mat
     DO p = time - ngroup, time - 1
       do i_pf =  n_phonon_field,1,-1
-        call left_evolve(p, rmat, nelec,ppf_list(i_pf),two_way=.false.) !expK *  expV * Q
+        call left_evolve(p, rmat, nelec,i_pf,two_way=.false.) !expK *  expV * Q
       end do
     end do
     CALL qdr(ns, nelec, rmat, R_string(1:nelec, 1:nelec), D_string_temp)
@@ -194,80 +194,94 @@ contains
 
   end subroutine get_g_scratch_tau
 
-  SUBROUTINE left_evolve(time, mat, n,ppf,two_way)
+  SUBROUTINE left_evolve(time, mat, n,pf_id,two_way)
     !mat -> expK1*expK2...expKn*mat*exp-Kn...*exp-K2*exp-K1
     IMPLICIT none
     integer, intent(in) :: time, n
     logical, intent(in):: two_way
     complex(dp),intent(inout) :: mat(ns, n)
-    integer :: i_pla,pfdim,i,j
-    type(pf_type),intent(in) :: ppf
+    integer :: i_pla,pfdim,i,j,n_pla
+    integer, intent(in) :: pf_id
     type(pf_data_type), pointer :: p_data
     complex(dp),allocatable :: temp_mat_B(:,:),temp_mat_C(:,:)
     complex(dp),allocatable :: temp_expKV(:,:)
-    integer, allocatable :: site_list(:,:) ! (ppf%dim, ppf%n_plaquette)
-    p_data => ppf%p_data
-    pfdim = ppf%dim
-    allocate(temp_mat_B(ppf%dim,n),temp_mat_C(ppf%dim,n), temp_expKV(ppf%dim,ppf%dim), site_list(ppf%dim, ppf%n_plaquette))
-    site_list = p_data%pla_site_list
-    do i_pla = 1, ppf%n_plaquette
-      temp_mat_B = mat(site_list(:,i_pla), :)
-      temp_expKV = p_data%expKV(:,:,i_pla,time)
+    integer, allocatable :: site_list(:)
+    !p_data => ppf%p_data
+    !pfdim = ppf%dim
+      pfdim = ppf_list(pf_id)%dim
+      n_pla = ppf_list(pf_id)%n_plaquette
+    allocate(temp_mat_B(pfdim,n),temp_mat_C(pfdim,n), temp_expKV(pfdim,pfdim), site_list(pfdim))
+    ! site_list = p_data%pla_site_list
+    
+    do i_pla = 1, n_pla
+      site_list = pla_site_list(:,i_pla,pf_id) !> get the site list for current phonon field
+      temp_mat_B = mat(site_list, :)
+      temp_expKV = expkv(:,:,i_pla,pf_id,time)
       call gemm(temp_mat_C, temp_expKV, temp_mat_B, pfdim, pfdim, n , (1d0,0d0), (0d0,0d0))
-      mat(site_list(:,i_pla), :) = temp_mat_C
+      mat(site_list, :) = temp_mat_C
       !!! mat(p_data%pla_site_list(:,i_pla), :) = matmul(p_data%expKV(:,:,i_pla,time) , mat(p_data%pla_site_list(:,i_pla), :))
     end do
     deallocate(temp_mat_B, temp_mat_C, temp_expKV)
+
     if (two_way) then
-      allocate(temp_mat_B(n,ppf%dim),temp_mat_C(n,ppf%dim), temp_expKV(ppf%dim,ppf%dim))
       if (n /= ns) stop 'error in left_evolve, dimension not for evolve two-way'
+      allocate(temp_mat_B(n,pfdim),temp_mat_C(n,pfdim), temp_expKV(pfdim,pfdim))
         !!! mat(:, p_data%pla_site_list(:,i_pla)) = matmul(mat(:, p_data%pla_site_list(:,i_pla)), p_data%expKV_inv(:,:,i_pla,time))
-      do i_pla = 1, ppf%n_plaquette
-        temp_mat_B = mat(:, p_data%pla_site_list(:,i_pla))
-        temp_expKV = p_data%expKV_inv(:,:,i_pla,time)
+      do i_pla = 1, n_pla
+        site_list = pla_site_list(:,i_pla,pf_id)
+        temp_mat_B = mat(:, site_list)
+        temp_expKV = expkv_inv(:,:,i_pla,pf_id,time)
         call gemm(temp_mat_C, temp_mat_B, temp_expKV, n, pfdim, pfdim , (1d0,0d0), (0d0,0d0))
-        mat(:, p_data%pla_site_list(:,i_pla)) = temp_mat_C
+        mat(:, site_list) = temp_mat_C
       end do
       deallocate(temp_mat_B, temp_mat_C, temp_expKV)
     end if
+
     !deallocate(temp_mat_B, temp_mat_C)
   end SUBROUTINE left_evolve
 
-  SUBROUTINE right_evolve(time, mat, n, ppf,two_way)
+  SUBROUTINE right_evolve(time, mat, n, pf_id,two_way)
     IMPLICIT none
     integer, intent(in) :: time, n
     logical, intent(in) :: two_way
     complex(dp) :: mat(n,ns)
-    integer :: i_pla,pfdim,i,j
-    type(pf_type):: ppf
+    integer :: i_pla,pfdim,i,j,n_pla
+    integer, intent(in) :: pf_id
     type(pf_data_type), pointer :: p_data
     complex(dp),allocatable :: temp_mat_B(:,:),temp_mat_C(:,:)
     complex(dp),allocatable :: temp_expKV(:,:)
-    integer, allocatable :: site_list(:,:) ! (ppf%dim, ppf%n_plaquette)
-    p_data => ppf%p_data
-    pfdim = ppf%dim
-    allocate(temp_mat_B(n,pfdim),temp_mat_C(n,pfdim), temp_expKV(pfdim,pfdim), site_list(ppf%dim, ppf%n_plaquette))
-    site_list = p_data%pla_site_list
-    do i_pla = 1, ppf%n_plaquette
-      temp_mat_B = mat(:,site_list(:,i_pla))
-      temp_expKV = p_data%expKV(:,:,i_pla,time)
+    integer, allocatable :: site_list(:) ! (ppf%dim, ppf%n_plaquette)
+    pfdim = ppf_list(pf_id)%dim
+    n_pla = ppf_list(pf_id)%n_plaquette
+    allocate(temp_mat_B(n,pfdim),temp_mat_C(n,pfdim), temp_expKV(pfdim,pfdim), site_list(pfdim))
+
+    do i_pla = 1, n_pla
+      site_list = pla_site_list(:,i_pla,pf_id)
+      temp_mat_B = mat(:,site_list)
+      temp_expKV = expkv(:,:,i_pla,pf_id,time)
       call gemm(temp_mat_C, temp_mat_B, temp_expKV, n, pfdim, pfdim , (1d0,0d0), (0d0,0d0))
-      mat(:,site_list(:,i_pla)) = temp_mat_C
+      mat(:,site_list) = temp_mat_C
       !!! mat(:,p_data%pla_site_list(:,i_pla)) = matmul(mat(:,p_data%pla_site_list(:,i_pla)),p_data%expKV(:,:,i_pla,time))
     end do
     deallocate(temp_mat_B, temp_mat_C, temp_expKV)
+
     if (two_way) then
+
       if (n /= ns) stop 'error in right_evolve, dimension not for evolve two-way'
       allocate(temp_mat_B(pfdim,n),temp_mat_C(pfdim,n), temp_expKV(pfdim,pfdim))
         !!!mat(p_data%pla_site_list(:,i_pla), :) = matmul(p_data%expKV_inv(:,:,i_pla,time),mat(p_data%pla_site_list(:,i_pla), :))
-      do i_pla = 1, ppf%n_plaquette
-        temp_mat_B = mat(p_data%pla_site_list(:,i_pla), :)
-        temp_expKV = p_data%expKV_inv(:,:,i_pla,time)
+      do i_pla = 1, n_pla
+        site_list = pla_site_list(:,i_pla,pf_id)
+        temp_mat_B = mat(site_list, :)
+        temp_expKV = expkv_inv(:,:,i_pla,pf_id,time)
         call gemm(temp_mat_C, temp_expKV, temp_mat_B,  pfdim, pfdim , n,(1d0,0d0), (0d0,0d0))
-        mat(p_data%pla_site_list(:,i_pla), :) = temp_mat_C
+        mat(site_list, :) = temp_mat_C
       end do
       deallocate(temp_mat_B, temp_mat_C, temp_expKV)
+      
     end if
+
+    
   end SUBROUTINE right_evolve
 
   subroutine cal_g_and_det(lmat,rmat)

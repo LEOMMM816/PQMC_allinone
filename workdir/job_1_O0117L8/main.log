@@ -4,12 +4,122 @@
  MODEL =EPSOC
  NMLFILE =model/EPSOC_b1.nml
  Initialized parameters:
- char_length,jump_distance,global_update_distance:   1.0000000000000000        1.0000000000000000        2.0000000000000000     
+ char_length,jump_distance,global_update_distance:   3.0000000000000000        3.0000000000000000        3.0000000000000000     
  Using fixed seed for RNG initialization.
  Seed:          42          42          42          42          42
  Using optimized expKV for EPSOC model.
- myid:           0 /beta,lambda,omega,M   96.000000000000000        1.0000000000000000        1.0000000000000000        1.0000000000000000      nelec:          98
+ myid:           0 /beta,lambda,omega,M   96.000000000000000        1.0000000000000000        3.0000000000000000       0.11111111111111110      nelec:          72
  ntime,nblock:         960         194
- startup ln_cw:               (33759.236436052030,0.0000000000000000)
- largest error in           0 process is   9.9999999999999995E-007
- RUN TIME(s):    91.9282150    
+ startup ln_cw:               (32688.729676806572,0.0000000000000000)
+ kspace accepted!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time accepted!
+ kspace accepted!
+ kspace_time accepted!
+ kspace accepted!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace accepted!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace accepted!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace accepted!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace accepted!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time rejected!
+ kspace rejected!
+ kspace_time accepted!
+ kspace accepted!
+ kspace_time accepted!
+ kspace rejected!
+ kspace_time rejected!
+ kspace accepted!
+ kspace_time rejected!

@@ -80,9 +80,9 @@ program Pqmc_main
       !print*,''
       call update_global("kspace")
       !call update_global("rotate")
-      !call update_global("kspace")
+      call update_global("kspace_time")
       !call update_global("rotate")
-      if(updated) call init_g_T0()
+      if(updated) call init_g_T0(1)
 
     end if
     ! update every phonon field
@@ -93,7 +93,7 @@ program Pqmc_main
         time = ntime - time_count + 1
         ! G(time+1) -> B^(-1) G(time+1) B = G(time),  where B = exp(-delt*H(time))
         do i_pf =  n_phonon_field,1,-1
-          call right_evolve(time, g_h, ns,ppf_list(i_pf),two_way = .true.)
+          call right_evolve(time, g_h, ns,i_pf,two_way = .true.)
 
           if (local_update .and. ppf_list(i_pf)%V_exist) then
             ! update G(time) where the exp(-delt*V(time)) is to the right most
@@ -112,7 +112,7 @@ program Pqmc_main
             ! update G(time) where the exp(-delt*V(time)) is to the right most
             call update_phonon_field(ppf_list(i_pf), time)
           end if
-          call left_evolve(time, g_h, ns,ppf_list(i_pf),two_way = .true.)
+          call left_evolve(time, g_h, ns,i_pf,two_way = .true.)
 
         end do
       end if ! forward
@@ -134,7 +134,7 @@ program Pqmc_main
       if (loop > warmup .and. mod(loop - warmup, meas_interval) == 0) then
         if(time >= ntime/2 - meas_number .and. time <= ntime/2 + meas_number) then
           ! take measurement every meas_interval MCS
-          !call Meas_sys%begin_measure( forward,time)
+          call Meas_sys%begin_measure( forward,time)
         end if
       end if
 
@@ -175,7 +175,7 @@ contains
     do i_pf = 1 , n_phonon_field
       call init_expKV(ppf_list(i_pf))
     end do
-    call init_g_T0()
+    call init_g_T0(1)
     ! print*,'init g_T0 finishes'
     print*,'startup ln_cw:', ln_cw
 

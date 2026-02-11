@@ -47,7 +47,7 @@ MODULE input
   character(len=100) ::  model_name
   integer :: ncopy = 1! number of flavours
   integer :: ntime, Ns ! ntime is number of time slices and Ns is # of sites
-  integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2
+  integer :: nblock, ngroup = 5 !> nblock = ntime/ngroup + 2,notice that nblock vs. mpi_nblock
   real(dp) :: delt = 0.1, beta = 90d0,hop = 1d0
   integer :: print_loop = 1000
   real(dp) :: err_fast = 0d0, err_fast_max = 0.000001d0
@@ -74,7 +74,7 @@ MODULE input
   integer :: n_global_update = 1!>number of bonds that change in one GUD
   integer :: global_update_loop = 2
   logical :: updated = .false.
-
+  integer :: update_time = 1 !> time slice to start global update, default 1, will be updated in the global update process
 ! projection formulae
   real(dp) :: disorder = 0d0
   integer :: nelec
@@ -90,6 +90,10 @@ MODULE input
   complex(dp), ALLOCATABLE ::  Q_string(:, :, :), D_string(:, :) ! (Ns),nelec,nblock
   complex(dp), ALLOCATABLE :: R_string(:, :) ! auxilliary matrix to store R_matrix in qdr decomposition
   complex(dp), ALLOCATABLE :: expKV(:,:,:,:,:),expKV_inv(:,:,:,:,:) !>(ppf%dim,ppf%dim,n_plaquette,n_phonon_field,ntime)
+  logical,allocatable :: boundary_crossing(:,:) !> (n_plaquette,n_phonon_field), if this plaquette crosses the boundary
+  integer, allocatable :: pla_site_list(:,:,:)! (pf%dim,n_plaquette,n_phonon_field) 
+  complex(dp),allocatable :: BC_phases(:,:,:,:) ! (ppf%dim,ppf%dim,n_plaquette,n_phonon_field)
+  integer,allocatable :: bf_list(:,:) !> (n_plaquette,n_phonon_field), index of the coupled boson field for each plaquette
 !!! typed objects
   type :: pf_data_type
     integer,allocatable :: pla_site_list(:,:)! (pf%dim,n_plaquette) the site index in each plaquette for each phonon field

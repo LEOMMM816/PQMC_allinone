@@ -221,8 +221,8 @@ n_subsite_uc = 1
 &bf_initial
     phase_intra_cell = (1,0),(-1,0) ! size of n_bf, phases of intra-cell boson fields
     phase_k_inter_cell = 1,1! size of Lat%dim, k-space distribution of phase of bfs,in unit of pi
-    random_range = 0.05 ! range of random number for initial boson field, in unit of character length
-    offset = 0.05 ! range of random number for initial boson field, in unit of character length
+    random_range = 0.5 ! range of random number for initial boson field, in unit of character length
+    offset = 0.5 ! range of random number for initial boson field, in unit of character length
 /
 
 
@@ -236,12 +236,8 @@ n_subsite_uc = 1
 &observable name="BFxy_BFxy", obskind="field" /
 &observable name="Jx_Jx", obskind="field" /
 &observable name="Jx_Jy", obskind="field" /
-&observable name="Jy_Jy", obskind="field" 
-&observable name="cJx_cJx", obskind="field" /
-&observable name="cJy_cJy", obskind="field" /
-&observable name="cJx_cJy", obskind="field" /
+&observable name="Jy_Jy", obskind="field" /
 &observable name="den_den", obskind="field" /
 &observable name="SC_SC",   obskind="field" /
-&observable name="Sz_Sz",   obskind="field" /
-&observable name="Sx_Sx",   obskind="field" /
-&observable name="Sy_Sy",   obskind="field" /
+
+

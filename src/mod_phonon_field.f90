@@ -604,7 +604,28 @@ contains
   end subroutine get_expKV_epsoc
   subroutine set_pf_expKV_mat()
     ! this subroutine is suspended for now.
-
+    ! the idea is to store all pf_Data in a big matrix so we don't need to extract data for typed structure
+    implicit none
+    integer :: i_pf, i_pla, pdim,n_pla
+    type(pf_type),pointer :: ppf
+    
+    pdim = maxval([(pf_list(i_pf)%dim, i_pf=1,n_phonon_field)])
+    n_pla = maxval([(pf_list(i_pf)%n_plaquette, i_pf=1,n_phonon_field)])
+    allocate(pla_site_list(pdim,n_pla,n_phonon_field), &
+             boundary_crossing(n_pla,n_phonon_field), &
+             BC_phases(pdim,pdim,n_pla,n_phonon_field), &
+             expKV(pdim,pdim,n_pla,n_phonon_field,ntime), &
+             expKV_inv(pdim,pdim,n_pla,n_phonon_field,ntime), &
+             bf_list(n_pla,n_phonon_field))
+    do i_pf = 1, n_phonon_field
+      ppf => pf_list(i_pf)
+      pla_site_list(1:ppf%dim,1:ppf%n_plaquette,i_pf) = ppf%p_data%pla_site_list
+      boundary_crossing(1:ppf%n_plaquette,i_pf) = ppf%p_data%boundary_crossing
+      BC_phases(1:ppf%dim,1:ppf%dim,1:ppf%n_plaquette,i_pf) = ppf%p_data%BC_phases
+      expKV(1:ppf%dim,1:ppf%dim,1:ppf%n_plaquette, i_pf, 1:ntime) = ppf%p_data%expKV
+      expKV_inv(1:ppf%dim,1:ppf%dim,1:ppf%n_plaquette, i_pf, 1:ntime) = ppf%p_data%expKV_inv
+      bf_list(1:ppf%n_plaquette,i_pf) = ppf%p_data%bf_list
+    end do
 
 
 
@@ -613,4 +634,30 @@ contains
 
 
   end subroutine set_pf_expKV_mat
+
+  subroutine updata_expKV_global(start_time,end_time)
+     ! this subroutine is used to update the expKV and expKV_inv in pf_list, which is called in each time step
+     ! the idea is to store all pf_Data in a big matrix so we don't need to extract data for typed structure
+     ! start_time and end_time are the time slices need updating, 
+     ! with default value 1 and ntime
+    implicit none
+    integer, intent(in):: start_time, end_time
+    integer :: i_ph, time, i_pla
+     ! update the expKV and expKV_inv in pf_list
+    do i_ph = 1, n_phonon_field
+      do time = start_time, end_time
+        do i_pla = 1, ppf_list(i_ph)%n_plaquette
+
+          !call get_expKV(pf_list(i)%p_data%expKV(:,:,i_pla,time),ppf_list(i),i_pla, &
+          !& boson_field(ppf_list(i)%p_data%bf_list(i_pla), time), inv=.false.)
+          !call get_expKV(pf_list(i)%p_data%expKV_inv(:,:,i_pla,time),ppf_list(i),i_pla, &
+          !& boson_field(ppf_list(i)%p_data%bf_list(i_pla), time), inv=.true.)
+          call get_expKV(expKV(:,:,i_pla,i_ph,time),ppf_list(i_ph),i_pla, &
+          & boson_field(bf_list(i_pla,i_ph), time), inv=.false.)
+          call get_expKV(expKV_inv(:,:,i_pla,i_ph,time),ppf_list(i_ph),i_pla, &
+          & boson_field(bf_list(i_pla,i_ph), time), inv=.true.)
+        end do
+      end do
+    end do
+    end subroutine updata_expKV_global
 end module pf_setting

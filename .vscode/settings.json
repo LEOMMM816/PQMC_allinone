@@ -79,6 +79,14 @@
       "variable.readonly": { "foreground": "#C792EA" }
     }
   },
-  "cmake.sourceDirectory": "/home/zhangxiangyu/project/all_in_one_git"
+  "cmake.sourceDirectory": "/home/zhangxiangyu/project/all_in_one_git",
+  "fortran.linter.includePaths": [
+    "${workspaceFolder}/modules",
+    "${workspaceFolder}/modules/**"
+  ],
+  "fortran.fortls.directories": [
+    "${workspaceFolder}/modules",
+    "${workspaceFolder}/modules/**"
+  ]
 }
   

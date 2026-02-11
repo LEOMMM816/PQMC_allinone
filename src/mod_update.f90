@@ -66,7 +66,7 @@ contains
       ! get the site index of the plaquette
       site_list = pf_site_list(:,i_pla)
       ! get the old field value
-      p_bf => boson_field(p_data%bf_list(i_pla), time)
+      p_bf => boson_field(bf_list(i_pla,ppf%id), time)
       old_bf = p_bf
       ! get g_sub and g_h_sub
       g_h_sub = g_h(site_list, site_list)
@@ -117,8 +117,10 @@ contains
 
           update_accept = .true.
           ! update pf_datam
-          call get_expKV(p_data%expKV(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.false.)
-          call get_expKV(p_data%expKV_inv(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.true.)
+          !call get_expKV(p_data%expKV(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.false.)
+          !call get_expKV(p_data%expKV_inv(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.true.)
+          call get_expKV(expKV(:,:,i_pla,ppf%id,time),ppf,i_pla,p_bf,inv=.false.)
+          call get_expKV(expKV_inv(:,:,i_pla,ppf%id,time),ppf,i_pla,p_bf,inv=.true.)
           if(n_local_update >1) then
             ! update G_sub
             ! g_h_sub = g_h_sub + g_h_sub * Delta * R^(-1) * (I - g_h_sub)
@@ -152,7 +154,7 @@ contains
         call get_expKV(Delta_sub,ppf,i_pla, old_bf, inv=.true.)
         ! now Delta_sub = exp(delt*KV), the old one; p_data%expKV contains the new ones: exp(-delt*KV')
         ! we need to do: Delta_sub = expKV * exp(-delt*KV') - I or Delta_sub = Delta_sub * p_data%expKV - I
-        Delta_sub  = matmul(Delta_sub, p_data%expKV(:,:,i_pla,time))
+        Delta_sub  = matmul(Delta_sub, expKV(:,:,i_pla,ppf%id,time))
         do j = 1 , pfdim
           Delta_sub(j, j) = Delta_sub(j, j) - 1d0
         end do
@@ -230,7 +232,7 @@ contains
     integer :: i,j
     bf_value = bf_new
     call get_expKV(re,ppf,i_pla,bf_value,inv = .false.) ! re = expKV
-    re = matmul(ppf%p_data%expKV_inv(:,:,i_pla,time),re) ! delta_sub = exp(delt*KV) * exp(-delt*KV') - I
+    re = matmul(expKV_inv(:,:,i_pla,ppf%id,time),re) ! delta_sub = exp(delt*KV) * exp(-delt*KV') - I
     do i = 1 , ppf%dim
       re(i, i) = re(i, i) - 1d0
     end do
@@ -248,37 +250,40 @@ contains
     !real(dp) :: oldfield(Ns, ntime)
     complex(dp) :: oldconfigurationweight
     real(dp) :: ph_ln_cw,prob,test_ln_cw
-    type(pf_data_type) :: old_pdata(n_phonon_field)
+    ! type(pf_data_type) :: old_pdata(n_phonon_field)
+    complex(dp),allocatable :: expKV_old(:,:,:,:,:),expKV_inv_old(:,:,:,:,:)
     integer :: i_pf
     oldfield = boson_field
     oldconfigurationweight = ln_cw
-    old_pdata = pf_data_list
+    !old_pdata = pf_data_list
+    allocate(expKV_old, source=expKV)
+    allocate(expKV_inv_old, source=expKV_inv)
     ln_cw = 0d0
     test_ln_cw = 0d0
-    call generate_newfield_global(update_type) ! generate new pf and sum over the weight caused by energy difference
+
+    ! generate new pf and sum over the weight caused by energy difference
+    call generate_newfield_global(update_type)
     !call generate_newfield_space(bf_jump, global_update_Kvec, global_update_distance)
     ph_ln_cw = real(ln_cw)
-    !print*,'ph_ln_cw:',ph_ln_cw
+
     call cal_new_weight_gemm() ! calculate the relative weight caused by det()
-    !print*,'total ln_cw:',ln_cw
-    !print*,'old ln_cw:',oldconfigurationweight
+
     call cal_prob(ln_cw + ph_ln_cw - oldconfigurationweight,prob,"global update")
 
     if (rands() < prob) then ! accept this global update
       global_accept = global_accept + 1
       updated = .true.
       ! need to update expKV and expKV_inv in pf_list
-      ! do it in generate_newfield_global subroutine
+      ! did it in generate_newfield_global subroutine
       !print*,update_type//' accepted!'
 
     else
       !print*,update_type//' rejected!'
       boson_field = oldfield
       ln_cw = oldconfigurationweight
-      pf_data_list = old_pdata
-      !print*,'old_pdata expKV:',old_pdata(1)%expKV(:,:,1,1)
-      !print*,'current_pdata expKV:',ppf_list(1)%p_data%expKV(:,:,1,1)
-      !Kmat = old_Kmat
+      expKV = expKV_old
+      expKV_inv = expKV_inv_old
+
       global_reject = global_reject + 1
     end if
     !print*,'---------------------------------------------------'
@@ -287,7 +292,7 @@ contains
   subroutine generate_newfield_global(update_type)
     implicit none
     character(len=*), intent(in) :: update_type
-    integer :: i, site, time, i_pla,i_cell
+    integer :: i, site, time, i_cell,start_time,end_time
     integer, dimension(n_global_update) :: updated_ind !
     real(dp) :: bf_temp_ntime(ntime), bf_jump, bf_temp_space(n_boson_field)
     real(dp) :: delta_energy,K_vec(Lat%dim), incell_phase(bf_sets)
@@ -306,15 +311,60 @@ contains
         boson_field(updated_ind(i), :) = boson_field(site, :)
         boson_field(site, :) = bf_temp_ntime
       end do
-    case ("kspace")
+
+    case ("kspace_time")
+
       K_vec = 2*PI*[0.5d0,0.5d0]  ! Initialize K_vec with appropriate values
       ! incell_phase = [1d0, -1d0]  ! Initialize incell_phase with appropriate values
-      incell_phase(1) = irands(2)*2d0 - 1d0 ! random phase + or - 1
-      incell_phase(2) = - incell_phase(1)
+      do i = 1,bf_sets
+        incell_phase(i) = irands(2)*2d0 - 1d0
+      end do
       ! generate new field in K space
       call generate_newfield_space(bf_temp_space, K_vec, incell_phase)
-      !print*,'bf_temp_space:',bf_temp_space
-      !print*,'bf_now:',boson_field(:,1)
+      ! pick a update_time to update the field from time = 1 to update_time
+      start_time = irands(ntime/2)
+      end_time = max(start_time + int(1d0*M/delt**2), ntime)
+      update_time = start_time
+      do time = start_time, end_time
+        do i = 1,n_boson_field
+          boson_field(i,time) = boson_field(i,time) + bf_temp_space(i)
+        end do
+      end do
+      !boson_field(:, 1) = end_field
+      !boson_field(:, ntime) = end_field
+      ! calculate the energy difference
+      delta_energy = 0d0
+      do time = start_time, end_time
+      do i = 1, n_boson_field
+        delta_energy = delta_energy + 0.5*D*(boson_field(i, time)**2 - old_field(i, time)**2)
+        delta_energy = delta_energy + (- biased_phonon * (boson_field(i, time) - old_field(i, time)))
+      end do
+      end do
+      ! plus the kinetic energy difference at the two endpoints [1, update_time], which is not included in the above summation
+      do i = 1, n_boson_field
+          delta_energy = delta_energy + & 
+          & 0.5*(M/delt**2)*((boson_field(i, start_time) - boson_field(i, modi(start_time-1,ntime)))**2 & 
+          & - (old_field(i, start_time) - old_field(i, modi(start_time-1,ntime)))**2)
+          delta_energy = delta_energy + & 
+          & 0.5*(M/delt**2)*((boson_field(i, end_time) - boson_field(i, modi(end_time+1,ntime)))**2 & 
+          & - (old_field(i, end_time) - old_field(i, modi(end_time+1,ntime)))**2)
+      end do
+      ln_cw = ln_cw - delta_energy*delt
+       call updata_expKV_global(start_time,end_time) 
+       ! after updating the boson field, we need to update the expKV and expKV_inv for the selected time domain.
+
+
+    case ("kspace")
+
+      K_vec = 2*PI*[0.5d0,0.5d0]  ! Initialize K_vec with appropriate values
+      ! incell_phase = [1d0, -1d0]  ! Initialize incell_phase with appropriate values
+      do i = 1,bf_sets
+        incell_phase(i) = irands(2)*2d0 - 1d0
+      end do
+      ! generate new field in K space
+      call generate_newfield_space(bf_temp_space, K_vec, incell_phase)
+      ! pick a update_time to update the field from time = 1 to update_time
+      
       do time = 1, ntime
         do i = 1,n_boson_field
           boson_field(i,time) = boson_field(i,time) + bf_temp_space(i)
@@ -331,6 +381,8 @@ contains
       end do
       end do
       ln_cw = ln_cw - delta_energy*delt
+      ! after updating the boson field, we need to update the expKV and expKV_inv for global update
+       call updata_expKV_global(1,ntime) 
     case ("rotate")
       ! rotate the two-component bf_field in each unit cell
 
@@ -377,21 +429,11 @@ contains
         boson_field(updated_ind(i), :) = bf_temp_ntime
         ln_cw = ln_cw - delta_energy*delt
       end do
+       call updata_expKV_global(1,ntime) ! after updating the boson field, we need to update the expKV and expKV_inv for global update
     end select
 
-    ! update the expKV and expKV_inv in pf_list
-    do i = 1, n_phonon_field
-      do time = 1, ntime
-        do i_pla = 1, ppf_list(i)%n_plaquette
+   
 
-          call get_expKV(pf_list(i)%p_data%expKV(:,:,i_pla,time),ppf_list(i),i_pla, &
-          & boson_field(ppf_list(i)%p_data%bf_list(i_pla), time), inv=.false.)
-          call get_expKV(pf_list(i)%p_data%expKV_inv(:,:,i_pla,time),ppf_list(i),i_pla, &
-          & boson_field(ppf_list(i)%p_data%bf_list(i_pla), time), inv=.true.)
-
-        end do
-      end do
-    end do
     !call set_kmat()
   end subroutine
 
@@ -514,7 +556,7 @@ contains
     flag = 0
     do p = ntime, 1, -1
       do i_pf = n_phonon_field,1,-1
-        call right_evolve(p, lmat, nelec,ppf_list(i_pf),two_way=.false.)
+        call right_evolve(p, lmat, nelec,i_pf,two_way=.false.)
       end do
       flag = flag + 1
       if (flag /= ngroup) cycle

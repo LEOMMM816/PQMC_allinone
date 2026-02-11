@@ -205,7 +205,7 @@ def generate_cmake(project_name, compiler, use_mpi,platform,debug):
     # -fbacktrace: 报错打印堆栈
     if(platform=="cluster" or platform=="SSD"):
         # 针对集群的优化
-        gnu_flags_release = "-O3 -g -march=icelake-server -ffree-line-length-none -fbacktrace -cpp -DMPI"
+        gnu_flags_release = "-O3 -Ofast -g -march=icelake-server -ffree-line-length-none -fbacktrace -cpp -DMPI"
     else:
         # 本地编译
         gnu_flags_release = "-O3 -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI"
