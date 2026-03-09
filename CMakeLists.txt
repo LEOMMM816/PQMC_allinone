@@ -4,7 +4,7 @@ project(HPC_Project LANGUAGES Fortran C CXX)
 # =========================================================
 #  自动生成的 CMakeLists.txt
 #  编译器模式: GNU
-#  生成时间: Wed Feb 11 21:03:37 CST 2026
+#  生成时间: Fri Mar  6 16:27:24 CST 2026
 # =========================================================
 
 # 设置 C++ 标准 (如果用到)
@@ -18,14 +18,14 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
     message(STATUS ">>> 配置 GNU (gfortran) 环境")
     
     # Release 模式 Flags
-    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
     
     # Debug 模式 Flags
-    set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
+    set(CMAKE_Fortran_FLAGS_DEBUG "-O3 -fno-stack-arrays -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
     
-    # set(CMAKE_Fortran_FLAGS "-O3 -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
-    # set(CMAKE_Fortran_FLAGS "-O0 -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
-    set(CMAKE_Fortran_FLAGS "-O3 -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
+    # set(CMAKE_Fortran_FLAGS "-O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
+    # set(CMAKE_Fortran_FLAGS "-O3 -fno-stack-arrays -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
+    set(CMAKE_Fortran_FLAGS "-O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
             
 endif()
 # ---------------------------------------------------------

@@ -10,14 +10,11 @@ program Pqmc_main
 #endif
 ! parameters declare
 
-  integer :: loop, time, time_count, iflv, i_phonon_field, i_site,i_bond,i_pf
-  integer :: i_ml, i_ml2
+  integer :: loop, time, time_count, i_pf
   integer(8) :: count1, count2, count_rate
   integer :: iteration  ! # of Monte Carlo loops
   logical :: forward = .true.
-  character*10 :: ci_myid
-  integer :: i_cell,j
-  real(dp) :: temp_bf,phi
+
 !> mpi
 #ifdef MPI
   call my_mpi_init()
@@ -39,15 +36,18 @@ program Pqmc_main
   ! phonon-field initialize
   !print *, 'set phonon field...'
   call set_pf_main()
+  
   !print *, 'set slater pf...'
   call readin_slater_pf()
   !print *, 'set phonon field ends.'
-#ifdef MPI
-  call init_MPI(mpi_block_id)
-#endif
+  call init_pf_para()
   ! slater initialization
-  call set_k_slater()
-  call set_nelec_occupied()
+  if(proj) then
+    call set_k_slater()
+    call set_nelec_occupied()
+  end if
+  ! (hop, ep_parameter) initializatin
+
   ! initialize for measurement
   !print *, 'initialize measurement system...'
   call Meas_sys%init_meas()
@@ -59,6 +59,7 @@ program Pqmc_main
     & 'nelec:', nelec
     print *, 'ntime,nblock:', ntime, nblock
     !print*, "MPI_one_block", MPI_one_block
+    print *, 'pf1:', pf_list(1)%K_coe, pf_list(1)%V_coe
   end if
 #else
   print *, 'nelec:', nelec
@@ -75,13 +76,13 @@ program Pqmc_main
     forward = .not. forward ! the first loop is going backwards
 
     ! global update
-    if (.not. forward .and. mod(loop + 1, global_update_loop) == 0 .and. global_update) then
+    if ((.not. forward) .and. mod(loop + 1, global_update_loop) == 0 .and. global_update) then
       updated = .false.
       !print*,''
       call update_global("kspace")
-      !call update_global("rotate")
+      if(trim(adjustl(model_name)) == "EPSOCZ") call update_global("rotate")
       call update_global("kspace_time")
-      !call update_global("rotate")
+      
       if(updated) call init_g_T0(1)
 
     end if
@@ -134,7 +135,7 @@ program Pqmc_main
       if (loop > warmup .and. mod(loop - warmup, meas_interval) == 0) then
         if(time >= ntime/2 - meas_number .and. time <= ntime/2 + meas_number) then
           ! take measurement every meas_interval MCS
-          call Meas_sys%begin_measure( forward,time)
+          call Meas_sys%begin_measure(forward,time)
         end if
       end if
 
@@ -171,10 +172,13 @@ program Pqmc_main
 contains
   subroutine init_MC()
     implicit none
-
+    ! initial p_data
     do i_pf = 1 , n_phonon_field
       call init_expKV(ppf_list(i_pf))
     end do
+    ! convert p_data into the matrices
+    call set_pf_expKV_mat()
+    ! calculate the B string
     call init_g_T0(1)
     ! print*,'init g_T0 finishes'
     print*,'startup ln_cw:', ln_cw

@@ -252,7 +252,7 @@ n_subsite_uc = 2
     phase_intra_cell = (1,0),(-1,0) ! size of n_bf, phases of intra-cell boson fields
     phase_k_inter_cell = 1,1! size of Lat%dim, k-space distribution of phase of bfs,in unit of pi
     random_range = 0.25 ! range of random number for initial boson field, in unit of character length
-    offset = 0.25 ! range of random number for initial boson field, in unit of character length
+    offset = 0.05 ! range of random number for initial boson field, in unit of character length
 /
 
 
@@ -267,21 +267,13 @@ n_subsite_uc = 2
 &observable name="BFy_BFy", obskind="field" /
 &observable name="BFxy_BFxy", obskind="field" /
 &observable name="Jxx_Jxx", obskind="field" /
-&observable name="Jxxh_Jxxh", obskind="field" /
 &observable name="Jxy_Jxy", obskind="field" /
-&observable name="Jxyh_Jxyh", obskind="field" /
 &observable name="Jyx_Jyx", obskind="field" /
-&observable name="Jyxh_Jyxh", obskind="field" /
 &observable name="Jyy_Jyy", obskind="field" /
-&observable name="Jyyh_Jyyh", obskind="field" /
 &observable name="Jxx_Jyx", obskind="field" /
-&observable name="Jxxh_Jyxh", obskind="field" /
 &observable name="Jxy_Jyy", obskind="field" /
-&observable name="Jxyh_Jyyh", obskind="field" /
 &observable name="Jxx_Jyy", obskind="field" /
-&observable name="Jxxh_Jyyh", obskind="field" /
 &observable name="Jxy_Jyx", obskind="field" /
-&observable name="Jxyh_Jyxh", obskind="field" /
 &observable name="cJxy_cJxy", obskind="field" /
 &observable name="cJyx_cJyx", obskind="field" /
 &observable name="den_den", obskind="field" /

@@ -29,7 +29,7 @@ contains
     call readin_pf_basic()
     !print*,'Finished reading in pf basic info.'
     call set_pf_detail()
-    call set_pf_expKV_mat()
+    ! call set_pf_expKV_mat()
     ! debug
     if(.false.) then
       ! print the pf_site_list information
@@ -416,7 +416,6 @@ contains
       ! set the expKV
       allocate(p_data_temp%expKV(ppf%dim,ppf%dim,ppf%n_plaquette,ntime),&
       & p_data_temp%expKV_inv(ppf%dim,ppf%dim,ppf%n_plaquette,ntime))
-      call init_expKV(ppf)
 
     end if
   end subroutine set_typed_pf
@@ -425,7 +424,7 @@ contains
     implicit none
     type(pf_type),intent(inout) :: pf
     type(pf_data_type),pointer :: p_data_temp
-    integer :: i_plaquette,p
+    integer :: i_plaquette,p,i_ph,time
     ! --- 调试代码开始 ---
 
     !if (.not. associated(pf%p_data)) then
@@ -448,6 +447,7 @@ contains
         end if
       end do
     end do
+    
     BLOCK ! debug block
       complex(dp) :: expKV1(pf%dim, pf%dim), expKV2(pf%dim, pf%dim)
       if(.false.) then

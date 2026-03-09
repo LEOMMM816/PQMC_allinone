@@ -203,18 +203,16 @@ contains
     end if
   end subroutine
 
-  subroutine init_MPI(mpi_block)
-    integer, intent(in) :: mpi_block
+  subroutine init_pf_para()
     integer :: i_pf
-    character(len=20) :: temp_string
     ! when TR_double = .true., filling is set as half of the actual filling
     do i_pf = 1, n_phonon_field
-      pf_list(i_pf)%K_coe = (-hop)
-      pf_list(i_pf)%V_coe = ep_parameter
+      pf_list(i_pf)%K_coe = pf_list(i_pf)%K_coe * (-hop)
+      pf_list(i_pf)%V_coe = pf_list(i_pf)%V_coe * ep_parameter
     end do
-    slater_pf%K_coe = (-hop)
+    slater_pf%K_coe = slater_pf%K_coe * (-hop)
     return
-  end subroutine init_MPI
+  end subroutine init_pf_para
 
   subroutine general_paramter_init()
     implicit none

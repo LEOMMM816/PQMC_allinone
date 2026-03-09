@@ -276,14 +276,12 @@ contains
       ! need to update expKV and expKV_inv in pf_list
       ! did it in generate_newfield_global subroutine
       !print*,update_type//' accepted!'
-
     else
       !print*,update_type//' rejected!'
       boson_field = oldfield
       ln_cw = oldconfigurationweight
       expKV = expKV_old
       expKV_inv = expKV_inv_old
-
       global_reject = global_reject + 1
     end if
     !print*,'---------------------------------------------------'
@@ -322,7 +320,7 @@ contains
       ! generate new field in K space
       call generate_newfield_space(bf_temp_space, K_vec, incell_phase)
       ! pick a update_time to update the field from time = 1 to update_time
-      start_time = irands(ntime/2)
+      start_time = irands(ntime/2) + 1
       end_time = max(start_time + int(1d0*M/delt**2), ntime)
       update_time = start_time
       do time = start_time, end_time
@@ -387,7 +385,7 @@ contains
       ! rotate the two-component bf_field in each unit cell
 
       ! generate a random rotation angle
-      rot_angle = ran_sysm()*0.05d0*pi
+      rot_angle = ran_sysm()*0.1d0*pi
       ! print*,'angle:',rot_angle*180d0/pi
       rot_mat = 0d0
       rot_mat(1,1) = cos(rot_angle)
@@ -409,6 +407,7 @@ contains
         call gemm(rot_tempout, rot_mat, rot_tempin, 2, 2, ntime, 1d0, 0d0)
         boson_field(p_cells(i_cell)%bf_list, :) = rot_tempout
       end do
+      call updata_expKV_global(1,ntime) 
     case default ! single site shift
       do i = 1, n_global_update
         updated_ind(i) = irands(n_boson_field) + 1
