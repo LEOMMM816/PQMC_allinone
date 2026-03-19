@@ -51,6 +51,12 @@ MODULE matrixlib
   !> C = alpha * A(m,d) * B(d,n) + beta * C(m,n) 
     MODULE PROCEDURE dgemm_selfadd, zgemm_selfadd
   END INTERFACE
+
+  INTERFACE udv 
+    ! SVD decomposition A = U * D * V^\dagger
+    ! A is overwritten by U, VT contains V^\dagger, D contains singular values.
+    MODULE PROCEDURE dudv, zudv
+  END INTERFACE
 CONTAINS
 !--------------------------------------------------
 !   general functins
@@ -692,5 +698,82 @@ CONTAINS
 
 
 
+  ! =======================================================================
+  ! 纯复数版本 SVD (对应 zqdr)
+  ! =======================================================================
+  SUBROUTINE zudv(M, N, A, VT, D)
+    implicit none
+    integer, intent(in) :: M, N
+    ! 输入时 A 是待分解矩阵；输出时 A 被原地覆写为正交矩阵 U
+    complex(dp), intent(inout) :: A(M, N)   
+    ! 输出矩阵 VT，直接对应 V^\dagger (直接充当以前的 R)
+    complex(dp), intent(out)   :: VT(N, N)  
+    ! 输出奇异值矩阵的对角元 (SVD 的奇异值永远是实数，这里转为复数兼容原代码)
+    complex(dp), intent(out)   :: D(min(M, N)) 
+    
+    ! 局部变量
+    real(dp)    :: S_real(min(M, N)) ! LAPACK 要求奇异值必须用实数数组接收
+    complex(dp) :: U_dummy(1, 1)     ! 占位符，因为 U 已经覆写到了 A 中
+    complex(dp) :: wkopt(1)          ! 探测最优内存大小
+    complex(dp), allocatable :: WORK(:)
+    real(dp), allocatable    :: RWORK(:)
+    integer :: LWORK, INFO, i
+
+    ! 1. 第一步：调用 ZGESVD 查询最优内存 (LWORK = -1)
+    LWORK = -1
+    allocate(RWORK(5 * min(M, N))) 
+    call ZGESVD('O', 'A', M, N, A, M, S_real, U_dummy, 1, VT, N, wkopt, LWORK, RWORK, INFO)
+    
+    ! 2. 第二步：分配最优内存并执行实际的 SVD 分解
+    LWORK = int(real(wkopt(1)))
+    allocate(WORK(LWORK))
+    call ZGESVD('O', 'A', M, N, A, M, S_real, U_dummy, 1, VT, N, WORK, LWORK, RWORK, INFO)
+    
+    if (INFO /= 0) then
+      print *, "ERROR: ZGESVD SVD decomposition failed with INFO = ", INFO
+      stop
+    end if
+
+    ! 3. 第三步：将严格非负的实数奇异值转存入您的复数 D 数组中
+    do i = 1, min(M, N)
+      D(i) = cmplx(S_real(i), 0.0_dp, kind=dp)
+    end do
+    
+    deallocate(WORK, RWORK)
+  END SUBROUTINE zudv
+
+
+  ! =======================================================================
+  ! 纯实数版本 SVD (对应 dqdr)
+  ! =======================================================================
+  SUBROUTINE dudv(M, N, A, VT, D)
+    implicit none
+    integer, intent(in) :: M, N
+    real(dp), intent(inout) :: A(M, N)   
+    real(dp), intent(out)   :: VT(N, N)  
+    real(dp), intent(out)   :: D(min(M, N))
+    
+    ! 局部变量
+    real(dp) :: U_dummy(1, 1)
+    real(dp) :: wkopt(1)
+    real(dp), allocatable :: WORK(:)
+    integer :: LWORK, INFO
+
+    ! 1. 内存查询
+    LWORK = -1
+    call DGESVD('O', 'A', M, N, A, M, D, U_dummy, 1, VT, N, wkopt, LWORK, INFO)
+    
+    ! 2. 执行分解
+    LWORK = int(wkopt(1))
+    allocate(WORK(LWORK))
+    call DGESVD('O', 'A', M, N, A, M, D, U_dummy, 1, VT, N, WORK, LWORK, INFO)
+    
+    if (INFO /= 0) then
+      print *, "ERROR: DGESVD SVD decomposition failed with INFO = ", INFO
+      stop
+    end if
+    
+    deallocate(WORK)
+  END SUBROUTINE dudv
 END MODULE
 

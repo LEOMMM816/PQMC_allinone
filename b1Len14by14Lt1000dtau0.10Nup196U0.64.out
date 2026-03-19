@@ -1,0 +1,37 @@
+************************************************
+ ***********************************************
+           Epsoc_phonon_along_Z
+************************************************
+************************************************
+ Hamiltonian: H = H_k + \lambda * X1 * i sigma_y J^x + X2 * i sigma_x J^y
+
+ ####################################
+ #####  Monte Carlo parameter  #####
+ ####################################
+ nbin  =               5
+ measurements in one_bin            800
+ warmup  =            4000
+ meas_interval  =               1
+ meas_timerange  =               0
+ total_iterations  =            8000
+ number of mpi_blocks  =               8
+ number of cores per block  =              24
+ global update is not used
+
+####################################
+ #######  Physical parameter  #######
+####################################
+ lattice_dimension =            2
+ Lt    =            1000
+ dtau  =    0.100000000000000
+ Beta  = dtau*Lt =  100.000000000000000
+ lambda, el-phonon coupling =    0.800000000000000
+Anti-aidabatic limit, M = 0.0
+ disorder =    0.000000000000000
+ filling  =    0.500000000000000
+ N_up = N_down  =             196
+
+List of observables, averages and errors
+ Description: 
+   e_PE = -U/2 * (n_up + n_down)^2 = -U/2*(n_up+n_down) - U*n_up*n_down
+#--observables--#

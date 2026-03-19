@@ -22,8 +22,7 @@ contains
     type(pf_type), intent(in) :: ppf
     type(pf_data_type), pointer :: p_data
     complex(dp) :: R,R_elec ! relative boltzmann weight &
-    complex(dp) :: delta_energy
-    real(dp) ::  bf_jump, delta_energy_elec
+    real(dp) ::  delta_energy, bf_jump, delta_energy_elec
     real(dp) :: old_bf,prob
     complex(dp), dimension(ppf%dim,ppf%dim) :: expKV_old,expK_inv_old
     complex(dp),dimension(ppf%dim,ppf%dim) :: Delta_sub,  R_mat_sub, R_temp_sub, g_h_sub,g_sub
@@ -86,7 +85,7 @@ contains
         ! calculate energy difference due to boson field: delta_energy
         call cal_energy_difference(p_data%bf_list(i_pla), time, bf_jump, delta_energy)
         delta_energy = -delt*delta_energy
-        !R = R * exp(delta_energy)
+        R = R * exp(delta_energy)
 
         ! update boson field
         p_bf = p_bf + bf_jump
@@ -104,14 +103,11 @@ contains
         R_elec = R_elec**ncopy
 
         ! total weight ratio
-        !R = R*(R_elec)
-        delta_energy = delta_energy + log(R_elec)
-        
-        
+        R = R*(R_elec)
+        !print*, 'i_pla,time,bf_jump,delta_energy,R_elec,R:',i_pla,time,bf_jump,delta_energy,R_elec,R
         ! calculate the acceptance probability
-        call cal_prob(delta_energy, prob,"local update")
-        ! print*, 'i_pla,time,bf_jump,delta_energy,prob',i_pla,time,bf_jump,delta_energy,prob
-        !print*,"log(R):",log(R)
+        call cal_prob(log(R), prob,"local update")
+
         ! acceptance test
         !if(.true.) then
         if ((prob < rands())) then
@@ -203,8 +199,7 @@ contains
   Subroutine cal_energy_difference(bf_index, time, bf_jump, delta_energy)
     implicit none
     integer ::  time,bf_index
-    real(dp) :: bf_jump,  E_1, E_2, ph_be, ph_af, ph_now, ph_new
-    complex(dp) :: delta_energy
+    real(dp) :: bf_jump, delta_energy, E_1, E_2, ph_be, ph_af, ph_now, ph_new
     ph_be = boson_field(bf_index, modi(time - 1, ntime))
     ph_af = boson_field(bf_index, modi(time + 1, ntime))
     ph_now = boson_field(bf_index, time)
@@ -271,7 +266,7 @@ contains
     !call generate_newfield_space(bf_jump, global_update_Kvec, global_update_distance)
     ph_ln_cw = real(ln_cw)
 
-    call cal_new_weight() ! calculate the relative weight caused by det()
+    call cal_new_weight_gemm() ! calculate the relative weight caused by det()
 
     call cal_prob(ln_cw + ph_ln_cw - oldconfigurationweight,prob,"global update")
 
@@ -281,12 +276,14 @@ contains
       ! need to update expKV and expKV_inv in pf_list
       ! did it in generate_newfield_global subroutine
       !print*,update_type//' accepted!'
+
     else
       !print*,update_type//' rejected!'
       boson_field = oldfield
       ln_cw = oldconfigurationweight
       expKV = expKV_old
       expKV_inv = expKV_inv_old
+
       global_reject = global_reject + 1
     end if
     !print*,'---------------------------------------------------'
@@ -466,8 +463,126 @@ contains
     ! print*,'amplitude:',amplitude
   end subroutine
 
+  subroutine cal_new_weight()
+    ! calculate the relative weight caused by det(), the expKV are not available
+    ! this subroutine is called in update_global(backup version)
+    ! note that boson_field have been updated but the expKV and expKV_inv need to be calculated explicitly
+    ! the Q,D,R are not changed in this subroutine
+    implicit none
+    integer ::  flv, p, d, flag, i, i_pf,i_pla,pdim
+    complex(dp) :: lndet
+    complex(dp), allocatable :: tmat(:, :), lmat(:, :), rmat(:, :), expKV_temp(:,:)
+    complex(dp),allocatable :: lmat_temp_B(:, :),lmat_temp_C(:,:)
+    ln_cw = 0d0
 
-  
+    lndet = 0d0
+    d = nelec
+    allocate (tmat(d, d), lmat(d, ns), rmat(ns, d))
+
+    lmat = conjg(transpose(Q_string(:, 1:nelec, nblock)))
+
+    do i = 1, d
+      lndet = lndet + log((d_string(i, nblock)))
+    end do
+
+    flag = 0
+    do p = ntime, 1, -1
+      do i_pf = n_phonon_field,1,-1
+        pdim = ppf_list(i_pf)%dim
+        allocate (expKV_temp(pdim, pdim), lmat_temp_B(d,pdim), lmat_temp_C(d,pdim))
+
+        do i_pla = 1, ppf_list(i_pf)%n_plaquette
+          if(pf_list(i_pf)%V_exist) then
+            call get_expKV(expKV_temp, ppf_list(i_pf), i_pla, boson_field(ppf_list(i_pf)%p_data%bf_list(i_pla), p), inv=.false.)
+          else
+            expKV_temp = pf_list(i_pf)%p_data%expKV(:,:,i_pla,p) ! if no V, expKV = I
+          end if
+
+          ! right evolve the lmat matrix : expK * expV * Q
+          lmat_temp_B = lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla))
+          lmat_temp_C = 0d0
+          ! lmat_temp_C = matmul(lmat_temp_B, expKV_temp)
+          call gemm(lmat_temp_C, lmat_temp_B, expKV_temp, d, pdim, pdim, (1d0,0d0), (0d0,0d0))
+
+          lmat(:,ppf_list(i_pf)%p_data%pla_site_list(:,i_pla)) = lmat_temp_C
+
+        end do
+        deallocate(expKV_temp, lmat_temp_B, lmat_temp_C)
+      end do
+      flag = flag + 1
+      if (flag /= ngroup) cycle
+      flag = 0
+      call zlq(d, ns, lmat, tmat)
+      do i = 1, d
+        lndet = lndet + log((tmat(i, i)))
+      end do
+      !print*,'lndet for time',p,'is',lndet
+    end do
+
+    rmat = Q_string(:, 1:nelec, 1)
+
+    do i = 1, d
+      lndet = lndet + log((d_string(i, 1)))
+    end do
+
+    tmat = matmul(lmat, rmat)
+
+    lndet = lndet + log((det(d, tmat)))
+    !print*,'lndet:',log(abs(det(d,tmat)))
+    if(TR_weight) lndet = lndet + conjg(lndet)
+    ln_cw = ln_cw + lndet * ncopy
+    ln_cw = cmplx(real(ln_cw),mod(aimag(ln_cw),2*pi),kind=dpc) ! make sure weight is in the principal branch
+  end subroutine
+
+  subroutine cal_new_weight_gemm()
+    ! calculate the relative weight caused by det(), the expKV are  available in pf_data
+    ! this subroutine is called in update_global(working version)
+    ! the Q,D,R are not changed in this subroutine
+    implicit none
+    integer flv, p, d, flag, i, i_pf,i_pla
+    complex(dp) :: lndet
+    complex(dp), allocatable :: tmat(:, :), lmat(:, :), rmat(:, :), expKV_temp(:,:)
+    complex(dp), allocatable :: lmat_temp_B(:, :),lmat_temp_C(:,:)
+    ln_cw = 0d0
+    lndet = 0d0
+    d = nelec
+    allocate (tmat(d, d), lmat(d, ns), rmat(ns, d))
+
+    lmat = conjg(transpose(Q_string(:, 1:nelec, nblock)))
+
+    do i = 1, d
+      lndet = lndet + log((d_string(i, nblock)))
+    end do
+
+    flag = 0
+    do p = ntime, 1, -1
+      do i_pf = n_phonon_field,1,-1
+        call right_evolve(p, lmat, nelec,i_pf,two_way=.false.)
+      end do
+      flag = flag + 1
+      if (flag /= ngroup) cycle
+      flag = 0
+      call zlq(d, ns, lmat, tmat)
+      do i = 1, d
+        lndet = lndet + log((tmat(i, i)))
+      end do
+      !print*,'lndet for time',p,'is',lndet
+    end do
+
+    rmat = Q_string(:, 1:nelec, 1)
+
+    do i = 1, d
+      lndet = lndet + log((d_string(i, 1)))
+    end do
+
+    !!!tmat = matmul(lmat, rmat)
+    call gemm(tmat, lmat, rmat, d, ns, d, (1d0,0d0), (0d0,0d0))
+    lndet = lndet + log((det(d, tmat)))
+    !print*,'lndet:',log(abs(det(d,tmat)))
+    if(TR_weight) lndet = lndet + conjg(lndet)
+    ln_cw = ln_cw + lndet * ncopy
+    ln_cw = cmplx(real(ln_cw),mod(aimag(ln_cw),2*pi),kind=dpc) ! make sure weight is in the principal branch
+  end subroutine
 !======================================================================!
 !                            Metropolis prob                         !
 !======================================================================!
@@ -487,6 +602,7 @@ contains
     if(abs(aimag(weight)) > 1d-2 .and. abs(abs(aimag(weight)) - 2*pi) > 1d-2) then
       print *, "SIGN PROBLEM,weight:", weight
       print*, "happens in  ", trim(adjustl(mpi_info))//sign_err
+      stop
     end if
     R_temp = exp(min(10d0, real(weight)))
     if (Metropolis) then

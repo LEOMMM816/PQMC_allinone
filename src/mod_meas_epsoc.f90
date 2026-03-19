@@ -323,8 +323,9 @@ end subroutine spin_current_matrix
     phase = Lat%k_phase
     do i_obs = 1, this%nobs
       k_data = 0.0d0
-      r_data = this%data(this%off_lo(i_obs):this%off_hi(i_obs), this%cur_meas, this%cur_bin)
+      
       if (this%kinds(i_obs) == KIND_FIELD) then
+        r_data = this%data(this%off_lo(i_obs):this%off_hi(i_obs), this%cur_meas, this%cur_bin)
         ! create k-space data
         do i  = 1, lat%N_cell
           k_data = k_data + phase(:,i) * r_data(i)

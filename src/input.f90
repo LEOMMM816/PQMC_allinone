@@ -79,7 +79,7 @@ MODULE input
   real(dp) :: disorder = 0d0
   integer :: nelec
   real(dp) R_nflv ! relative boltzmann weight for different particles
-  complex(dp), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:)
+  complex(dp), ALLOCATABLE :: slater(:, :), slater_Q(:, :), slater_D(:),slater_R(:, :) !> for slater determinant, QDR decomposition
   complex(dp), allocatable :: K_slater(:, :)! kinetic energy ns*ns
   real(dp), allocatable :: TR_mat(:,:)
 ! boson & fermion matrices
@@ -88,7 +88,7 @@ MODULE input
   complex(dp), allocatable :: g(:, :), g_h(:, :) ! green function(ns,ns) & inv
   !complex(kind = 8), allocatable :: g_debug(:,:,:)
   complex(dp), ALLOCATABLE ::  Q_string(:, :, :), D_string(:, :) ! (Ns),nelec,nblock
-  complex(dp), ALLOCATABLE :: R_string(:, :) ! auxilliary matrix to store R_matrix in qdr decomposition
+  complex(dp), ALLOCATABLE :: R_string(:, :, :) ! auxilliary matrix to store R_matrix in qdr decomposition
   complex(dp), ALLOCATABLE :: expKV(:,:,:,:,:),expKV_inv(:,:,:,:,:) !>(ppf%dim,ppf%dim,n_plaquette,n_phonon_field,ntime)
   logical,allocatable :: boundary_crossing(:,:) !> (n_plaquette,n_phonon_field), if this plaquette crosses the boundary
   integer, allocatable :: pla_site_list(:,:,:)! (pf%dim,n_plaquette,n_phonon_field) 
@@ -201,6 +201,7 @@ contains
       print*,'Using fixed seed for RNG initialization.'
       print*,'Seed:', ranseeds
     end if
+    
   end subroutine
 
   subroutine init_pf_para()

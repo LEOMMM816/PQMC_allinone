@@ -10,7 +10,7 @@ program Pqmc_main
 #endif
 ! parameters declare
 
-  integer :: loop, time, time_count, i_pf
+  integer :: loop, time, time_count, i_pf,i
   integer(8) :: count1, count2, count_rate
   integer :: iteration  ! # of Monte Carlo loops
   logical :: forward = .true.
@@ -30,6 +30,8 @@ program Pqmc_main
   call set_lattice_main()
   !print *, 'setting lattice ends.'
   call init()
+
+  call set_temperature()
   !print*,"setting boson field..."
   call init_boson_field()
   !print*,"setting bf ends."
@@ -67,6 +69,13 @@ program Pqmc_main
 #endif
 !simulation begins here
   call init_MC()
+
+  do i = 1, 6
+    print*,"g_h(i,1:6)",i, real(g_h(i,1:6))
+  end do
+  print*,""
+  stop
+
   !print *, 'Monte Carlo starts with ln_cw:', ln_cw
 
   do loop = 1, iteration ! Monte Carlo steps ()
@@ -83,7 +92,7 @@ program Pqmc_main
       if(trim(adjustl(model_name)) == "EPSOCZ") call update_global("rotate")
       call update_global("kspace_time")
       
-      if(updated) call init_g_T0(1)
+      if(updated) call init_g(1)
 
     end if
     ! update every phonon field
@@ -95,13 +104,15 @@ program Pqmc_main
         ! G(time+1) -> B^(-1) G(time+1) B = G(time),  where B = exp(-delt*H(time))
         do i_pf =  n_phonon_field,1,-1
           call right_evolve(time, g_h, ns,i_pf,two_way = .true.)
-
+          !print*,"time,i_pf:",time,i_pf
+          !print*,"g_h:",real(g_h(1,:))
           if (local_update .and. ppf_list(i_pf)%V_exist) then
             ! update G(time) where the exp(-delt*V(time)) is to the right most
             call update_phonon_field(ppf_list(i_pf), time)
           end if
 
         end do ! i_pf
+         
       end if ! backward
 
       !fast update green function along time direction (forward) ! at time to get g(time+1)
@@ -123,9 +134,10 @@ program Pqmc_main
 
         if (forward) then
           !print *, 'forward time:', time
-          call get_g_scratch_T0(time + 1, forward, loop) ! at time to get g(time+1)
+          
+          call get_g_scratch(time + 1, forward, loop) ! at time to get g(time+1)
         else
-          call get_g_scratch_T0(time, forward, loop) ! at time to get g(tim e)
+          call get_g_scratch(time, forward, loop) ! at time to get g(tim e)
         end if
 
       end if ! end update g from scratch
@@ -172,6 +184,7 @@ program Pqmc_main
 contains
   subroutine init_MC()
     implicit none
+
     ! initial p_data
     do i_pf = 1 , n_phonon_field
       call init_expKV(ppf_list(i_pf))
@@ -179,8 +192,9 @@ contains
     ! convert p_data into the matrices
     call set_pf_expKV_mat()
     ! calculate the B string
-    call init_g_T0(1)
-    ! print*,'init g_T0 finishes'
+    call init_g(1)
+    
+
     print*,'startup ln_cw:', ln_cw
 
     iteration = (nbin_per_core*nmeas_per_bin)*meas_interval + warmup
@@ -275,7 +289,7 @@ contains
     IF (.not. allocated(slater)) ALLOCATE (slater(Ns, nelec))
     IF (.not. allocated(slater_Q)) ALLOCATE (slater_Q(Ns, nelec))
     IF (.not. allocated(slater_D)) ALLOCATE (slater_D(nelec))
-    IF (.not. allocated(R_string)) ALLOCATE (R_string(nelec, nelec))
+    IF (.not. allocated(slater_R)) ALLOCATE (slater_R(nelec, nelec))
     !open(39,file='eval.dat')
     CALL eigen(Ns, K_slater(:, :), eval)
     if(TR_SLATER) THEN
@@ -285,7 +299,7 @@ contains
       slater(:, 1:nelec) = K_slater(:, 1:nelec)
     END IF
     slater_Q(:, 1:nelec) = slater(:, 1:nelec)
-    CALL qdr(Ns, nelec, slater_Q(:, 1:nelec), R_string(1:nelec, 1:nelec), slater_D(1:nelec))
+    CALL qdr(Ns, nelec, slater_Q(:, 1:nelec), slater_R(1:nelec, 1:nelec), slater_D(1:nelec))
     !close(39)
 
   end subroutine
