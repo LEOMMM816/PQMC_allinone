@@ -399,7 +399,7 @@ contains
       rot_mat(2,2) = cos(rot_angle)
       ! apply a random flip to to bf(2)
       ! print*,ran_sysm()
-      if (ran_sysm() < 0d0) then
+      if (ran_sysm() < 0d0 .and. trim(adjustl(model_name)) == "EPSOCZ" ) then
         rot_mat(1,2) = - rot_mat(1,2)
         rot_mat(2,2) = - rot_mat(2,2)
       end if

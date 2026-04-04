@@ -70,11 +70,11 @@ program Pqmc_main
 !simulation begins here
   call init_MC()
 
-  do i = 1, 6
-    print*,"g_h(i,1:6)",i, real(g_h(i,1:6))
-  end do
-  print*,""
-  stop
+  !do i = 1, 6
+  !  print*,"g_h(i,1:6)",i, real(g_h(i,1:6))
+  !end do
+  !print*,""
+  !stop
 
   !print *, 'Monte Carlo starts with ln_cw:', ln_cw
 
@@ -89,7 +89,7 @@ program Pqmc_main
       updated = .false.
       !print*,''
       call update_global("kspace")
-      if(trim(adjustl(model_name)) == "EPSOCZ") call update_global("rotate")
+       call update_global("rotate")
       call update_global("kspace_time")
       
       if(updated) call init_g(1)
@@ -334,8 +334,8 @@ contains
         print*,'ios:',ios
         stop
       end if
-      random_range = 0.5d0 * random_range * char_length
-      offset = 0.5d0 * offset * char_length
+      random_range =  random_range * char_length
+      offset = offset * char_length
       do l = 1, ntime
         !boson_field(:,:,l,flv,i_pf) = K
         do i_cell = 1, Lat%N_cell

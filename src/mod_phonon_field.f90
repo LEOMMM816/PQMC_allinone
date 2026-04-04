@@ -280,8 +280,8 @@ contains
              ppf%pla_int_subsites(Lat%dim+1,dim))
     ppf%K_coe = K_coe
     ppf%V_coe = V_coe
-    ppf%Vmatrix = reshape(Vmatrix, shape=[dim, dim])
-    ppf%Kmatrix = reshape(Kmatrix, shape=[dim, dim])
+    ppf%Vmatrix = transpose(reshape(Vmatrix, shape=[dim, dim]))! the transpose here deals with column major order
+    ppf%Kmatrix = transpose(reshape(Kmatrix, shape=[dim, dim]))! so that in model.nml we write in normal order
     ppf%pla_tsl_dvec_uc = reshape(pla_tsl_dvec_uc, shape=[Lat%dim, Lat%dim])
     ppf%pla_offset_dvec_uc = pla_offset_dvec_uc
     ppf%pla_int_subsites = reshape(pla_int_subsites, shape=[Lat%dim+1, dim])
@@ -585,6 +585,7 @@ contains
     ! now the expKV is 2x2 matrix, only spin-up electrons are involved
     ! H = -t * K + gX * J, so exp(-delt * H) =  cosh(norm) * I - H * sinh(norm) / norm
     ! where norm = delt * sqrt(t^2 + (gX * bf_value)^2)
+    
     norm = delt * sqrt((abs(ppf%K_coe))**2 + (abs(ppf%V_coe) * bf_value)**2)
     do i = 1, ppf%dim
       ! set the diagonal elements

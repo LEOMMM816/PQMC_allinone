@@ -1,40 +1,40 @@
 Determining if the Fortran sgemm exists failed with the following output:
 Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_4315e/fast && /usr/bin/make -f CMakeFiles/cmTC_4315e.dir/build.make CMakeFiles/cmTC_4315e.dir/build
+Run Build Command(s):/usr/bin/make cmTC_6b98a/fast && /usr/bin/make -f CMakeFiles/cmTC_6b98a.dir/build.make CMakeFiles/cmTC_6b98a.dir/build
 make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-Building Fortran object CMakeFiles/cmTC_4315e.dir/testFortranCompiler.f.o
-/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_4315e.dir/testFortranCompiler.f.o
-Linking Fortran executable cmTC_4315e
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4315e.dir/link.txt --verbose=1
-/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_4315e.dir/testFortranCompiler.f.o  -o cmTC_4315e 
-/usr/bin/ld: CMakeFiles/cmTC_4315e.dir/testFortranCompiler.f.o: in function `main':
+Building Fortran object CMakeFiles/cmTC_6b98a.dir/testFortranCompiler.f.o
+/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_6b98a.dir/testFortranCompiler.f.o
+Linking Fortran executable cmTC_6b98a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b98a.dir/link.txt --verbose=1
+/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_6b98a.dir/testFortranCompiler.f.o  -o cmTC_6b98a 
+/usr/bin/ld: CMakeFiles/cmTC_6b98a.dir/testFortranCompiler.f.o: in function `main':
 /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f:4: undefined reference to `sgemm_'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_4315e.dir/build.make:87: cmTC_4315e] Error 1
+make[1]: *** [CMakeFiles/cmTC_6b98a.dir/build.make:87: cmTC_6b98a] Error 1
 make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_4315e/fast] Error 2
+make: *** [Makefile:121: cmTC_6b98a/fast] Error 2
 
 
 
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
 Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_e6697/fast && /usr/bin/make -f CMakeFiles/cmTC_e6697.dir/build.make CMakeFiles/cmTC_e6697.dir/build
+Run Build Command(s):/usr/bin/make cmTC_07053/fast && /usr/bin/make -f CMakeFiles/cmTC_07053.dir/build.make CMakeFiles/cmTC_07053.dir/build
 make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e6697.dir/src.c.o
-/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_e6697.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_e6697
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e6697.dir/link.txt --verbose=1
-/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_e6697.dir/src.c.o  -o cmTC_e6697 
-/usr/bin/ld: CMakeFiles/cmTC_e6697.dir/src.c.o: in function `main':
+Building C object CMakeFiles/cmTC_07053.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_07053.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_07053
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_07053.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_07053.dir/src.c.o  -o cmTC_07053 
+/usr/bin/ld: CMakeFiles/cmTC_07053.dir/src.c.o: in function `main':
 src.c:(.text+0x46): undefined reference to `pthread_create'
 /usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
 /usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_e6697.dir/build.make:87: cmTC_e6697] Error 1
+make[1]: *** [CMakeFiles/cmTC_07053.dir/build.make:87: cmTC_07053] Error 1
 make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_e6697/fast] Error 2
+make: *** [Makefile:121: cmTC_07053/fast] Error 2
 
 
 Source file was:
@@ -60,58 +60,58 @@ int main(void)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_5d962/fast && /usr/bin/make -f CMakeFiles/cmTC_5d962.dir/build.make CMakeFiles/cmTC_5d962.dir/build
+Run Build Command(s):/usr/bin/make cmTC_b5905/fast && /usr/bin/make -f CMakeFiles/cmTC_b5905.dir/build.make CMakeFiles/cmTC_b5905.dir/build
 make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_5d962.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_5d962.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_5d962
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5d962.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_5d962.dir/CheckFunctionExists.c.o  -o cmTC_5d962  -lpthreads 
+Building C object CMakeFiles/cmTC_b5905.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_b5905.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b5905
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b5905.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_b5905.dir/CheckFunctionExists.c.o  -o cmTC_b5905  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_5d962.dir/build.make:87: cmTC_5d962] Error 1
+make[1]: *** [CMakeFiles/cmTC_b5905.dir/build.make:87: cmTC_b5905] Error 1
 make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_5d962/fast] Error 2
+make: *** [Makefile:121: cmTC_b5905/fast] Error 2
 
 
 
 Determining if the Fortran sgemm exists failed with the following output:
 Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_15fb8/fast && /usr/bin/make -f CMakeFiles/cmTC_15fb8.dir/build.make CMakeFiles/cmTC_15fb8.dir/build
+Run Build Command(s):/usr/bin/make cmTC_27f38/fast && /usr/bin/make -f CMakeFiles/cmTC_27f38.dir/build.make CMakeFiles/cmTC_27f38.dir/build
 make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-Building Fortran object CMakeFiles/cmTC_15fb8.dir/testFortranCompiler.f.o
-/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_15fb8.dir/testFortranCompiler.f.o
-Linking Fortran executable cmTC_15fb8
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_15fb8.dir/link.txt --verbose=1
-/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_15fb8.dir/testFortranCompiler.f.o  -o cmTC_15fb8 
-/usr/bin/ld: CMakeFiles/cmTC_15fb8.dir/testFortranCompiler.f.o: in function `main':
+Building Fortran object CMakeFiles/cmTC_27f38.dir/testFortranCompiler.f.o
+/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_27f38.dir/testFortranCompiler.f.o
+Linking Fortran executable cmTC_27f38
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_27f38.dir/link.txt --verbose=1
+/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_27f38.dir/testFortranCompiler.f.o  -o cmTC_27f38 
+/usr/bin/ld: CMakeFiles/cmTC_27f38.dir/testFortranCompiler.f.o: in function `main':
 /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f:4: undefined reference to `sgemm_'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_15fb8.dir/build.make:87: cmTC_15fb8] Error 1
+make[1]: *** [CMakeFiles/cmTC_27f38.dir/build.make:87: cmTC_27f38] Error 1
 make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_15fb8/fast] Error 2
+make: *** [Makefile:121: cmTC_27f38/fast] Error 2
 
 
 
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
 Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_1120d/fast && /usr/bin/make -f CMakeFiles/cmTC_1120d.dir/build.make CMakeFiles/cmTC_1120d.dir/build
+Run Build Command(s):/usr/bin/make cmTC_69e56/fast && /usr/bin/make -f CMakeFiles/cmTC_69e56.dir/build.make CMakeFiles/cmTC_69e56.dir/build
 make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1120d.dir/src.c.o
-/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_1120d.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_1120d
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1120d.dir/link.txt --verbose=1
-/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_1120d.dir/src.c.o  -o cmTC_1120d 
-/usr/bin/ld: CMakeFiles/cmTC_1120d.dir/src.c.o: in function `main':
+Building C object CMakeFiles/cmTC_69e56.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_69e56.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_69e56
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_69e56.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_69e56.dir/src.c.o  -o cmTC_69e56 
+/usr/bin/ld: CMakeFiles/cmTC_69e56.dir/src.c.o: in function `main':
 src.c:(.text+0x46): undefined reference to `pthread_create'
 /usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
 /usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_1120d.dir/build.make:87: cmTC_1120d] Error 1
+make[1]: *** [CMakeFiles/cmTC_69e56.dir/build.make:87: cmTC_69e56] Error 1
 make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_1120d/fast] Error 2
+make: *** [Makefile:121: cmTC_69e56/fast] Error 2
 
 
 Source file was:
@@ -137,18 +137,326 @@ int main(void)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_1d326/fast && /usr/bin/make -f CMakeFiles/cmTC_1d326.dir/build.make CMakeFiles/cmTC_1d326.dir/build
+Run Build Command(s):/usr/bin/make cmTC_d8d55/fast && /usr/bin/make -f CMakeFiles/cmTC_d8d55.dir/build.make CMakeFiles/cmTC_d8d55.dir/build
 make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1d326.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_1d326.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_1d326
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d326.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_1d326.dir/CheckFunctionExists.c.o  -o cmTC_1d326  -lpthreads 
+Building C object CMakeFiles/cmTC_d8d55.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_d8d55.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d8d55
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d8d55.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_d8d55.dir/CheckFunctionExists.c.o  -o cmTC_d8d55  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_1d326.dir/build.make:87: cmTC_1d326] Error 1
+make[1]: *** [CMakeFiles/cmTC_d8d55.dir/build.make:87: cmTC_d8d55] Error 1
 make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_1d326/fast] Error 2
+make: *** [Makefile:121: cmTC_d8d55/fast] Error 2
+
+
+
+Determining if the Fortran sgemm exists failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_45ee4/fast && /usr/bin/make -f CMakeFiles/cmTC_45ee4.dir/build.make CMakeFiles/cmTC_45ee4.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building Fortran object CMakeFiles/cmTC_45ee4.dir/testFortranCompiler.f.o
+/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_45ee4.dir/testFortranCompiler.f.o
+Linking Fortran executable cmTC_45ee4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45ee4.dir/link.txt --verbose=1
+/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_45ee4.dir/testFortranCompiler.f.o  -o cmTC_45ee4 
+/usr/bin/ld: CMakeFiles/cmTC_45ee4.dir/testFortranCompiler.f.o: in function `main':
+/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f:4: undefined reference to `sgemm_'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_45ee4.dir/build.make:87: cmTC_45ee4] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_45ee4/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_bff2e/fast && /usr/bin/make -f CMakeFiles/cmTC_bff2e.dir/build.make CMakeFiles/cmTC_bff2e.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bff2e.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_bff2e.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_bff2e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bff2e.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_bff2e.dir/src.c.o  -o cmTC_bff2e 
+/usr/bin/ld: CMakeFiles/cmTC_bff2e.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_bff2e.dir/build.make:87: cmTC_bff2e] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_bff2e/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_35812/fast && /usr/bin/make -f CMakeFiles/cmTC_35812.dir/build.make CMakeFiles/cmTC_35812.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_35812.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_35812.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_35812
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_35812.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_35812.dir/CheckFunctionExists.c.o  -o cmTC_35812  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_35812.dir/build.make:87: cmTC_35812] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_35812/fast] Error 2
+
+
+
+Determining if the Fortran sgemm exists failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_142dd/fast && /usr/bin/make -f CMakeFiles/cmTC_142dd.dir/build.make CMakeFiles/cmTC_142dd.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building Fortran object CMakeFiles/cmTC_142dd.dir/testFortranCompiler.f.o
+/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_142dd.dir/testFortranCompiler.f.o
+Linking Fortran executable cmTC_142dd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_142dd.dir/link.txt --verbose=1
+/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_142dd.dir/testFortranCompiler.f.o  -o cmTC_142dd 
+/usr/bin/ld: CMakeFiles/cmTC_142dd.dir/testFortranCompiler.f.o: in function `main':
+/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f:4: undefined reference to `sgemm_'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_142dd.dir/build.make:87: cmTC_142dd] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_142dd/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_871c8/fast && /usr/bin/make -f CMakeFiles/cmTC_871c8.dir/build.make CMakeFiles/cmTC_871c8.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_871c8.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_871c8.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_871c8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_871c8.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_871c8.dir/src.c.o  -o cmTC_871c8 
+/usr/bin/ld: CMakeFiles/cmTC_871c8.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_871c8.dir/build.make:87: cmTC_871c8] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_871c8/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_5b99d/fast && /usr/bin/make -f CMakeFiles/cmTC_5b99d.dir/build.make CMakeFiles/cmTC_5b99d.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5b99d.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_5b99d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_5b99d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5b99d.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_5b99d.dir/CheckFunctionExists.c.o  -o cmTC_5b99d  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_5b99d.dir/build.make:87: cmTC_5b99d] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_5b99d/fast] Error 2
+
+
+
+Determining if the Fortran sgemm exists failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_07346/fast && /usr/bin/make -f CMakeFiles/cmTC_07346.dir/build.make CMakeFiles/cmTC_07346.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building Fortran object CMakeFiles/cmTC_07346.dir/testFortranCompiler.f.o
+/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_07346.dir/testFortranCompiler.f.o
+Linking Fortran executable cmTC_07346
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_07346.dir/link.txt --verbose=1
+/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_07346.dir/testFortranCompiler.f.o  -o cmTC_07346 
+/usr/bin/ld: CMakeFiles/cmTC_07346.dir/testFortranCompiler.f.o: in function `main':
+/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f:4: undefined reference to `sgemm_'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_07346.dir/build.make:87: cmTC_07346] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_07346/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_8a5de/fast && /usr/bin/make -f CMakeFiles/cmTC_8a5de.dir/build.make CMakeFiles/cmTC_8a5de.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8a5de.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_8a5de.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_8a5de
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8a5de.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_8a5de.dir/src.c.o  -o cmTC_8a5de 
+/usr/bin/ld: CMakeFiles/cmTC_8a5de.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_8a5de.dir/build.make:87: cmTC_8a5de] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_8a5de/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_320e2/fast && /usr/bin/make -f CMakeFiles/cmTC_320e2.dir/build.make CMakeFiles/cmTC_320e2.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_320e2.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_320e2.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_320e2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_320e2.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_320e2.dir/CheckFunctionExists.c.o  -o cmTC_320e2  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_320e2.dir/build.make:87: cmTC_320e2] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_320e2/fast] Error 2
+
+
+
+Determining if the Fortran sgemm exists failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_faa77/fast && /usr/bin/make -f CMakeFiles/cmTC_faa77.dir/build.make CMakeFiles/cmTC_faa77.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building Fortran object CMakeFiles/cmTC_faa77.dir/testFortranCompiler.f.o
+/usr/bin/f95   -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI    -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f -o CMakeFiles/cmTC_faa77.dir/testFortranCompiler.f.o
+Linking Fortran executable cmTC_faa77
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_faa77.dir/link.txt --verbose=1
+/usr/bin/f95    -O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI  CMakeFiles/cmTC_faa77.dir/testFortranCompiler.f.o  -o cmTC_faa77 
+/usr/bin/ld: CMakeFiles/cmTC_faa77.dir/testFortranCompiler.f.o: in function `main':
+/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/testFortranCompiler.f:4: undefined reference to `sgemm_'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_faa77.dir/build.make:87: cmTC_faa77] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_faa77/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_164a1/fast && /usr/bin/make -f CMakeFiles/cmTC_164a1.dir/build.make CMakeFiles/cmTC_164a1.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_164a1.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_164a1.dir/src.c.o   -c /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_164a1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_164a1.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_164a1.dir/src.c.o  -o cmTC_164a1 
+/usr/bin/ld: CMakeFiles/cmTC_164a1.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_164a1.dir/build.make:87: cmTC_164a1] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_164a1/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_50a8b/fast && /usr/bin/make -f CMakeFiles/cmTC_50a8b.dir/build.make CMakeFiles/cmTC_50a8b.dir/build
+make[1]: Entering directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_50a8b.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_50a8b.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_50a8b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50a8b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_50a8b.dir/CheckFunctionExists.c.o  -o cmTC_50a8b  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_50a8b.dir/build.make:87: cmTC_50a8b] Error 1
+make[1]: Leaving directory '/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_50a8b/fast] Error 2
 
 
 
