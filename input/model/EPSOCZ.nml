@@ -244,7 +244,7 @@ n_subsite_uc = 2
 &bf_basics
     bf_sets = 2 ! number of set of boson fields
     ising = .false. ! ising type or not
-    continuous = .true. ! continuous type or not
+    continuous = .true. ! continuous type or not 
     import_ph_field = .false. ! import phonon field from file or not
 /
 

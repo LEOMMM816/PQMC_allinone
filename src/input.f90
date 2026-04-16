@@ -176,7 +176,7 @@ contains
     M = D * omega**(-2)
     if(M < 0.001d0) then
       M = 0d0
-      char_length = sqrt(1d0/(D*ep_parameter))
+      char_length = sqrt(1d0/(D*ep_parameter)) * (1d0/delt)
     else
       char_length = (1d0/(M*omega))
     end if

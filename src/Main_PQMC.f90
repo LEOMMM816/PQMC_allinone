@@ -89,7 +89,9 @@ program Pqmc_main
       updated = .false.
       !print*,''
       call update_global("kspace")
-       call update_global("rotate")
+      call update_global("rotate")
+      call update_global("kspace")
+      call update_global("rotate")
       call update_global("kspace_time")
       
       if(updated) call init_g(1)
