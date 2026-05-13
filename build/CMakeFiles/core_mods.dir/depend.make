@@ -36,6 +36,7 @@ CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o.provides.build:
 	$(CMAKE_COMMAND) -E touch CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o.provides.build
 CMakeFiles/core_mods.dir/build: CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o.provides.build
 
+CMakeFiles/core_mods.dir/src/mod_meas.f90.o: CMakeFiles/core_mods.dir/evolution.mod.stamp
 CMakeFiles/core_mods.dir/src/mod_meas.f90.o: CMakeFiles/core_mods.dir/pf_setting.mod.stamp
 CMakeFiles/core_mods.dir/src/mod_meas.f90.o.provides.build: CMakeFiles/core_mods.dir/dqmc_measurements.mod.stamp
 CMakeFiles/core_mods.dir/dqmc_measurements.mod.stamp: CMakeFiles/core_mods.dir/src/mod_meas.f90.o

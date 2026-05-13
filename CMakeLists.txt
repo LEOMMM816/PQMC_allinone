@@ -4,7 +4,7 @@ project(HPC_Project LANGUAGES Fortran C CXX)
 # =========================================================
 #  自动生成的 CMakeLists.txt
 #  编译器模式: GNU
-#  生成时间: Tue Apr 14 16:06:47 CST 2026
+#  生成时间: Wed May 13 19:59:49 CST 2026
 # =========================================================
 
 # 设置 C++ 标准 (如果用到)
@@ -25,7 +25,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
     
     # set(CMAKE_Fortran_FLAGS "-O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
     # set(CMAKE_Fortran_FLAGS "-O3 -fno-stack-arrays -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
-    set(CMAKE_Fortran_FLAGS "-O3  -g -march=native -ffree-line-length-none -fbacktrace -cpp -DMPI")
+    set(CMAKE_Fortran_FLAGS "-O3 -fno-stack-arrays -g -Wall -fcheck=all -fbacktrace -cpp -DMPI -ffpe-trap=invalid,zero,overflow")
             
 endif()
 # ---------------------------------------------------------
@@ -58,7 +58,6 @@ add_library(core_mods
     src/mod_matrixlib.f90
     src/mod_lattice.f90
     src/input.f90
-    src/input.f90
     src/mod_nrtype.f90
     src/mod_nrutil.f90
     src/mod_ranstate.f90
@@ -68,7 +67,6 @@ add_library(core_mods
     src/mod_evolution.f90
     src/mod_update.f90
     src/mod_meas.f90
-    # ... 其他文件 ...
 )
 # 主文件
 add_executable(simulation_app src/Main_PQMC.f90)

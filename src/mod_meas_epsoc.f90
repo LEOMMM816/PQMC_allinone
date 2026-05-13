@@ -1,5 +1,10 @@
+! meas for epsoc model, including only x-bond and y-bond J^z channel interaction.
+
+
+
 module dqmc_measurements
   use pf_setting
+  use evolution
   implicit none
   public :: MeasurementSystem
 
@@ -612,7 +617,7 @@ end subroutine spin_current_matrix
     integer, intent(in) :: time
     !2nd trotter
     if(second_trotter) then
-
+      call second_trotter_evolve(g_h, .false.)
     end if
     if (this%cur_bin > this%nbins) error stop "begin_measure: no more bins left"
     call this%take_measurement(time)
@@ -626,19 +631,18 @@ end subroutine spin_current_matrix
       if (this%cur_meas > this%nmeas) then
         ! output this bin's data
         call this%compute_one_bin_mean(this%cur_bin)
-        call this%output_bin_data(this%cur_bin)
+        ! call this%output_bin_data(this%cur_bin)
         ! next bin
         this%cur_meas = 1
         this%cur_bin = this%cur_bin + 1
       end if
 
-    end if
-
+    end if 
     ! next loop
 
     !2nd trotter
     if(second_trotter) then
-
+      call second_trotter_evolve(g_h,.true.)
     end if
   end subroutine ms_begin_measure
 

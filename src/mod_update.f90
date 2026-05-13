@@ -121,10 +121,10 @@ contains
 
           update_accept = .true.
           ! update pf_datam
-          !call get_expKV(p_data%expKV(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.false.)
-          !call get_expKV(p_data%expKV_inv(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.true.)
-          call get_expKV(expKV(:,:,i_pla,ppf%id,time),ppf,i_pla,p_bf,inv=.false.)
-          call get_expKV(expKV_inv(:,:,i_pla,ppf%id,time),ppf,i_pla,p_bf,inv=.true.)
+          call get_expKV(p_data%expKV(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.false.)
+          call get_expKV(p_data%expKV_inv(:,:,i_pla,time),ppf,i_pla,p_bf,inv=.true.)
+          !call get_expKV(expKV(:,:,i_pla,ppf%id,time),ppf,i_pla,p_bf,inv=.false.)
+          !call get_expKV(expKV_inv(:,:,i_pla,ppf%id,time),ppf,i_pla,p_bf,inv=.true.)
           if(n_local_update >1) then
             ! update G_sub
             ! g_h_sub = g_h_sub + g_h_sub * Delta * R^(-1) * (I - g_h_sub)
@@ -136,7 +136,7 @@ contains
             g_h_sub = g_h_sub + g_sub
             g_sub = -g_h_sub
             do j = 1 , pfdim
-              g_sub = g_sub + 1d0
+              g_sub(j, j) = g_sub(j, j) + 1d0
             end do
           end if
           ln_cw = ln_cw + log(real(R_elec))
@@ -158,7 +158,7 @@ contains
         call get_expKV(Delta_sub,ppf,i_pla, old_bf, inv=.true.)
         ! now Delta_sub = exp(delt*KV), the old one; p_data%expKV contains the new ones: exp(-delt*KV')
         ! we need to do: Delta_sub = expKV * exp(-delt*KV') - I or Delta_sub = Delta_sub * p_data%expKV - I
-        Delta_sub  = matmul(Delta_sub, expKV(:,:,i_pla,ppf%id,time))
+        Delta_sub  = matmul(Delta_sub, p_data%expKV(:,:,i_pla,time))
         do j = 1 , pfdim
           Delta_sub(j, j) = Delta_sub(j, j) - 1d0
         end do
@@ -234,10 +234,11 @@ contains
     complex(dp) :: re(ppf%dim, ppf%dim)
     real(dp),pointer ::  bf_new
     real(dp) :: bf_value
-    integer :: i,j
+    integer :: i
     bf_value = bf_new
     call get_expKV(re,ppf,i_pla,bf_value,inv = .false.) ! re = expKV
-    re = matmul(expKV_inv(:,:,i_pla,ppf%id,time),re) ! delta_sub = exp(delt*KV) * exp(-delt*KV') - I
+    !re = matmul(expKV_inv(:,:,i_pla,ppf%id,time),re) ! delta_sub = exp(delt*KV) * exp(-delt*KV') - I
+    re = matmul(ppf%p_data%expKV_inv(:,:,i_pla,time),re) ! delta_sub = exp(delt*KV) * exp(-delt*KV') - I
     do i = 1 , ppf%dim
       re(i, i) = re(i, i) - 1d0
     end do
@@ -255,14 +256,14 @@ contains
     !real(dp) :: oldfield(Ns, ntime)
     complex(dp) :: oldconfigurationweight
     real(dp) :: ph_ln_cw,prob,test_ln_cw
-    ! type(pf_data_type) :: old_pdata(n_phonon_field)
-    complex(dp),allocatable :: expKV_old(:,:,:,:,:),expKV_inv_old(:,:,:,:,:)
+    type(pf_data_type) :: old_pdata(n_phonon_field)
+    !complex(dp),allocatable :: expKV_old(:,:,:,:,:),expKV_inv_old(:,:,:,:,:)
     integer :: i_pf
     oldfield = boson_field
     oldconfigurationweight = ln_cw
-    !old_pdata = pf_data_list
-    allocate(expKV_old, source=expKV)
-    allocate(expKV_inv_old, source=expKV_inv)
+    old_pdata = pf_data_list
+    !allocate(expKV_old, source=expKV)
+    !allocate(expKV_inv_old, source=expKV_inv)
     ln_cw = 0d0
     test_ln_cw = 0d0
 
@@ -285,8 +286,9 @@ contains
       !print*,update_type//' rejected!'
       boson_field = oldfield
       ln_cw = oldconfigurationweight
-      expKV = expKV_old
-      expKV_inv = expKV_inv_old
+      !expKV = expKV_old
+      !expKV_inv = expKV_inv_old
+      pf_data_list = old_pdata
       global_reject = global_reject + 1
     end if
     !print*,'---------------------------------------------------'

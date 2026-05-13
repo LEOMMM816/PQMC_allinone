@@ -95,15 +95,7 @@ MODULE input
   complex(dp),allocatable :: BC_phases(:,:,:,:) ! (ppf%dim,ppf%dim,n_plaquette,n_phonon_field)
   integer,allocatable :: bf_list(:,:) !> (n_plaquette,n_phonon_field), index of the coupled boson field for each plaquette
 !!! typed objects
-  type :: pf_data_type
-    integer,allocatable :: pla_site_list(:,:)! (pf%dim,n_plaquette) the site index in each plaquette for each phonon field
-    logical,allocatable :: boundary_crossing(:)! n_plaquette, if this plaquette crosses the boundary
-    complex(dp),allocatable :: BC_phases(:,:,:) ! (ppf%dim,ppf%dim,n_plaquette), phase factor for each plaquette if it crosses the boundary
-    integer,allocatable :: bf_list(:) !> n_plaquette, index of the coupled boson field
-    complex(dp),allocatable :: expKV(:,:,:,:) !> exp(-delt* K or V) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
-    complex(dp),allocatable :: expKV_inv(:,:,:,:) !> exp(delt* K) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
-  end type pf_data_type
-  
+ 
   type :: lat_type 
     logical,allocatable :: periodic(:) !> for each dimension, if .true, periodic or twisted boundary condition;
     !> if .false, open boundary condition
@@ -124,6 +116,8 @@ MODULE input
     integer :: dim
     integer :: n_plaquette
     complex(dp) :: K_coe, V_coe !> coefficient of K and V in the pf Hamiltonian
+    logical :: ST_decomposition !> if true, the pf is decomposed into sub-plaquettes with Suzuki-Trotter errors; 
+    !> if false, the pf is treated as a whole with exact exp(-delt* K or V)
     complex(dp),allocatable :: Vmatrix(:,:)
     complex(dp),allocatable :: Kmatrix(:,:)
     integer, allocatable :: pla_tsl_dvec_uc(:,:)
@@ -133,9 +127,19 @@ MODULE input
     integer, allocatable :: pla_int_subsites(:,:)
     !>[d_vecs,sub_index] of sites in each pla, including the first site,(lat%dim+1,ppf%dim)
     type(pf_data_type),pointer :: p_data !> phonon field data
-    logical,pointer :: debug
   end type  pf_type
 
+   type :: pf_data_type
+    integer,allocatable :: pla_site_list(:,:)! (pf%dim,n_plaquette) the site index in each plaquette for each phonon field
+    logical,allocatable :: boundary_crossing(:)! n_plaquette, if this plaquette crosses the boundary
+    complex(dp),allocatable :: BC_phases(:,:,:) ! (ppf%dim,ppf%dim,n_plaquette), phase factor for each plaquette if it crosses the boundary
+    integer,allocatable :: bf_list(:) !> n_plaquette, index of the coupled boson field
+    complex(dp),allocatable :: expKV(:,:,:,:) !> exp(-delt* K or V) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
+    complex(dp),allocatable :: expKV_inv(:,:,:,:) !> exp(delt* K) for each pf, (ppf%dim,ppf%dim,n_plaquette,ntime)
+    complex(dp),allocatable :: expKV_whole(:,:) !> exp(-delt* K or V) for each pf, (Ns,Ns)
+    complex(dp),allocatable :: expKV_whole_inv(:,:) !> exp(delt* K) for each pf, (Ns,Ns)
+  end type pf_data_type
+  
   type:: cell_type
     integer :: id! unique cell id
     integer, allocatable :: dpos(:) ! position of the unit cell in lattice vectors
@@ -208,8 +212,12 @@ contains
     integer :: i_pf
     ! when TR_double = .true., filling is set as half of the actual filling
     do i_pf = 1, n_phonon_field
+      if(pf_list(i_pf)%K_exist) then
       pf_list(i_pf)%K_coe = pf_list(i_pf)%K_coe * (-hop)
+      end if 
+      if(pf_list(i_pf)%V_exist) then
       pf_list(i_pf)%V_coe = pf_list(i_pf)%V_coe * ep_parameter
+      end if 
     end do
     slater_pf%K_coe = slater_pf%K_coe * (-hop)
     return

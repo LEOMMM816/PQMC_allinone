@@ -31,7 +31,7 @@ program Pqmc_main
   !print *, 'setting lattice ends.'
   call init()
 
-  call set_temperature()
+  call set_FT_Pqmc()
   !print*,"setting boson field..."
   call init_boson_field()
   !print*,"setting bf ends."
@@ -57,11 +57,26 @@ program Pqmc_main
 
   if(mod(myid,MPI_one_block) == 0) then
     print *, 'myid:',myid, '/', &
-    &'beta,lambda,omega,M', beta,  ep_parameter,omega,M, &
+    &'beta,ep_parameter,omega,M', beta,  ep_parameter,omega,M, &
     & 'nelec:', nelec
     print *, 'ntime,nblock:', ntime, nblock
     !print*, "MPI_one_block", MPI_one_block
-    print *, 'pf1:', pf_list(1)%K_coe, pf_list(1)%V_coe
+  
+  end if
+
+  if(myid == 0) then
+    print *, 'model_name:', model_name
+      do i_pf = 1, n_phonon_field
+      print *, 'pf', i_pf, ':', 'pf_dim:', ppf_list(i_pf)%dim, 'K_coe:', ppf_list(i_pf)%K_coe, 'V_coe:', ppf_list(i_pf)%V_coe
+      print *, ''
+      print *, 'Kmatrix:', (ppf_list(i_pf)%Kmatrix)
+      print *, 'Vmatrix:', (ppf_list(i_pf)%Vmatrix)
+      print *, ''
+    end do
+    print *, 'slater_pf:', slater_pf%K_coe, slater_pf%V_coe
+    print *, 'slater_pf Kmatrix:', slater_pf%Kmatrix
+    print*, ''
+    print*, 'bf_sets:', bf_sets
   end if
 #else
   print *, 'nelec:', nelec
@@ -70,13 +85,8 @@ program Pqmc_main
 !simulation begins here
   call init_MC()
 
-  !do i = 1, 6
-  !  print*,"g_h(i,1:6)",i, real(g_h(i,1:6))
-  !end do
-  !print*,""
-  !stop
-
-  !print *, 'Monte Carlo starts with ln_cw:', ln_cw
+  print *, 'Monte Carlo starts with ln_cw:', ln_cw
+  
 
   do loop = 1, iteration ! Monte Carlo steps ()
 
@@ -89,10 +99,10 @@ program Pqmc_main
       updated = .false.
       !print*,''
       call update_global("kspace")
-      call update_global("rotate")
+      !call update_global("rotate")
       call update_global("kspace")
-      call update_global("rotate")
-      call update_global("kspace_time")
+      !call update_global("rotate")
+      !call update_global("kspace_time")
       
       if(updated) call init_g(1)
 
@@ -150,7 +160,7 @@ program Pqmc_main
         if(time >= ntime/2 - meas_number .and. time <= ntime/2 + meas_number) then
           ! take measurement every meas_interval MCS
           call Meas_sys%begin_measure(forward,time)
-        end if
+        end if 
       end if
 
     end do ! for time in 1 :ntime
@@ -192,7 +202,7 @@ contains
       call init_expKV(ppf_list(i_pf))
     end do
     ! convert p_data into the matrices
-    call set_pf_expKV_mat()
+    !call set_pf_expKV_mat()
     ! calculate the B string
     call init_g(1)
     
@@ -249,20 +259,21 @@ contains
 
   SUBROUTINE set_k_slater()
     implicit none
-    integer :: i_pla,i_pf,i
-    real(8) ::  factor
-
+    integer :: i_pla,site_list(slater_pf%dim)
+    complex(dp), allocatable :: K_sub(:,:)
     if (.not. allocated(K_slater)) ALLOCATE (K_slater(Ns, Ns))
     K_slater = 0
+    allocate(K_sub(slater_pf%dim, slater_pf%dim))
+    K_sub = 0d0
     ! build K_slater matrix from typed slater_pf
     do i_pla = 1, slater_pf%n_plaquette
-      K_slater(slater_pf%p_data%pla_site_list(:,i_pla), slater_pf%p_data%pla_site_list(:,i_pla))&
-      &  =  slater_pf%K_coe * slater_pf%Kmatrix
+      site_list = slater_pf%p_data%pla_site_list(1:slater_pf%dim,i_pla)
+      K_sub = slater_pf%K_coe * slater_pf%Kmatrix
       ! check boundary crossing for each plaquette
       if(slater_pf%p_data%boundary_crossing(i_pla)) then
-        K_slater(slater_pf%p_data%pla_site_list(:,i_pla), slater_pf%p_data%pla_site_list(:,i_pla))&
-      &  =  slater_pf%K_coe * slater_pf%Kmatrix * slater_pf%p_data%BC_phases(:,:,i_pla)
+        K_sub = K_sub * slater_pf%p_data%BC_phases(:,:,i_pla)
       end if
+        K_slater(site_list, site_list) = K_slater(site_list, site_list) + K_sub
     end do
 
     if(.false.) then
@@ -338,6 +349,9 @@ contains
       end if
       random_range =  random_range * char_length
       offset = offset * char_length
+      !! +++++++++++++++++++++
+      !offset = 1
+      !! ++++++++++++++++++++++
       do l = 1, ntime
         !boson_field(:,:,l,flv,i_pf) = K
         do i_cell = 1, Lat%N_cell

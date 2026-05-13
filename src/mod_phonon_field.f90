@@ -25,11 +25,11 @@ contains
     type(pf_type),pointer :: ppf
 
     if(.not.allocated(pf_list)) allocate(pf_list(n_phonon_field),ppf_list(n_phonon_field),pf_data_list(n_phonon_field))
-    call setup_expKV(model_name)
+    call setup_get_expKV(model_name)
     call readin_pf_basic()
     !print*,'Finished reading in pf basic info.'
     call set_pf_detail()
-    ! call set_pf_expKV_mat()
+    call set_pf_expKV_mat()
     ! debug
     if(.false.) then
       ! print the pf_site_list information
@@ -63,16 +63,17 @@ contains
     integer :: nml_unit  ! 定义一个变量来存设备号
     integer,dimension(n_phonon_field) :: id, pf_dim
     real(dp),dimension(n_phonon_field) ::  n_cover
-    logical,dimension(n_phonon_field) :: K_exist, V_exist
+    logical,dimension(n_phonon_field) :: K_exist, V_exist, ST_decomposition
     integer :: ios
     type(pf_type),pointer :: ppf
-    namelist /pf_basic/ id, K_exist, V_exist, pf_dim, n_cover
+    namelist /pf_basic/ id, K_exist, V_exist, pf_dim, n_cover, ST_decomposition
 
     id = 0
     K_exist = .false.
     V_exist = .false.
     pf_dim = 0
     n_cover = 0
+    ST_decomposition = .false.
     open(newunit=nml_unit, file=trim(nml_file), status='old', &
          action='read', iostat=ios)
     if (ios /= 0) then
@@ -99,6 +100,7 @@ contains
       ppf%id = id(i_pf)
       ppf%K_exist = K_exist(i_pf)
       ppf%V_exist = V_exist(i_pf)
+      ppf%ST_decomposition = ST_decomposition(i_pf)
       ppf%dim = pf_dim(i_pf)
       ppf%n_plaquette = n_plaquette
       !ppf%site_list(1:n_plaquette, 1:n_phonon_field) = reshape(site_list, &
@@ -265,7 +267,7 @@ contains
     ! and the BC_phase matrix is set accordingly
     type(pf_type),intent(inout) :: ppf
     integer,intent(in) :: dim
-    type(pf_data_type),pointer :: p_data_temp
+    type(pf_data_type),pointer :: pdt
     integer,intent(in),optional :: bf_index
     complex(dp),intent(in) :: K_coe,V_coe,Vmatrix(dim*dim),Kmatrix(dim*dim)
     integer, intent(in) ::pla_tsl_dvec_uc(Lat%dim*Lat%dim),pla_offset_dvec_uc(Lat%dim)
@@ -288,13 +290,14 @@ contains
     if (.not. associated(ppf%p_data)) then
       allocate(ppf%p_data)
     end if
-    p_data_temp => ppf%p_data
+    pdt => ppf%p_data
     ! allocate the p_data
-    allocate(p_data_temp%pla_site_list(ppf%dim,ppf%n_plaquette),p_data_temp%boundary_crossing(ppf%n_plaquette), &
-             p_data_temp%BC_phases(ppf%dim,ppf%dim,ppf%n_plaquette))
-    p_data_temp%pla_site_list = -1
-    p_data_temp%boundary_crossing = .false.
-    p_data_temp%BC_phases = (1.0d0,0.0d0)
+    allocate(pdt%pla_site_list(ppf%dim,ppf%n_plaquette),pdt%boundary_crossing(ppf%n_plaquette), &
+             pdt%BC_phases(ppf%dim,ppf%dim,ppf%n_plaquette), pdt%expKV_whole(Lat%Ns,Lat%Ns), &
+             pdt%expKV_whole_inv(Lat%Ns,Lat%Ns))
+    pdt%pla_site_list = -1
+    pdt%boundary_crossing = .false.
+    pdt%BC_phases = (1.0d0,0.0d0)
     ! run over all cells in the lattice and check if the cell is in one plaquette of the phonon field
     ! to check if the cell is in the plaquette, we need to check if the cell's dpos(denoted by v) is integer multiple of
     ! the pf translational dvec(denoted by M). That's to say M x = v has integer solution x.
@@ -327,13 +330,13 @@ contains
       end if
       ! --------------------
       ! record the subsite index of the first site in the plaquette(the representative site)
-      p_data_temp%pla_site_list(1,pla_count) = p_cells(i_cell)%sites(ppf%pla_int_subsites(lat%dim+1,1))
+      pdt%pla_site_list(1,pla_count) = p_cells(i_cell)%sites(ppf%pla_int_subsites(lat%dim+1,1))
     end do
 
     if(ppf%dim > 1) then
       ! loop over each plaquette and determine the plaquette index and pos vec first
       do i_plaquette = 1, ppf%n_plaquette
-        pla_pos_vec = p_sites(p_data_temp%pla_site_list(1,i_plaquette))%uc_dpos
+        pla_pos_vec = p_sites(pdt%pla_site_list(1,i_plaquette))%uc_dpos
         do i_site = 2, ppf%dim
           ! calculate the position of unit cell that occupies the i-th site in the plaquette
           cell_dpos = pla_pos_vec + ppf%pla_int_subsites(1:lat%dim,i_site)
@@ -351,7 +354,7 @@ contains
           ! calculate the index of the site
           call get_uc_index_from_dpos(cell_dpos,cell_index)
           ! store the site index in the pla_site_list
-          p_data_temp%pla_site_list(i_site,i_plaquette) = p_cells(cell_index)%sites(ppf%pla_int_subsites(lat%dim+1,i_site))
+          pdt%pla_site_list(i_site,i_plaquette) = p_cells(cell_index)%sites(ppf%pla_int_subsites(lat%dim+1,i_site))
         end do
       end do
 
@@ -359,7 +362,7 @@ contains
       do i_plaquette = 1, ppf%n_plaquette
       do i = 1,ppf%dim
         do j = 1,ppf%dim
-          i_site = p_data_temp%pla_site_list(i,i_plaquette)
+          i_site = pdt%pla_site_list(i,i_plaquette)
           i_dpos = p_sites(i_site)%uc_dpos
           j_dpos = i_dpos - ppf%pla_int_subsites(1:lat%dim,i) + ppf%pla_int_subsites(1:lat%dim,j) ! relative dpos inferred
           ! check boundary crossing
@@ -367,12 +370,12 @@ contains
           ! if(abs(ppf%pla_int_subsites(lat%dim+1,i) - ppf%pla_int_subsites(lat%dim+1,j)) < 0.01d0) cycle
           do k  = 1, Lat%dim
             if(j_dpos(k) >= Lat%dlength(k)-0.0001d0) then
-              p_data_temp%boundary_crossing(i_plaquette) = .true.
-              p_data_temp%BC_phases(i,j,i_plaquette) = p_data_temp%BC_phases(i,j,i_plaquette) * lat%BC_phase(k)
+              pdt%boundary_crossing(i_plaquette) = .true.
+              pdt%BC_phases(i,j,i_plaquette) = pdt%BC_phases(i,j,i_plaquette) * lat%BC_phase(k)
             end if
             if(j_dpos(k) < -0.0001d0) then
-              p_data_temp%boundary_crossing(i_plaquette) = .true.
-              p_data_temp%BC_phases(i,j,i_plaquette) = p_data_temp%BC_phases(i,j,i_plaquette) * conjg(lat%BC_phase(k))
+              pdt%boundary_crossing(i_plaquette) = .true.
+              pdt%BC_phases(i,j,i_plaquette) = pdt%BC_phases(i,j,i_plaquette) * conjg(lat%BC_phase(k))
             end if
           end do
 
@@ -385,15 +388,15 @@ contains
         do i_plaquette = 1, ppf%n_plaquette
           write(*,'(A,I4,A)',advance='no') 'plaquette ',i_plaquette,' sites:'
           do i_site = 1, ppf%dim
-            write(*,'(I6)',advance='no') p_data_temp%pla_site_list(i_site,i_plaquette)
+            write(*,'(I6)',advance='no') pdt%pla_site_list(i_site,i_plaquette)
           end do
           print*,''
-          print*,'boundary crossing:',p_data_temp%boundary_crossing(i_plaquette)
+          print*,'boundary crossing:',pdt%boundary_crossing(i_plaquette)
           print*,'BC phases matrix:'
           do i_site = 1, ppf%dim
             write(*,'(A)',advance='no') '  '
             do j = 1, ppf%dim
-              write(*,'(A,2f10.6,A)',advance='no')'  (',p_data_temp%BC_phases(i_site,j,i_plaquette),')  '
+              write(*,'(A,2f10.6,A)',advance='no')'  (',pdt%BC_phases(i_site,j,i_plaquette),')  '
             end do
             print*,''
           end do
@@ -408,14 +411,14 @@ contains
     if(present(bf_index)) then
       ! set the bf_list
 
-      allocate(p_data_temp%bf_list(ppf%n_plaquette))
+      allocate(pdt%bf_list(ppf%n_plaquette))
       do i_plaquette = 1, ppf%n_plaquette
         temp_id = p_sites(ppf%p_data%pla_site_list(1,i_plaquette))%uc_id
-        p_data_temp%bf_list(i_plaquette) = (bf_index) + (temp_id - 1) * bf_sets
+        pdt%bf_list(i_plaquette) = (bf_index) + (temp_id - 1) * bf_sets
       end do
       ! set the expKV
-      allocate(p_data_temp%expKV(ppf%dim,ppf%dim,ppf%n_plaquette,ntime),&
-      & p_data_temp%expKV_inv(ppf%dim,ppf%dim,ppf%n_plaquette,ntime))
+      allocate(pdt%expKV(ppf%dim,ppf%dim,ppf%n_plaquette,ntime),&
+      & pdt%expKV_inv(ppf%dim,ppf%dim,ppf%n_plaquette,ntime))
 
     end if
   end subroutine set_typed_pf
@@ -423,7 +426,7 @@ contains
   subroutine init_expKV(pf)
     implicit none
     type(pf_type),intent(inout) :: pf
-    type(pf_data_type),pointer :: p_data_temp
+    type(pf_data_type),pointer :: pdt
     integer :: i_plaquette,p,i_ph,time
     ! --- 调试代码开始 ---
 
@@ -433,21 +436,25 @@ contains
     !end if
     !print *, "DEBUG: ppf%p_data is associated."
     ! --- 调试代码结束 ---
-    p_data_temp => pf%p_data
+    pdt => pf%p_data
+    if(pf%ST_decomposition) then
     do p = 1, ntime
       do i_plaquette = 1, pf%n_plaquette
         if(pf%V_exist) then
-          call get_expKV(p_data_temp%expKV(:,:,i_plaquette,p),pf,i_plaquette,&
-          & boson_field(p_data_temp%bf_list(i_plaquette),p), .false.)
-          call get_expKV(p_data_temp%expKV_inv(:,:,i_plaquette,p),pf,i_plaquette,&
-          & boson_field(p_data_temp%bf_list(i_plaquette),p),.true.)
+          call get_expKV(pdt%expKV(:,:,i_plaquette,p),pf,i_plaquette,&
+          & boson_field(pdt%bf_list(i_plaquette),p), .false.)
+          call get_expKV(pdt%expKV_inv(:,:,i_plaquette,p),pf,i_plaquette,&
+          & boson_field(pdt%bf_list(i_plaquette),p),.true.)
         else
-          call get_expKV(p_data_temp%expKV(:,:,i_plaquette,p),pf,i_plaquette,0d0,.false.)
-          call get_expKV(p_data_temp%expKV_inv(:,:,i_plaquette,p),pf,i_plaquette,0d0,.TRUE.)
+          call get_expKV(pdt%expKV(:,:,i_plaquette,p),pf,i_plaquette,0d0,.false.)
+          call get_expKV(pdt%expKV_inv(:,:,i_plaquette,p),pf,i_plaquette,0d0,.TRUE.)
         end if
       end do
     end do
-    
+    else
+      call set_expKV_whole(pf)
+    end if
+
     BLOCK ! debug block
       complex(dp) :: expKV1(pf%dim, pf%dim), expKV2(pf%dim, pf%dim)
       if(.false.) then
@@ -456,9 +463,9 @@ contains
         do p = 1, ntime
         do i_plaquette = 1, pf%n_plaquette
           call get_expKV_general(expKV1, pf,i_plaquette, &
-          & boson_field(p_data_temp%bf_list(i_plaquette),1), .false.)
+          & boson_field(pdt%bf_list(i_plaquette),1), .false.)
           call get_expKV_epsoc(expKV2, pf,i_plaquette, &
-          & boson_field(p_data_temp%bf_list(i_plaquette),1), .false.)
+          & boson_field(pdt%bf_list(i_plaquette),1), .false.)
           if(maxval(abs(expKV1 - expKV2)) > 1e-6) then
             print*,'expKV mismatch for plaquette ',i_plaquette,'at time',p
             print*,'max difference:',maxval(abs(expKV1 - expKV2))
@@ -469,7 +476,51 @@ contains
     END BLOCK
   end subroutine init_expkv
 
-  SUBROUTINE setup_expKV(model_name)
+  subroutine set_expKV_whole(pf)
+    implicit none
+    ! now this subroutine only deals with K_exist only.
+    ! this subroutine sets the expKV_whole and expKV_whole_inv for the pf,
+    ! which are Ns * Ns matrices that contain the expKV for all sites in the lattice
+    ! the subject is the pf%p_data%expKV_whole and expKV_whole_inv, which are in shape (Lat%Ns, Lat%Ns)
+    ! expKV_whole is calculated by first retrive -delt * KV for each plaquette,
+    ! then do a Ns-by-Ns matrix exponential to get the whole expKV.
+    ! no usage of get_expKV in this subroutine.
+    type(pf_type),intent(in) :: pf
+    type(pf_data_type),pointer :: pdt
+    integer :: i_pla
+    integer :: site_list(pf%dim)
+    complex(dp) :: sub_KV(pf%dim, pf%dim),temp_whole_KV(Ns,Ns)
+    if(.not.allocated(pf%p_data%expKV_whole)) then
+      allocate(pf%p_data%expKV_whole(Lat%Ns,Lat%Ns), pf%p_data%expKV_whole_inv(Lat%Ns,Lat%Ns))
+    end if
+    temp_whole_KV = 0.0d0
+    pdt => pf%p_data
+    pdt%expKV_whole = 0.0d0
+    pdt%expKV_whole_inv = 0.0d0
+
+    do i_pla = 1, pf%n_plaquette
+      site_list = pdt%pla_site_list(:,i_pla)
+      sub_KV = (pf%K_coe * pf%Kmatrix)
+      if(pdt%boundary_crossing(i_pla)) then
+        sub_KV = sub_KV * pdt%BC_phases(:,:,i_pla)
+      end if
+      temp_whole_KV(site_list, site_list) = temp_whole_KV(site_list, site_list) + sub_KV
+    end do
+    !! initialize the expKV_whole and expKV_whole_inv by doing matrix exponential of the whole KV matrix
+    pdt%expKV_whole = -delt * temp_whole_KV
+    pdt%expKV_whole_inv = -pdt%expKV_whole
+    call expm(pdt%expKV_whole, Lat%Ns)
+    call expm(pdt%expKV_whole_inv, Lat%Ns)
+
+    !! initialize the expK_half and expK_half_inv by doing matrix exponential of half of the whole KV matrix
+    if(.not. allocated(expK_half)) allocate(expK_half(Lat%Ns,Lat%Ns), expK_inv_half(Lat%Ns,Lat%Ns))
+    expK_half = - 0.5d0 * delt * temp_whole_KV
+    expK_inv_half = - expK_half
+    call expm(expK_half, Lat%Ns)
+    call expm(expK_inv_half, Lat%Ns)
+  end subroutine set_expKV_whole
+
+  SUBROUTINE setup_get_expKV(model_name)
     CHARACTER(LEN=*), INTENT(IN) :: model_name
 
     SELECT CASE (TRIM(model_name))
@@ -493,7 +544,8 @@ contains
       end if
 
     END SELECT
-  END SUBROUTINE setup_expKV
+  END SUBROUTINE setup_get_expKV
+
   subroutine get_expKV_general(expKV, ppf,n_pla,bf_value,inv)
     implicit none
     type(pf_type), intent(in) :: ppf
@@ -568,7 +620,6 @@ contains
 
   end subroutine get_expKV_epsocz
 
-
   subroutine get_expKV_epsoc(expKV, ppf,n_pla,bf_value,inv)
 
     implicit none
@@ -585,8 +636,16 @@ contains
     ! now the expKV is 2x2 matrix, only spin-up electrons are involved
     ! H = -t * K + gX * J, so exp(-delt * H) =  cosh(norm) * I - H * sinh(norm) / norm
     ! where norm = delt * sqrt(t^2 + (gX * bf_value)^2)
-    
+    expKV = 0d0
     norm = delt * sqrt((abs(ppf%K_coe))**2 + (abs(ppf%V_coe) * bf_value)**2)
+    if(norm < 1e-6) then
+      ! if norm is very small, use the Taylor expansion to avoid numerical instability
+      do i = 1, ppf%dim
+        ! set the diagonal elements
+        expKV(i,i) = 1d0
+      end do
+      return
+    end if
     do i = 1, ppf%dim
       ! set the diagonal elements
       expKV(i,i) = cosh(norm)
@@ -601,15 +660,15 @@ contains
       expKV(1,2) = -sub_h * sinh(norm) / norm
     end if
     expKV(2,1) = conjg(expKV(1,2))
-
   end subroutine get_expKV_epsoc
+
   subroutine set_pf_expKV_mat()
     ! this subroutine is suspended for now.
     ! the idea is to store all pf_Data in a big matrix so we don't need to extract data for typed structure
     implicit none
     integer :: i_pf, i_pla, pdim,n_pla
     type(pf_type),pointer :: ppf
-    
+
     pdim = maxval([(pf_list(i_pf)%dim, i_pf=1,n_phonon_field)])
     n_pla = maxval([(pf_list(i_pf)%n_plaquette, i_pf=1,n_phonon_field)])
     allocate(pla_site_list(pdim,n_pla,n_phonon_field), &
@@ -628,37 +687,38 @@ contains
       bf_list(1:ppf%n_plaquette,i_pf) = ppf%p_data%bf_list
     end do
 
-
-
-
-
-
-
   end subroutine set_pf_expKV_mat
 
   subroutine updata_expKV_global(start_time,end_time)
-     ! this subroutine is used to update the expKV and expKV_inv in pf_list, which is called in each time step
-     ! the idea is to store all pf_Data in a big matrix so we don't need to extract data for typed structure
-     ! start_time and end_time are the time slices need updating, 
-     ! with default value 1 and ntime
+    ! this subroutine is used to update the expKV and expKV_inv in pf_list, which is called in each time step
+    ! the idea is to store all pf_Data in a big matrix so we don't need to extract data for typed structure
+    ! start_time and end_time are the time slices need updating,
+    ! with default value 1 and ntime
     implicit none
-    integer, intent(in):: start_time, end_time
+    integer, intent(in) :: start_time, end_time
     integer :: i_ph, time, i_pla
-     ! update the expKV and expKV_inv in pf_list
+    type(pf_type),pointer :: ppf
+    type(pf_data_type),pointer :: pdt
+    ! update the expKV and expKV_inv in pf_list
     do i_ph = 1, n_phonon_field
+      
+      ppf => pf_list(i_ph)
+      pdt => ppf%p_data
+      if(.not. ppf%V_exist) cycle
       do time = start_time, end_time
-        do i_pla = 1, ppf_list(i_ph)%n_plaquette
-
-          !call get_expKV(pf_list(i)%p_data%expKV(:,:,i_pla,time),ppf_list(i),i_pla, &
-          !& boson_field(ppf_list(i)%p_data%bf_list(i_pla), time), inv=.false.)
-          !call get_expKV(pf_list(i)%p_data%expKV_inv(:,:,i_pla,time),ppf_list(i),i_pla, &
-          !& boson_field(ppf_list(i)%p_data%bf_list(i_pla), time), inv=.true.)
-          call get_expKV(expKV(:,:,i_pla,i_ph,time),ppf_list(i_ph),i_pla, &
-          & boson_field(bf_list(i_pla,i_ph), time), inv=.false.)
-          call get_expKV(expKV_inv(:,:,i_pla,i_ph,time),ppf_list(i_ph),i_pla, &
-          & boson_field(bf_list(i_pla,i_ph), time), inv=.true.)
+        do i_pla = 1, ppf%n_plaquette
+          print*,"Updating expKV for phonon field ", i_ph, " plaquette ", i_pla, " time ", time
+          print*, "bf_set:", pdt%bf_list(i_pla)
+          call get_expKV(pdt%expKV(:,:,i_pla,time),ppf,i_pla, & 
+          & boson_field(pdt%bf_list(i_pla), time), inv=.false.)
+          call get_expKV(pdt%expKV_inv(:,:,i_pla,time),ppf,i_pla, &
+          & boson_field(pdt%bf_list(i_pla), time), inv=.true.)
+          !call get_expKV(expKV(:,:,i_pla,i_ph,time),ppf_list(i_ph),i_pla, &
+          !& boson_field(bf_list(i_pla,i_ph), time), inv=.false.)
+          !call get_expKV(expKV_inv(:,:,i_pla,i_ph,time),ppf_list(i_ph),i_pla, &
+          !& boson_field(bf_list(i_pla,i_ph), time), inv=.true.)
         end do
       end do
     end do
-    end subroutine updata_expKV_global
+  end subroutine updata_expKV_global
 end module pf_setting

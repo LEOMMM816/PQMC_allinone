@@ -318,7 +318,6 @@ add_library(core_mods
     src/mod_matrixlib.f90
     src/mod_lattice.f90
     src/input.f90
-    src/input.f90
     src/mod_nrtype.f90
     src/mod_nrutil.f90
     src/mod_ranstate.f90
@@ -328,7 +327,6 @@ add_library(core_mods
     src/mod_evolution.f90
     src/mod_update.f90
     src/mod_meas.f90
-    # ... 其他文件 ...
 )
 # 主文件
 add_executable(simulation_app src/Main_PQMC.f90)

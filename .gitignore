@@ -8,4 +8,5 @@ code/**/*.mod
 workdir/
 bin/
 build/
+modules/
 *.o

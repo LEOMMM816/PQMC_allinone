@@ -41,7 +41,7 @@
 /
 
 &PHONON_ARGUMENTS
-  n_phonon_field = 5
+  n_phonon_field = 3
   D = 1d0
   M = 1d0                  ! >stiffness constant and Mass
   omega = 1d0
@@ -104,12 +104,12 @@ n_subsite_uc = 1
 
 !!     interaction field definition
 &pf_basic
-  id = 1,2,3,4,5
-  K_exist = .false.,.false.,.false.,.false.,.true.
-  V_exist = .true.,.true.,.true.,.true.,.false.
-  ST_decomposition = .true.,.true.,.true.,.true.,.false.
-  pf_dim = 2,2,2,2,3
-  n_cover = 1,1,1,1,3
+  id = 1,2,3
+  K_exist = .false.,.false.,.true.
+  V_exist = .true.,.true.,.false.
+  ST_decomposition = .true.,.true.,.false.
+  pf_dim = 2,2,3
+  n_cover = 1,1,3
 / 
 
 ! pf 1 : sigma_z along x direction
@@ -146,40 +146,6 @@ n_subsite_uc = 1
                 (0.0,1.0),(0.0,0.0)
 /
 
-! pf 3 : sigma_z along y direction
-&pf_pos
-      pla_tsl_dvec_uc = 2,0,
-                        1,1 
-      pla_offset_dvec_uc = 0,0
-     pla_int_subsites = 0,0,1,
-                        0,1,1
-/
-
-
-&pf_V
-      V_coe = (1d0,0d0)  !> coupling constant for V matrix
-      bf_index = 2 !> index of the coupled boson field
-      Vmatrix = (0.0,0.0),(0.0,-1.0),
-                (0.0,1.0),(0.0,0.0)
-/
-
-
-! pf 4 : sigma_z along y direction, off by (0,1)
-&pf_pos
-      pla_tsl_dvec_uc = 2,0,
-                        1,1 
-      pla_offset_dvec_uc = 0,1
-     pla_int_subsites = 0,0,1,
-                        0,1,1
-/
-
-
-&pf_V
-      V_coe = (1d0,0d0)  !> coupling constant for V matrix
-      bf_index = 2 !> index of the coupled boson field
-      Vmatrix = (0.0,0.0),(0.0,-1.0),
-                (0.0,1.0),(0.0,0.0)
-/
 
 ! pf 5 : kinetic term along x and y direction
 &pf_pos
@@ -203,14 +169,14 @@ n_subsite_uc = 1
 !! boson field definition
 
 &bf_basics
-    bf_sets = 2 ! number of set of boson fields
+    bf_sets = 1 ! number of set of boson fields
     ising = .false. ! ising type or not
     continuous = .true. ! continuous type or not
     import_ph_field = .false. ! import phonon field from file or not
 /
 
 &bf_initial
-    phase_intra_cell = (1,0),(-1,0) ! size of n_bf, phases of intra-cell boson fields
+    phase_intra_cell = (1,0) ! size of n_bf, phases of intra-cell boson fields
     phase_k_inter_cell = 1,1! size of Lat%dim, k-space distribution of phase of bfs,in unit of pi
     random_range = 0.25 ! range of random number for initial boson field, in unit of character length
     offset = 0.25 ! range of random number for initial boson field, in unit of character length

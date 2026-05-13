@@ -27,7 +27,7 @@ module evolution
   procedure(cal_new_weight_f), POINTER :: cal_new_weight => NULL()
 contains
 
-  subroutine set_temperature()
+  subroutine set_FT_Pqmc()
     implicit none
     ! set PQMC or FTQMC
     if(proj) then
@@ -245,42 +245,55 @@ contains
     complex(dp),allocatable :: Q_temp_B(:,:),Q_temp_C(:,:)
     complex(dp),allocatable :: temp_expKV(:,:)
     integer, allocatable :: site_list(:)
-    !p_data => ppf%p_data
-    !pfdim = ppf%dim
-    pfdim = ppf_list(pf_id)%dim
-    n_pla = ppf_list(pf_id)%n_plaquette
-    allocate(Q_temp_B(pfdim,n),Q_temp_C(pfdim,n), temp_expKV(pfdim,pfdim), site_list(pfdim))
-    ! site_list = p_data%pla_site_list
+    p_data =>ppf_list(pf_id)%p_data
 
-    do i_pla = 1, n_pla
-      site_list = pla_site_list(:,i_pla,pf_id) !> get the site list for current phonon field
-      Q_temp_B = mat(site_list, :)
-      temp_expKV = expkv(:,:,i_pla,pf_id,time)
-
-      !print*,"i_pf,i_pla:",pf_id,i_pla
-      !print*,"temp_expKV:",temp_expKV
-      !print*,''
-
-      call gemm(Q_temp_C, temp_expKV, Q_temp_B, pfdim, pfdim, n , (1d0,0d0), (0d0,0d0))
-      mat(site_list, :) = Q_temp_C
-      !!! mat(p_data%pla_site_list(:,i_pla), :) = matmul(p_data%expKV(:,:,i_pla,time) , mat(p_data%pla_site_list(:,i_pla), :))
-    end do
-    deallocate(Q_temp_B, Q_temp_C, temp_expKV)
-
-    if (two_way) then
-      if (n /= ns) stop 'error in left_evolve, dimension not for evolve two-way'
-      allocate(Q_temp_B(n,pfdim),Q_temp_C(n,pfdim), temp_expKV(pfdim,pfdim))
-        !!! mat(:, p_data%pla_site_list(:,i_pla)) = matmul(mat(:, p_data%pla_site_list(:,i_pla)), p_data%expKV_inv(:,:,i_pla,time))
+    if(ppf_list(pf_id)%ST_decomposition) then
+      pfdim = ppf_list(pf_id)%dim
+      n_pla = ppf_list(pf_id)%n_plaquette
+      allocate(Q_temp_B(pfdim,n),Q_temp_C(pfdim,n), temp_expKV(pfdim,pfdim), site_list(pfdim))
       do i_pla = 1, n_pla
-        site_list = pla_site_list(:,i_pla,pf_id)
-        Q_temp_B = mat(:, site_list)
-        temp_expKV = expkv_inv(:,:,i_pla,pf_id,time)
-        call gemm(Q_temp_C, Q_temp_B, temp_expKV, n, pfdim, pfdim , (1d0,0d0), (0d0,0d0))
-        mat(:, site_list) = Q_temp_C
+        site_list = p_data%pla_site_list(:,i_pla) !> get the site list for current phonon field
+        ! site_list = pla_site_list(:,i_pla,pf_id) !> get the site list for current phonon field
+        Q_temp_B = mat(site_list, :)
+        temp_expKV = p_data%expKV(:,:,i_pla,time)
+        call gemm(Q_temp_C, temp_expKV, Q_temp_B, pfdim, pfdim, n , (1d0,0d0), (0d0,0d0))
+        mat(site_list, :) = Q_temp_C
+      !!! mat(p_data%pla_site_list(:,i_pla), :) = matmul(p_data%expKV(:,:,i_pla,time) , mat(p_data%pla_site_list(:,i_pla), :))
       end do
       deallocate(Q_temp_B, Q_temp_C, temp_expKV)
-    end if
 
+      if (two_way) then
+        if (n /= ns) stop 'error in left_evolve, dimension not for evolve two-way'
+        allocate(Q_temp_B(n,pfdim),Q_temp_C(n,pfdim), temp_expKV(pfdim,pfdim))
+        !!! mat(:, p_data%pla_site_list(:,i_pla)) = matmul(mat(:, p_data%pla_site_list(:,i_pla)), p_data%expKV_inv(:,:,i_pla,time))
+        do i_pla = 1, n_pla
+          site_list = p_data%pla_site_list(:,i_pla)
+          Q_temp_B = mat(:, site_list)
+          temp_expKV = p_data%expKV_inv(:,:,i_pla,time)
+          call gemm(Q_temp_C, Q_temp_B, temp_expKV, n, pfdim, pfdim , (1d0,0d0), (0d0,0d0))
+          mat(:, site_list) = Q_temp_C
+        end do
+        deallocate(Q_temp_B, Q_temp_C, temp_expKV)
+      end if
+
+    else
+      ! evolve as a whole matrix, usually for the kinetic part
+      allocate(Q_temp_C(Ns,n), temp_expKV(Ns,Ns))
+      Q_temp_C = 0d0
+      temp_expKV = p_data%expKV_whole
+      call gemm(Q_temp_C, temp_expKV, mat, Ns, Ns, n , (1d0,0d0), (0d0,0d0))
+      mat = Q_temp_C
+
+      if(two_way) then
+        if (n /= ns) stop 'error in left_evolve, dimension not for evolve two-way'
+        Q_temp_C = 0d0
+        temp_expKV = p_data%expKV_whole_inv
+        call gemm(Q_temp_C, mat, temp_expKV, Ns, n, Ns , (1d0,0d0), (0d0,0d0))
+        mat = Q_temp_C
+        deallocate(Q_temp_C, temp_expKV)
+      end if
+
+    end if
     !deallocate(Q_temp_B, Q_temp_C)
   end SUBROUTINE left_evolve
 
@@ -288,21 +301,26 @@ contains
     IMPLICIT none
     integer, intent(in) :: time, n
     logical, intent(in) :: two_way
-    complex(dp) :: mat(n,ns)
+    complex(dp), intent(inout) :: mat(n,ns)
     integer :: i_pla,pfdim,i,j,n_pla
     integer, intent(in) :: pf_id
     type(pf_data_type), pointer :: p_data
     complex(dp),allocatable :: Q_temp_B(:,:),Q_temp_C(:,:)
     complex(dp),allocatable :: temp_expKV(:,:)
     integer, allocatable :: site_list(:) ! (ppf%dim, ppf%n_plaquette)
+    p_data =>ppf_list(pf_id)%p_data
+
+
+    if(ppf_list(pf_id)%ST_decomposition) then
+
     pfdim = ppf_list(pf_id)%dim
     n_pla = ppf_list(pf_id)%n_plaquette
     allocate(Q_temp_B(n,pfdim),Q_temp_C(n,pfdim), temp_expKV(pfdim,pfdim), site_list(pfdim))
 
     do i_pla = 1, n_pla
-      site_list = pla_site_list(:,i_pla,pf_id)
+      site_list = p_data%pla_site_list(:,i_pla)
       Q_temp_B = mat(:,site_list)
-      temp_expKV = expkv(:,:,i_pla,pf_id,time)
+      temp_expKV = p_data%expKV(:,:,i_pla,time)
       call gemm(Q_temp_C, Q_temp_B, temp_expKV, n, pfdim, pfdim , (1d0,0d0), (0d0,0d0))
       mat(:,site_list) = Q_temp_C
       !!! mat(:,p_data%pla_site_list(:,i_pla)) = matmul(mat(:,p_data%pla_site_list(:,i_pla)),p_data%expKV(:,:,i_pla,time))
@@ -315,17 +333,58 @@ contains
       allocate(Q_temp_B(pfdim,n),Q_temp_C(pfdim,n), temp_expKV(pfdim,pfdim))
         !!!mat(p_data%pla_site_list(:,i_pla), :) = matmul(p_data%expKV_inv(:,:,i_pla,time),mat(p_data%pla_site_list(:,i_pla), :))
       do i_pla = 1, n_pla
-        site_list = pla_site_list(:,i_pla,pf_id)
+        site_list = p_data%pla_site_list(:,i_pla)
         Q_temp_B = mat(site_list, :)
-        temp_expKV = expkv_inv(:,:,i_pla,pf_id,time)
+        temp_expKV = p_data%expKV_inv(:,:,i_pla,time)
         call gemm(Q_temp_C, temp_expKV, Q_temp_B,  pfdim, pfdim , n,(1d0,0d0), (0d0,0d0))
         mat(site_list, :) = Q_temp_C
       end do
       deallocate(Q_temp_B, Q_temp_C, temp_expKV)
 
     end if
-
+  else
+    ! evolve as a whole matrix, usually for the kinetic part
+    allocate(Q_temp_C(n,Ns), temp_expKV(Ns,Ns))
+    Q_temp_C = 0d0
+    temp_expKV = p_data%expKV_whole
+    call gemm(Q_temp_C, mat, temp_expKV, n, Ns, Ns , (1d0,0d0), (0d0,0d0))
+    mat = Q_temp_C
+    if(two_way) then
+      if (n /= ns) stop 'error in right_evolve, dimension not for evolve two-way'
+      Q_temp_C = 0d0
+      temp_expKV = p_data%expKV_whole_inv
+      call gemm(Q_temp_C, temp_expKV, mat, n, Ns, Ns , (1d0,0d0), (0d0,0d0))
+      mat = Q_temp_C
+    end if
+      deallocate(Q_temp_C, temp_expKV)
+  end if
   end SUBROUTINE right_evolve
+
+
+  subroutine second_trotter_evolve(mat,inv)
+    implicit none
+    logical, intent(in) :: inv
+    complex(dp), intent(inout) :: mat(Ns,Ns)
+    logical :: inv_flag
+    complex(dp) :: temp_A(Ns,Ns), temp_B(Ns,Ns)
+    ! if inv = .false., mat -> expK_inv_half * mat * expK_half
+    ! if inv = .true., mat -> expK_half * mat * expK_inv_half
+    ! here expK_half = exp(-0.5*dt*K), expK_inv_half = exp(0.5*dt*K)
+    if (inv) then
+      temp_A = 0d0
+      call gemm(temp_A, expK_half, mat, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
+      temp_B = 0d0
+      call gemm(temp_B, temp_A, expK_inv_half, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
+      mat = temp_B
+    else
+      temp_A = 0d0
+      call gemm(temp_A, expK_inv_half, mat, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
+      temp_B = 0d0
+      call gemm(temp_B, temp_A, expK_half, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
+      mat = temp_B
+    end if
+    
+  end subroutine second_trotter_evolve
 
   subroutine cal_g_and_det_T0(lmat,rmat)
     implicit none
@@ -491,7 +550,7 @@ contains
 
   end SUBROUTINE
 
- SUBROUTINE cal_g_and_det_FT(Q_l, Q_r, D_l, D_r, R_l, R_r, cal_g)
+  SUBROUTINE cal_g_and_det_FT(Q_l, Q_r, D_l, D_r, R_l, R_r, cal_g)
     implicit none
     ! for FTQMC, g = (1 + B(\tau,0) * B(\beta,\tau))^(-1)
     ! = (1 + Q_r*D_r*R_r * R_l*D_l*Q_l)^(-1)
@@ -509,7 +568,7 @@ contains
     complex(dp) :: R_temp(Ns,Ns),D_temp(Ns) ! for QDR calculation
     complex(dp) :: g_buffer(Ns, Ns)
     complex(dp) :: Q_temp(Ns, Ns)
-     ! --- Scale Arrays ---
+    ! --- Scale Arrays ---
     complex(dp) :: Dl_gt(Ns), Dl_lt(Ns)
     complex(dp) :: Dr_gt(Ns), Dr_lt(Ns)
     ln_cw = 0d0
@@ -538,7 +597,7 @@ contains
         Dl_gt(i) = (1.0d0, 0.0d0)
         Dl_lt(i) = D_l(i)
       end if
-      
+
       ! Split D_r
       if (abs(D_r(i)) > 1.0d0) then
         Dr_gt(i) = D_r(i)
@@ -549,14 +608,12 @@ contains
       end if
     end do
 
-
-
     ! Q_l_Q_r = (Q_l Q_r)^(-1), use that Q_l and Q_r are unitary to avoid matrix inverse
     Qr_temp = conjg(transpose(Q_r))
     Q_l_Q_r = 0d0
     Ql_temp = conjg(transpose(Q_l))
     call gemm(Q_l_Q_r, Qr_temp, Ql_temp, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
-    
+
     ! QDR = R_r*R_l
     call gemm(R_r_R_l, R_r, R_l, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
 
@@ -567,7 +624,6 @@ contains
         Q_l_Q_r(i, j) = Q_l_Q_r(i, j) / Dr_gt(i) / Dl_gt(j)
       end do
     end do
-
 
     ! QDR = (Dr_gt)^(-1) * (Q_l Q_r)^(-1) * (Dl_gt)^(-1) + Dr_lt*(R_r*R_l)*Dl_lt
     QDR_temp = R_r_R_l + Q_l_Q_r
@@ -580,7 +636,7 @@ contains
     Ql_temp = Q_l
     ln_cw = ln_cw + log(det(Ns, Ql_temp)) + log(det(Ns, Qr_temp)) + sum(log(D_temp)) + sum(log(Dl_gt)) + sum(log(Dr_gt)) &
     & + log(det(Ns,QDR_temp)) + log(det(Ns, R_temp))
-    
+
     ! scale Q_l and Q_r for later use in calculating g
     ! Q_l = Dl_gt * Q_l, Q_r = Q_r * Dr_gt
     !do j = 1, Ns
@@ -591,8 +647,8 @@ contains
     !end do
 
     if(cal_g) then
-    ! cal g = Ql^(-1) * Dl_gt^(-1) * (R)^(-1) * (D)^(-1) * (Q)^(-1) * Dr_gt^(-1) * Qr^(-1)
-     !call inverse(Ns, R_temp)
+      ! cal g = Ql^(-1) * Dl_gt^(-1) * (R)^(-1) * (D)^(-1) * (Q)^(-1) * Dr_gt^(-1) * Qr^(-1)
+      !call inverse(Ns, R_temp)
       R_temp = conjg(transpose(R_temp)) ! use that R is unitary to avoid matrix inverse
       do j = 1, Ns
         do i = 1, Ns
@@ -601,7 +657,7 @@ contains
           Q_temp(i, j) = conjg(QDR_temp(j, i)) ! 将 Q_M 的逆存入 Q_temp 以防覆盖
         end do
       end do
-    
+
       ! Ql_temp^(-1) * Dl_gt^(-1)
       do j = 1, Ns
         do i = 1, Ns
@@ -611,7 +667,7 @@ contains
       ! R_Ql = Ql^(-1) * Dl_gt^(-1) * (R)^(-1)
       call gemm(R_Ql, Ql_temp, R_temp, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
 
-      ! R_Ql = R_Ql * (D)^(-1) 
+      ! R_Ql = R_Ql * (D)^(-1)
       do j = 1, Ns
         do i = 1, Ns
           R_Ql(i, j) = R_Ql(i, j) / D_temp(j)
@@ -629,7 +685,7 @@ contains
 
       ! g = R_Ql * Qr_Q
       call gemm(g_buffer, R_Ql, Qr_Q, Ns, Ns, Ns, (1d0,0d0), (0d0,0d0))
-      
+
       ! 空穴格林函数转换
       g_h(:, :) = - g_buffer(:, :)
       do i = 1, Ns
@@ -637,7 +693,6 @@ contains
       end do
     end if
 
-    
     ! make sure weight is in the principal branch
     if(TR_weight) then
       ln_cw = ln_cw + conjg(ln_cw)
@@ -645,8 +700,7 @@ contains
     ln_cw = ln_cw*ncopy
     ln_cw = cmplx(real(ln_cw),mod(aimag(ln_cw),2*pi),kind=dp)
 
-end subroutine
-
+  end subroutine
 
   SUBROUTINE get_g_scratch_FT(time, forward, loop)
     implicit none
@@ -783,5 +837,5 @@ end subroutine
     call cal_g_and_det_FT(lmat,rmat, D_string(:, nblock), d_temp, R_string(:,:, nblock), R_new, .false.)
 
   end subroutine cal_new_weight_FT
-
+! ------------------------------ for finite temperature evolution, not used for now ------------------ --------------
 end module evolution
