@@ -102,7 +102,7 @@ program Pqmc_main
       !call update_global("rotate")
       call update_global("kspace")
       !call update_global("rotate")
-      !call update_global("kspace_time")
+      call update_global("kspace_time")
       
       if(updated) call init_g(1)
 

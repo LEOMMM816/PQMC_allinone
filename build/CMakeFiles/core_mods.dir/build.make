@@ -57,162 +57,162 @@ include CMakeFiles/core_mods.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/core_mods.dir/flags.make
 
-CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o: ../src/mod_nrtype.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_nrtype.f90 -o CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o
+CMakeFiles/core_mods.dir/src/mod_nrtype.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_nrtype.F90.o: ../src/mod_nrtype.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_nrtype.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_nrtype.F90 -o CMakeFiles/core_mods.dir/src/mod_nrtype.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_nrtype.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_nrtype.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_nrtype.f90 > CMakeFiles/core_mods.dir/src/mod_nrtype.f90.i
+CMakeFiles/core_mods.dir/src/mod_nrtype.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_nrtype.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_nrtype.F90 > CMakeFiles/core_mods.dir/src/mod_nrtype.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_nrtype.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_nrtype.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_nrtype.f90 -o CMakeFiles/core_mods.dir/src/mod_nrtype.f90.s
+CMakeFiles/core_mods.dir/src/mod_nrtype.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_nrtype.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_nrtype.F90 -o CMakeFiles/core_mods.dir/src/mod_nrtype.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o: ../src/mod_nrutil.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_nrutil.f90 -o CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o
+CMakeFiles/core_mods.dir/src/mod_nrutil.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_nrutil.F90.o: ../src/mod_nrutil.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_nrutil.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_nrutil.F90 -o CMakeFiles/core_mods.dir/src/mod_nrutil.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_nrutil.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_nrutil.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_nrutil.f90 > CMakeFiles/core_mods.dir/src/mod_nrutil.f90.i
+CMakeFiles/core_mods.dir/src/mod_nrutil.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_nrutil.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_nrutil.F90 > CMakeFiles/core_mods.dir/src/mod_nrutil.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_nrutil.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_nrutil.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_nrutil.f90 -o CMakeFiles/core_mods.dir/src/mod_nrutil.f90.s
+CMakeFiles/core_mods.dir/src/mod_nrutil.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_nrutil.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_nrutil.F90 -o CMakeFiles/core_mods.dir/src/mod_nrutil.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o: ../src/mod_matrixlib.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_matrixlib.f90 -o CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o
+CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.o: ../src/mod_matrixlib.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_matrixlib.F90 -o CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_matrixlib.f90 > CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.i
+CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_matrixlib.F90 > CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_matrixlib.f90 -o CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.s
+CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_matrixlib.F90 -o CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_lattice.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_lattice.f90.o: ../src/mod_lattice.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_lattice.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_lattice.f90 -o CMakeFiles/core_mods.dir/src/mod_lattice.f90.o
+CMakeFiles/core_mods.dir/src/mod_lattice.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_lattice.F90.o: ../src/mod_lattice.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_lattice.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_lattice.F90 -o CMakeFiles/core_mods.dir/src/mod_lattice.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_lattice.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_lattice.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_lattice.f90 > CMakeFiles/core_mods.dir/src/mod_lattice.f90.i
+CMakeFiles/core_mods.dir/src/mod_lattice.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_lattice.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_lattice.F90 > CMakeFiles/core_mods.dir/src/mod_lattice.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_lattice.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_lattice.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_lattice.f90 -o CMakeFiles/core_mods.dir/src/mod_lattice.f90.s
+CMakeFiles/core_mods.dir/src/mod_lattice.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_lattice.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_lattice.F90 -o CMakeFiles/core_mods.dir/src/mod_lattice.F90.s
 
-CMakeFiles/core_mods.dir/src/input.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/input.f90.o: ../src/input.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building Fortran object CMakeFiles/core_mods.dir/src/input.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/input.f90 -o CMakeFiles/core_mods.dir/src/input.f90.o
+CMakeFiles/core_mods.dir/src/input.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/input.F90.o: ../src/input.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building Fortran object CMakeFiles/core_mods.dir/src/input.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/input.F90 -o CMakeFiles/core_mods.dir/src/input.F90.o
 
-CMakeFiles/core_mods.dir/src/input.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/input.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/input.f90 > CMakeFiles/core_mods.dir/src/input.f90.i
+CMakeFiles/core_mods.dir/src/input.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/input.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/input.F90 > CMakeFiles/core_mods.dir/src/input.F90.i
 
-CMakeFiles/core_mods.dir/src/input.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/input.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/input.f90 -o CMakeFiles/core_mods.dir/src/input.f90.s
+CMakeFiles/core_mods.dir/src/input.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/input.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/input.F90 -o CMakeFiles/core_mods.dir/src/input.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o: ../src/mod_ranstate.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_ranstate.f90 -o CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o
+CMakeFiles/core_mods.dir/src/mod_ranstate.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_ranstate.F90.o: ../src/mod_ranstate.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_ranstate.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_ranstate.F90 -o CMakeFiles/core_mods.dir/src/mod_ranstate.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_ranstate.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_ranstate.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_ranstate.f90 > CMakeFiles/core_mods.dir/src/mod_ranstate.f90.i
+CMakeFiles/core_mods.dir/src/mod_ranstate.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_ranstate.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_ranstate.F90 > CMakeFiles/core_mods.dir/src/mod_ranstate.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_ranstate.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_ranstate.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_ranstate.f90 -o CMakeFiles/core_mods.dir/src/mod_ranstate.f90.s
+CMakeFiles/core_mods.dir/src/mod_ranstate.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_ranstate.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_ranstate.F90 -o CMakeFiles/core_mods.dir/src/mod_ranstate.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o: ../src/mod_phonon_field.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_phonon_field.f90 -o CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o
+CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.o: ../src/mod_phonon_field.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_phonon_field.F90 -o CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_phonon_field.f90 > CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.i
+CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_phonon_field.F90 > CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_phonon_field.f90 -o CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.s
+CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_phonon_field.F90 -o CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_evolution.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_evolution.f90.o: ../src/mod_evolution.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_evolution.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_evolution.f90 -o CMakeFiles/core_mods.dir/src/mod_evolution.f90.o
+CMakeFiles/core_mods.dir/src/mod_evolution.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_evolution.F90.o: ../src/mod_evolution.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_evolution.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_evolution.F90 -o CMakeFiles/core_mods.dir/src/mod_evolution.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_evolution.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_evolution.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_evolution.f90 > CMakeFiles/core_mods.dir/src/mod_evolution.f90.i
+CMakeFiles/core_mods.dir/src/mod_evolution.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_evolution.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_evolution.F90 > CMakeFiles/core_mods.dir/src/mod_evolution.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_evolution.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_evolution.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_evolution.f90 -o CMakeFiles/core_mods.dir/src/mod_evolution.f90.s
+CMakeFiles/core_mods.dir/src/mod_evolution.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_evolution.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_evolution.F90 -o CMakeFiles/core_mods.dir/src/mod_evolution.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_update.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_update.f90.o: ../src/mod_update.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_update.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_update.f90 -o CMakeFiles/core_mods.dir/src/mod_update.f90.o
+CMakeFiles/core_mods.dir/src/mod_update.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_update.F90.o: ../src/mod_update.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_update.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_update.F90 -o CMakeFiles/core_mods.dir/src/mod_update.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_update.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_update.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_update.f90 > CMakeFiles/core_mods.dir/src/mod_update.f90.i
+CMakeFiles/core_mods.dir/src/mod_update.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_update.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_update.F90 > CMakeFiles/core_mods.dir/src/mod_update.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_update.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_update.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_update.f90 -o CMakeFiles/core_mods.dir/src/mod_update.f90.s
+CMakeFiles/core_mods.dir/src/mod_update.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_update.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_update.F90 -o CMakeFiles/core_mods.dir/src/mod_update.F90.s
 
-CMakeFiles/core_mods.dir/src/mod_meas.f90.o: CMakeFiles/core_mods.dir/flags.make
-CMakeFiles/core_mods.dir/src/mod_meas.f90.o: ../src/mod_meas.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_meas.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_meas.f90 -o CMakeFiles/core_mods.dir/src/mod_meas.f90.o
+CMakeFiles/core_mods.dir/src/mod_meas.F90.o: CMakeFiles/core_mods.dir/flags.make
+CMakeFiles/core_mods.dir/src/mod_meas.F90.o: ../src/mod_meas.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building Fortran object CMakeFiles/core_mods.dir/src/mod_meas.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/mod_meas.F90 -o CMakeFiles/core_mods.dir/src/mod_meas.F90.o
 
-CMakeFiles/core_mods.dir/src/mod_meas.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_meas.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_meas.f90 > CMakeFiles/core_mods.dir/src/mod_meas.f90.i
+CMakeFiles/core_mods.dir/src/mod_meas.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/core_mods.dir/src/mod_meas.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/mod_meas.F90 > CMakeFiles/core_mods.dir/src/mod_meas.F90.i
 
-CMakeFiles/core_mods.dir/src/mod_meas.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_meas.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_meas.f90 -o CMakeFiles/core_mods.dir/src/mod_meas.f90.s
+CMakeFiles/core_mods.dir/src/mod_meas.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/core_mods.dir/src/mod_meas.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/mod_meas.F90 -o CMakeFiles/core_mods.dir/src/mod_meas.F90.s
 
 # Object files for target core_mods
 core_mods_OBJECTS = \
-"CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_lattice.f90.o" \
-"CMakeFiles/core_mods.dir/src/input.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_evolution.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_update.f90.o" \
-"CMakeFiles/core_mods.dir/src/mod_meas.f90.o"
+"CMakeFiles/core_mods.dir/src/mod_nrtype.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_nrutil.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_lattice.F90.o" \
+"CMakeFiles/core_mods.dir/src/input.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_ranstate.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_evolution.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_update.F90.o" \
+"CMakeFiles/core_mods.dir/src/mod_meas.F90.o"
 
 # External object files for target core_mods
 core_mods_EXTERNAL_OBJECTS =
 
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_lattice.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/input.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_evolution.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_update.f90.o
-libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_meas.f90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_nrtype.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_nrutil.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_lattice.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/input.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_ranstate.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_evolution.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_update.F90.o
+libcore_mods.a: CMakeFiles/core_mods.dir/src/mod_meas.F90.o
 libcore_mods.a: CMakeFiles/core_mods.dir/build.make
 libcore_mods.a: CMakeFiles/core_mods.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking Fortran static library libcore_mods.a"

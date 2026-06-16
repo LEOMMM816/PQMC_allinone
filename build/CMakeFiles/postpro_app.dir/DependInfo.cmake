@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_Fortran
-  "/home/zhangxiangyu/project/all_in_one_git/src/outputnew.f90" "/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/postpro_app.dir/src/outputnew.f90.o"
+  "/home/zhangxiangyu/project/all_in_one_git/src/outputnew.F90" "/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles/postpro_app.dir/src/outputnew.F90.o"
   )
 set(CMAKE_Fortran_COMPILER_ID "GNU")
 set(CMAKE_Fortran_SUBMODULE_SEP "@")

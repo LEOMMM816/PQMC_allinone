@@ -188,9 +188,6 @@ n_subsite_uc = 1
 &observable name="BF_PE",   obskind="scalar" /
 &observable name="BF_X",    obskind="scalar" /
 &observable name="BFx_BFx", obskind="field" /
-&observable name="BFx_BFy", obskind="field" /
-&observable name="BFy_BFy", obskind="field" /
-&observable name="BFxy_BFxy", obskind="field" /
 &observable name="Jx_Jx", obskind="field" /
 &observable name="Jx_Jy", obskind="field" /
 &observable name="Jy_Jy", obskind="field" /

@@ -57,27 +57,27 @@ include CMakeFiles/postpro_app.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/postpro_app.dir/flags.make
 
-CMakeFiles/postpro_app.dir/src/outputnew.f90.o: CMakeFiles/postpro_app.dir/flags.make
-CMakeFiles/postpro_app.dir/src/outputnew.f90.o: ../src/outputnew.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/postpro_app.dir/src/outputnew.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/outputnew.f90 -o CMakeFiles/postpro_app.dir/src/outputnew.f90.o
+CMakeFiles/postpro_app.dir/src/outputnew.F90.o: CMakeFiles/postpro_app.dir/flags.make
+CMakeFiles/postpro_app.dir/src/outputnew.F90.o: ../src/outputnew.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/postpro_app.dir/src/outputnew.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/outputnew.F90 -o CMakeFiles/postpro_app.dir/src/outputnew.F90.o
 
-CMakeFiles/postpro_app.dir/src/outputnew.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/postpro_app.dir/src/outputnew.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/outputnew.f90 > CMakeFiles/postpro_app.dir/src/outputnew.f90.i
+CMakeFiles/postpro_app.dir/src/outputnew.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/postpro_app.dir/src/outputnew.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/outputnew.F90 > CMakeFiles/postpro_app.dir/src/outputnew.F90.i
 
-CMakeFiles/postpro_app.dir/src/outputnew.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/postpro_app.dir/src/outputnew.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/outputnew.f90 -o CMakeFiles/postpro_app.dir/src/outputnew.f90.s
+CMakeFiles/postpro_app.dir/src/outputnew.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/postpro_app.dir/src/outputnew.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/outputnew.F90 -o CMakeFiles/postpro_app.dir/src/outputnew.F90.s
 
 # Object files for target postpro_app
 postpro_app_OBJECTS = \
-"CMakeFiles/postpro_app.dir/src/outputnew.f90.o"
+"CMakeFiles/postpro_app.dir/src/outputnew.F90.o"
 
 # External object files for target postpro_app
 postpro_app_EXTERNAL_OBJECTS =
 
-../bin/postpro_app: CMakeFiles/postpro_app.dir/src/outputnew.f90.o
+../bin/postpro_app: CMakeFiles/postpro_app.dir/src/outputnew.F90.o
 ../bin/postpro_app: CMakeFiles/postpro_app.dir/build.make
 ../bin/postpro_app: libcore_mods.a
 ../bin/postpro_app: /home/zhangxiangyu/.local/OpenBLAS/lib/libopenblas.so

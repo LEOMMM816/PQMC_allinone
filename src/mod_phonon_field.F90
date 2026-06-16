@@ -707,8 +707,8 @@ contains
       if(.not. ppf%V_exist) cycle
       do time = start_time, end_time
         do i_pla = 1, ppf%n_plaquette
-          print*,"Updating expKV for phonon field ", i_ph, " plaquette ", i_pla, " time ", time
-          print*, "bf_set:", pdt%bf_list(i_pla)
+          !print*,"Updating expKV for phonon field ", i_ph, " plaquette ", i_pla, " time ", time
+          !print*, "bf_set:", pdt%bf_list(i_pla)
           call get_expKV(pdt%expKV(:,:,i_pla,time),ppf,i_pla, & 
           & boson_field(pdt%bf_list(i_pla), time), inv=.false.)
           call get_expKV(pdt%expKV_inv(:,:,i_pla,time),ppf,i_pla, &

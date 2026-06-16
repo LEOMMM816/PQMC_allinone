@@ -256,7 +256,7 @@ else()
     message(WARNING "你选择了生成 Intel 配置，但 CMake 检测到的编译器不是 Intel！")
 endif()
 """
-    elif compiler == 'gnu':
+    elif compiler == 'gnu' or compiler == 'gnu5':
         content += f"""
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
     message(STATUS ">>> 配置 GNU (gfortran) 环境")
@@ -313,25 +313,27 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${{CMAKE_SOURCE_DIR}}/modules)
 # ---------------------------------------------------------
 
 add_library(core_mods
-    src/mod_nrtype.f90
-    src/mod_nrutil.f90
-    src/mod_matrixlib.f90
-    src/mod_lattice.f90
-    src/input.f90
-    src/mod_nrtype.f90
-    src/mod_nrutil.f90
-    src/mod_ranstate.f90
-    src/mod_matrixlib.f90
-    src/mod_lattice.f90
-    src/mod_phonon_field.f90
-    src/mod_evolution.f90
-    src/mod_update.f90
-    src/mod_meas.f90
+    src/mod_nrtype.F90
+    src/mod_nrutil.F90
+    src/mod_matrixlib.F90
+    src/mod_lattice.F90
+    src/input.F90
+    src/input.F90
+    src/mod_nrtype.F90
+    src/mod_nrutil.F90
+    src/mod_ranstate.F90
+    src/mod_matrixlib.F90
+    src/mod_lattice.F90
+    src/mod_phonon_field.F90
+    src/mod_evolution.F90
+    src/mod_update.F90
+    src/mod_meas.F90
+    # ... 其他文件 ...
 )
 # 主文件
-add_executable(simulation_app src/Main_PQMC.f90)
+add_executable(simulation_app src/Main_PQMC.F90)
 # 后处理文件
-add_executable(postpro_app src/outputnew.f90)
+add_executable(postpro_app src/outputnew.F90)
 
 # ---------------------------------------------------------
 # 4. 库链接 (Link Libraries)
@@ -344,7 +346,7 @@ message(STATUS ">>> Intel 编译器使用 MKL 自动链接数学库")
 set(MY_MATH_LIBS "")
 """ 
 
-    elif compiler == 'gnu':
+    elif compiler == 'gnu' or compiler == 'gnu5':
         content += """
 message(STATUS ">>> 尝试链接 OpenBLAS/LAPACK (GNU 环境)")
  # 查找库
@@ -503,6 +505,13 @@ def submit_main(compiler, platform, jobfile):
                             "module load cmake/3.19.6",
                             "module load OpenBLAS/0.3.13"]
             FC_STR = "mpifort"
+        elif(compiler=="gnu5"):
+            module_list =  ["module purge",
+                            "module load gcc/9.5.0",
+                            "module load openmpi/4.1.8",
+                            "module load cmake/3.19.6",
+                            "module load OpenBLAS/0.3.30"]
+            FC_STR = "mpifort"
         module_str = "\n".join(module_list)
         build_script_content = f"""#!/bin/bash
 set -e  # 遇到错误立即停止
@@ -657,7 +666,7 @@ make
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="自动生成适用于 HPC 的 CMakeLists.txt")
     
-    parser.add_argument('--compiler', choices=['intel', 'gnu'], default='intel', 
+    parser.add_argument('--compiler', choices=['intel', 'gnu','gnu5'], default='gnu', 
                         help='选择编译器: intel (ifort/ifx) 或 gnu (gfortran)')
     
     parser.add_argument('--mpi', action='store_true', default=True,

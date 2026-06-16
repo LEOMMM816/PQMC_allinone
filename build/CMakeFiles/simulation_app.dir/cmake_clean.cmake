@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "../bin/simulation_app"
   "../bin/simulation_app.pdb"
-  "CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o"
+  "CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o"
 )
 
 # Per-language clean rules from dependency scanning.

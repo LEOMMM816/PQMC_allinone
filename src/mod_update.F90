@@ -364,7 +364,7 @@ contains
       K_vec = 2*PI*[0.5d0,0.5d0]  ! Initialize K_vec with appropriate values
       ! incell_phase = [1d0, -1d0]  ! Initialize incell_phase with appropriate values
       do i = 1,bf_sets
-        incell_phase(i) = irands(2)*2d0 - 1d0
+        incell_phase(i) = irands(2)*2d0 - 1d0 ! can be either 1 or -1
       end do
       ! generate new field in K space
       call generate_newfield_space(bf_temp_space, K_vec, incell_phase)
@@ -453,7 +453,7 @@ contains
     ! print*,"interphase:", incell_phase
     bf_jump = 0d0
     distance = 2 * global_update_distance/lat%N_cell ! can be adjusted
-    amplitude =  distance * rands()
+    amplitude =  distance * ran_sysm()
     !phi = 2d0*pi*rands()
     phi = 0d0
     do i_cell = 1, Lat%N_cell

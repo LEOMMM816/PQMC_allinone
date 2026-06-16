@@ -149,329 +149,329 @@ core_mods/fast:
 	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/build
 .PHONY : core_mods/fast
 
-src/Main_PQMC.o: src/Main_PQMC.f90.o
+src/Main_PQMC.o: src/Main_PQMC.F90.o
 
 .PHONY : src/Main_PQMC.o
 
 # target to build an object file
-src/Main_PQMC.f90.o:
-	$(MAKE) -f CMakeFiles/simulation_app.dir/build.make CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o
-.PHONY : src/Main_PQMC.f90.o
+src/Main_PQMC.F90.o:
+	$(MAKE) -f CMakeFiles/simulation_app.dir/build.make CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o
+.PHONY : src/Main_PQMC.F90.o
 
-src/Main_PQMC.i: src/Main_PQMC.f90.i
+src/Main_PQMC.i: src/Main_PQMC.F90.i
 
 .PHONY : src/Main_PQMC.i
 
 # target to preprocess a source file
-src/Main_PQMC.f90.i:
-	$(MAKE) -f CMakeFiles/simulation_app.dir/build.make CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.i
-.PHONY : src/Main_PQMC.f90.i
+src/Main_PQMC.F90.i:
+	$(MAKE) -f CMakeFiles/simulation_app.dir/build.make CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.i
+.PHONY : src/Main_PQMC.F90.i
 
-src/Main_PQMC.s: src/Main_PQMC.f90.s
+src/Main_PQMC.s: src/Main_PQMC.F90.s
 
 .PHONY : src/Main_PQMC.s
 
 # target to generate assembly for a file
-src/Main_PQMC.f90.s:
-	$(MAKE) -f CMakeFiles/simulation_app.dir/build.make CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.s
-.PHONY : src/Main_PQMC.f90.s
+src/Main_PQMC.F90.s:
+	$(MAKE) -f CMakeFiles/simulation_app.dir/build.make CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.s
+.PHONY : src/Main_PQMC.F90.s
 
-src/input.o: src/input.f90.o
+src/input.o: src/input.F90.o
 
 .PHONY : src/input.o
 
 # target to build an object file
-src/input.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/input.f90.o
-.PHONY : src/input.f90.o
+src/input.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/input.F90.o
+.PHONY : src/input.F90.o
 
-src/input.i: src/input.f90.i
+src/input.i: src/input.F90.i
 
 .PHONY : src/input.i
 
 # target to preprocess a source file
-src/input.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/input.f90.i
-.PHONY : src/input.f90.i
+src/input.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/input.F90.i
+.PHONY : src/input.F90.i
 
-src/input.s: src/input.f90.s
+src/input.s: src/input.F90.s
 
 .PHONY : src/input.s
 
 # target to generate assembly for a file
-src/input.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/input.f90.s
-.PHONY : src/input.f90.s
+src/input.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/input.F90.s
+.PHONY : src/input.F90.s
 
-src/mod_evolution.o: src/mod_evolution.f90.o
+src/mod_evolution.o: src/mod_evolution.F90.o
 
 .PHONY : src/mod_evolution.o
 
 # target to build an object file
-src/mod_evolution.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_evolution.f90.o
-.PHONY : src/mod_evolution.f90.o
+src/mod_evolution.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_evolution.F90.o
+.PHONY : src/mod_evolution.F90.o
 
-src/mod_evolution.i: src/mod_evolution.f90.i
+src/mod_evolution.i: src/mod_evolution.F90.i
 
 .PHONY : src/mod_evolution.i
 
 # target to preprocess a source file
-src/mod_evolution.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_evolution.f90.i
-.PHONY : src/mod_evolution.f90.i
+src/mod_evolution.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_evolution.F90.i
+.PHONY : src/mod_evolution.F90.i
 
-src/mod_evolution.s: src/mod_evolution.f90.s
+src/mod_evolution.s: src/mod_evolution.F90.s
 
 .PHONY : src/mod_evolution.s
 
 # target to generate assembly for a file
-src/mod_evolution.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_evolution.f90.s
-.PHONY : src/mod_evolution.f90.s
+src/mod_evolution.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_evolution.F90.s
+.PHONY : src/mod_evolution.F90.s
 
-src/mod_lattice.o: src/mod_lattice.f90.o
+src/mod_lattice.o: src/mod_lattice.F90.o
 
 .PHONY : src/mod_lattice.o
 
 # target to build an object file
-src/mod_lattice.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_lattice.f90.o
-.PHONY : src/mod_lattice.f90.o
+src/mod_lattice.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_lattice.F90.o
+.PHONY : src/mod_lattice.F90.o
 
-src/mod_lattice.i: src/mod_lattice.f90.i
+src/mod_lattice.i: src/mod_lattice.F90.i
 
 .PHONY : src/mod_lattice.i
 
 # target to preprocess a source file
-src/mod_lattice.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_lattice.f90.i
-.PHONY : src/mod_lattice.f90.i
+src/mod_lattice.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_lattice.F90.i
+.PHONY : src/mod_lattice.F90.i
 
-src/mod_lattice.s: src/mod_lattice.f90.s
+src/mod_lattice.s: src/mod_lattice.F90.s
 
 .PHONY : src/mod_lattice.s
 
 # target to generate assembly for a file
-src/mod_lattice.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_lattice.f90.s
-.PHONY : src/mod_lattice.f90.s
+src/mod_lattice.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_lattice.F90.s
+.PHONY : src/mod_lattice.F90.s
 
-src/mod_matrixlib.o: src/mod_matrixlib.f90.o
+src/mod_matrixlib.o: src/mod_matrixlib.F90.o
 
 .PHONY : src/mod_matrixlib.o
 
 # target to build an object file
-src/mod_matrixlib.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.o
-.PHONY : src/mod_matrixlib.f90.o
+src/mod_matrixlib.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.o
+.PHONY : src/mod_matrixlib.F90.o
 
-src/mod_matrixlib.i: src/mod_matrixlib.f90.i
+src/mod_matrixlib.i: src/mod_matrixlib.F90.i
 
 .PHONY : src/mod_matrixlib.i
 
 # target to preprocess a source file
-src/mod_matrixlib.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.i
-.PHONY : src/mod_matrixlib.f90.i
+src/mod_matrixlib.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.i
+.PHONY : src/mod_matrixlib.F90.i
 
-src/mod_matrixlib.s: src/mod_matrixlib.f90.s
+src/mod_matrixlib.s: src/mod_matrixlib.F90.s
 
 .PHONY : src/mod_matrixlib.s
 
 # target to generate assembly for a file
-src/mod_matrixlib.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_matrixlib.f90.s
-.PHONY : src/mod_matrixlib.f90.s
+src/mod_matrixlib.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_matrixlib.F90.s
+.PHONY : src/mod_matrixlib.F90.s
 
-src/mod_meas.o: src/mod_meas.f90.o
+src/mod_meas.o: src/mod_meas.F90.o
 
 .PHONY : src/mod_meas.o
 
 # target to build an object file
-src/mod_meas.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_meas.f90.o
-.PHONY : src/mod_meas.f90.o
+src/mod_meas.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_meas.F90.o
+.PHONY : src/mod_meas.F90.o
 
-src/mod_meas.i: src/mod_meas.f90.i
+src/mod_meas.i: src/mod_meas.F90.i
 
 .PHONY : src/mod_meas.i
 
 # target to preprocess a source file
-src/mod_meas.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_meas.f90.i
-.PHONY : src/mod_meas.f90.i
+src/mod_meas.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_meas.F90.i
+.PHONY : src/mod_meas.F90.i
 
-src/mod_meas.s: src/mod_meas.f90.s
+src/mod_meas.s: src/mod_meas.F90.s
 
 .PHONY : src/mod_meas.s
 
 # target to generate assembly for a file
-src/mod_meas.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_meas.f90.s
-.PHONY : src/mod_meas.f90.s
+src/mod_meas.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_meas.F90.s
+.PHONY : src/mod_meas.F90.s
 
-src/mod_nrtype.o: src/mod_nrtype.f90.o
+src/mod_nrtype.o: src/mod_nrtype.F90.o
 
 .PHONY : src/mod_nrtype.o
 
 # target to build an object file
-src/mod_nrtype.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrtype.f90.o
-.PHONY : src/mod_nrtype.f90.o
+src/mod_nrtype.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrtype.F90.o
+.PHONY : src/mod_nrtype.F90.o
 
-src/mod_nrtype.i: src/mod_nrtype.f90.i
+src/mod_nrtype.i: src/mod_nrtype.F90.i
 
 .PHONY : src/mod_nrtype.i
 
 # target to preprocess a source file
-src/mod_nrtype.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrtype.f90.i
-.PHONY : src/mod_nrtype.f90.i
+src/mod_nrtype.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrtype.F90.i
+.PHONY : src/mod_nrtype.F90.i
 
-src/mod_nrtype.s: src/mod_nrtype.f90.s
+src/mod_nrtype.s: src/mod_nrtype.F90.s
 
 .PHONY : src/mod_nrtype.s
 
 # target to generate assembly for a file
-src/mod_nrtype.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrtype.f90.s
-.PHONY : src/mod_nrtype.f90.s
+src/mod_nrtype.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrtype.F90.s
+.PHONY : src/mod_nrtype.F90.s
 
-src/mod_nrutil.o: src/mod_nrutil.f90.o
+src/mod_nrutil.o: src/mod_nrutil.F90.o
 
 .PHONY : src/mod_nrutil.o
 
 # target to build an object file
-src/mod_nrutil.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrutil.f90.o
-.PHONY : src/mod_nrutil.f90.o
+src/mod_nrutil.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrutil.F90.o
+.PHONY : src/mod_nrutil.F90.o
 
-src/mod_nrutil.i: src/mod_nrutil.f90.i
+src/mod_nrutil.i: src/mod_nrutil.F90.i
 
 .PHONY : src/mod_nrutil.i
 
 # target to preprocess a source file
-src/mod_nrutil.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrutil.f90.i
-.PHONY : src/mod_nrutil.f90.i
+src/mod_nrutil.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrutil.F90.i
+.PHONY : src/mod_nrutil.F90.i
 
-src/mod_nrutil.s: src/mod_nrutil.f90.s
+src/mod_nrutil.s: src/mod_nrutil.F90.s
 
 .PHONY : src/mod_nrutil.s
 
 # target to generate assembly for a file
-src/mod_nrutil.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrutil.f90.s
-.PHONY : src/mod_nrutil.f90.s
+src/mod_nrutil.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_nrutil.F90.s
+.PHONY : src/mod_nrutil.F90.s
 
-src/mod_phonon_field.o: src/mod_phonon_field.f90.o
+src/mod_phonon_field.o: src/mod_phonon_field.F90.o
 
 .PHONY : src/mod_phonon_field.o
 
 # target to build an object file
-src/mod_phonon_field.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.o
-.PHONY : src/mod_phonon_field.f90.o
+src/mod_phonon_field.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.o
+.PHONY : src/mod_phonon_field.F90.o
 
-src/mod_phonon_field.i: src/mod_phonon_field.f90.i
+src/mod_phonon_field.i: src/mod_phonon_field.F90.i
 
 .PHONY : src/mod_phonon_field.i
 
 # target to preprocess a source file
-src/mod_phonon_field.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.i
-.PHONY : src/mod_phonon_field.f90.i
+src/mod_phonon_field.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.i
+.PHONY : src/mod_phonon_field.F90.i
 
-src/mod_phonon_field.s: src/mod_phonon_field.f90.s
+src/mod_phonon_field.s: src/mod_phonon_field.F90.s
 
 .PHONY : src/mod_phonon_field.s
 
 # target to generate assembly for a file
-src/mod_phonon_field.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_phonon_field.f90.s
-.PHONY : src/mod_phonon_field.f90.s
+src/mod_phonon_field.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_phonon_field.F90.s
+.PHONY : src/mod_phonon_field.F90.s
 
-src/mod_ranstate.o: src/mod_ranstate.f90.o
+src/mod_ranstate.o: src/mod_ranstate.F90.o
 
 .PHONY : src/mod_ranstate.o
 
 # target to build an object file
-src/mod_ranstate.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_ranstate.f90.o
-.PHONY : src/mod_ranstate.f90.o
+src/mod_ranstate.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_ranstate.F90.o
+.PHONY : src/mod_ranstate.F90.o
 
-src/mod_ranstate.i: src/mod_ranstate.f90.i
+src/mod_ranstate.i: src/mod_ranstate.F90.i
 
 .PHONY : src/mod_ranstate.i
 
 # target to preprocess a source file
-src/mod_ranstate.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_ranstate.f90.i
-.PHONY : src/mod_ranstate.f90.i
+src/mod_ranstate.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_ranstate.F90.i
+.PHONY : src/mod_ranstate.F90.i
 
-src/mod_ranstate.s: src/mod_ranstate.f90.s
+src/mod_ranstate.s: src/mod_ranstate.F90.s
 
 .PHONY : src/mod_ranstate.s
 
 # target to generate assembly for a file
-src/mod_ranstate.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_ranstate.f90.s
-.PHONY : src/mod_ranstate.f90.s
+src/mod_ranstate.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_ranstate.F90.s
+.PHONY : src/mod_ranstate.F90.s
 
-src/mod_update.o: src/mod_update.f90.o
+src/mod_update.o: src/mod_update.F90.o
 
 .PHONY : src/mod_update.o
 
 # target to build an object file
-src/mod_update.f90.o:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_update.f90.o
-.PHONY : src/mod_update.f90.o
+src/mod_update.F90.o:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_update.F90.o
+.PHONY : src/mod_update.F90.o
 
-src/mod_update.i: src/mod_update.f90.i
+src/mod_update.i: src/mod_update.F90.i
 
 .PHONY : src/mod_update.i
 
 # target to preprocess a source file
-src/mod_update.f90.i:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_update.f90.i
-.PHONY : src/mod_update.f90.i
+src/mod_update.F90.i:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_update.F90.i
+.PHONY : src/mod_update.F90.i
 
-src/mod_update.s: src/mod_update.f90.s
+src/mod_update.s: src/mod_update.F90.s
 
 .PHONY : src/mod_update.s
 
 # target to generate assembly for a file
-src/mod_update.f90.s:
-	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_update.f90.s
-.PHONY : src/mod_update.f90.s
+src/mod_update.F90.s:
+	$(MAKE) -f CMakeFiles/core_mods.dir/build.make CMakeFiles/core_mods.dir/src/mod_update.F90.s
+.PHONY : src/mod_update.F90.s
 
-src/outputnew.o: src/outputnew.f90.o
+src/outputnew.o: src/outputnew.F90.o
 
 .PHONY : src/outputnew.o
 
 # target to build an object file
-src/outputnew.f90.o:
-	$(MAKE) -f CMakeFiles/postpro_app.dir/build.make CMakeFiles/postpro_app.dir/src/outputnew.f90.o
-.PHONY : src/outputnew.f90.o
+src/outputnew.F90.o:
+	$(MAKE) -f CMakeFiles/postpro_app.dir/build.make CMakeFiles/postpro_app.dir/src/outputnew.F90.o
+.PHONY : src/outputnew.F90.o
 
-src/outputnew.i: src/outputnew.f90.i
+src/outputnew.i: src/outputnew.F90.i
 
 .PHONY : src/outputnew.i
 
 # target to preprocess a source file
-src/outputnew.f90.i:
-	$(MAKE) -f CMakeFiles/postpro_app.dir/build.make CMakeFiles/postpro_app.dir/src/outputnew.f90.i
-.PHONY : src/outputnew.f90.i
+src/outputnew.F90.i:
+	$(MAKE) -f CMakeFiles/postpro_app.dir/build.make CMakeFiles/postpro_app.dir/src/outputnew.F90.i
+.PHONY : src/outputnew.F90.i
 
-src/outputnew.s: src/outputnew.f90.s
+src/outputnew.s: src/outputnew.F90.s
 
 .PHONY : src/outputnew.s
 
 # target to generate assembly for a file
-src/outputnew.f90.s:
-	$(MAKE) -f CMakeFiles/postpro_app.dir/build.make CMakeFiles/postpro_app.dir/src/outputnew.f90.s
-.PHONY : src/outputnew.f90.s
+src/outputnew.F90.s:
+	$(MAKE) -f CMakeFiles/postpro_app.dir/build.make CMakeFiles/postpro_app.dir/src/outputnew.F90.s
+.PHONY : src/outputnew.F90.s
 
 # Help Target
 help:

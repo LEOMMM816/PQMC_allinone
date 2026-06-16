@@ -3,4 +3,4 @@
 
 # Note that incremental build could trigger a call to cmake_copy_f90_mod on each re-build
 
-CMakeFiles/postpro_app.dir/src/outputnew.f90.o: CMakeFiles/core_mods.dir/nrtype.mod.stamp
+CMakeFiles/postpro_app.dir/src/outputnew.F90.o: CMakeFiles/core_mods.dir/nrtype.mod.stamp

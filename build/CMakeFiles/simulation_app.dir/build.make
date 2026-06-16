@@ -57,27 +57,27 @@ include CMakeFiles/simulation_app.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/simulation_app.dir/flags.make
 
-CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o: CMakeFiles/simulation_app.dir/flags.make
-CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o: ../src/Main_PQMC.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/Main_PQMC.f90 -o CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o
+CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o: CMakeFiles/simulation_app.dir/flags.make
+CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o: ../src/Main_PQMC.F90
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxiangyu/project/all_in_one_git/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building Fortran object CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c /home/zhangxiangyu/project/all_in_one_git/src/Main_PQMC.F90 -o CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o
 
-CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.i"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/Main_PQMC.f90 > CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.i
+CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.i"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E /home/zhangxiangyu/project/all_in_one_git/src/Main_PQMC.F90 > CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.i
 
-CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.s"
-	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/Main_PQMC.f90 -o CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.s
+CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.s"
+	/usr/bin/f95 $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S /home/zhangxiangyu/project/all_in_one_git/src/Main_PQMC.F90 -o CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.s
 
 # Object files for target simulation_app
 simulation_app_OBJECTS = \
-"CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o"
+"CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o"
 
 # External object files for target simulation_app
 simulation_app_EXTERNAL_OBJECTS =
 
-../bin/simulation_app: CMakeFiles/simulation_app.dir/src/Main_PQMC.f90.o
+../bin/simulation_app: CMakeFiles/simulation_app.dir/src/Main_PQMC.F90.o
 ../bin/simulation_app: CMakeFiles/simulation_app.dir/build.make
 ../bin/simulation_app: libcore_mods.a
 ../bin/simulation_app: /home/zhangxiangyu/.local/OpenBLAS/lib/libopenblas.so
